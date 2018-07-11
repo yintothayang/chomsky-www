@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
+import Decks from './pages/Decks.vue'
+import Cards from './pages/Cards.vue'
+import Game from './pages/Game.vue'
+import About from './pages/About.vue'
 
 Vue.use(Router)
 
@@ -9,8 +11,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      redirect: '/decks'
+    },
+    {
+      path: '/decks',
+      name: 'decks',
+      component: Decks
+    },
+    {
+      path: '/cards',
+      name: 'cards',
+      component: Cards
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: Game
     },
     {
       path: '/about',

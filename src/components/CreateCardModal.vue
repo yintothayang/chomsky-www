@@ -1,7 +1,7 @@
 <template lang="pug">
 #create-card-modal
   v-layout(row='', justify-center='')
-    v-dialog(v-model='open', max-width='500px')
+    v-dialog(v-model='local_open', max-width='500px')
       v-card
         v-card-title
           span.headline New Card
@@ -15,8 +15,8 @@
           small *indicates required field
         v-card-actions
           v-spacer
-          v-btn(color='blue darken-1', flat='', @click.native='open = false') Close
-          v-btn(color='blue darken-1', flat='', @click.native='createCard(); open = false') Create
+          v-btn(color='blue darken-1', flat='', @click.native='local_open = false') Close
+          v-btn(color='blue darken-1', flat='', @click.native='createCard(); local_open = false') Create
 
 </template>
 
@@ -32,14 +32,27 @@ export default {
       default: ()=>{}
     }
   },
+  watch: {
+    open: function(new_value){
+      this.local_open = true
+    },
+  },
   data() {
-    return {}
+    return {
+      local_open: false
+    }
   },
   computed: {
 
   },
   methods: {
-
+    ...mapMutations({
+      addCard: 'cards/ADD_CARD',
+    }),
+    createCard(){
+      this.addCard(this.card)
+      this.card = {}
+    }
   }
 }
 </script>

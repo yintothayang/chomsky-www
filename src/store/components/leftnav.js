@@ -3,8 +3,8 @@ const state = {
   open: false,
   links: [
     { title: 'Decks', icon: 'style', to: {name: 'decks'} },
-    { title: 'Cards', icon: 'photo_size_select_actual', to: {name: 'cards'} },
-    { title: 'Game', icon: 'photo_size_select_actual', to: {name: 'game'} },
+    { title: 'Cards', icon: 'view_module', to: {name: 'cards'} },
+    { title: 'Game', icon: 'videogame_asset', to: {name: 'game'} },
     { title: 'About', icon: 'contact_support', to: {name: 'about'} }
   ],
 }
@@ -19,6 +19,9 @@ const getters = {
 const mutations = {
   ['TOGGLE_OPEN'] (state) {
     state.open = !state.open
+  },
+  ['SET_OPEN'] (state, open) {
+    state.open = open
   },
 }
 

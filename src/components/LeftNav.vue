@@ -1,17 +1,13 @@
 <template lang="pug">
-  v-navigation-drawer(v-model="open" temporary="" absolute="")
-    v-list.pa-1
-      v-list-tile(avatar="")
-        v-list-tile-content
-          v-list-tile-title Chomsky
-    v-list.pt-0(dense="")
-      v-divider
-      v-list-tile(v-for="item in links" :key="item.title")
-        router-link(:to="item.to")
+#left-nav
+  v-navigation-drawer(v-model="local_open" temporary="" absolute="")
+    v-list(dense='')
+      router-link.link(v-for='link in links' :key='link.title' :to="link.to" tag="div")
+        v-list-tile
           v-list-tile-action
-            v-icon {{ item.icon }}
+            v-icon {{ link.icon }}
           v-list-tile-content
-            v-list-tile-title {{ item.title }}
+            v-list-tile-title {{ link.title }}
 </template>
 
 <script>
@@ -20,28 +16,26 @@ export default {
   name: 'LeftNav',
   data() {
     return {
-
+      local_open: false
     }
+  },
+  watch: {
+    local_open: function(new_value){
+      this.setOpen(new_value)
+    },
+    open: function(new_value){
+      this.local_open = new_value
+    },
   },
   computed: {
     ...mapGetters({
-      isOpen: 'leftnav/open',
-      links: 'leftnav/links'
+      open: 'leftnav/open',
+      links: 'leftnav/links',
     }),
-    open: {
-      // getter
-      get: function () {
-        return this.isOpen
-      },
-      // setter
-      set: function (newValue) {
-        // this.toggleLeftNav()
-      }
-    }
   },
   methods: {
     ...mapMutations({
-      toggleLeftNav: 'leftnav/TOGGLE_OPEN'
+      setOpen: 'leftnav/SET_OPEN'
     })
   }
 }
@@ -49,17 +43,11 @@ export default {
 
 
 <style lang="stylus" scoped>
-h3
-  margin 40px 0 0
+#left-nav
+  .link
+    &:hover
+      background rgba(0, 0, 0, .07)
 
-ul
-  list-style-type none
-  padding 0
-
-li
-  display inline-block
-  margin 0 10px
-
-a
-  color #42b983
+  .router-link-active
+    background rgba(0, 0, 0, .15)
 </style>

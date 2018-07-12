@@ -9,6 +9,7 @@ const state = {
 // Getters
 var getters = {
   cards: state => state.cards,
+  selectedCards: state => state.cards.filter(card => card.selected),
 }
 
 // Mutations
@@ -18,6 +19,9 @@ var mutations = {
   },
   ["ADD_CARD"] (state, card) {
     state.cards.push(card)
+  },
+  ["UPDATE_CARD"] (state, {card, updates}) {
+    Object.assign(card, updates)
   },
   ["LOAD_CARDS"] (state, card) {
     let local_cards = localStorage.getItem('cards')

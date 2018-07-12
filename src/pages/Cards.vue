@@ -1,15 +1,26 @@
 <template lang="pug">
 #cards-page
   .card-list
-    .card(v-for="card in cards")
-      h1 card
+    .card-container(v-for="card in cards" @click="toggleSelected(card)")
+      .card(:class="{'selected': card.selected}")
+        .face.front
+          h1 {{card.front}}
+        .face.back
+          h1 {{card.back}}
 
-  .create-card-button(@click="open = true")
+
+
+  .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
+    v-btn.on(fab dark large color="blue")
+      v-icon(dark) style
+
+  .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
     v-btn.on(fab dark large color="green")
       v-icon(dark) add
 
+  create-card-modal(:open="createCardModalOpen" :card="{}")
+  v-snackbar(v-model="toast.open" :timeout="1000") {{toast.message}}
 
-  create-card-modal(:open="open" :card="{}")
 
 </template>
 
@@ -23,27 +34,26 @@ export default {
   },
   data() {
     return {
-      open: false,
-      card: {}
+      createCardModalOpen: false,
+      card: {},
+      toast: {open: false}
     }
   },
   computed: {
     ...mapGetters({
       cards: 'cards/cards',
+      selectedCards: 'cards/selectedCards',
     }),
   },
   methods: {
-    ...mapActions({
-
-    }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      addCard: 'cards/ADD_CARD',
+      updateCard: 'cards/UPDATE_CARD',
     }),
-    createCard(){
-      this.addCard(this.card)
-      this.card = {}
-    }
+    toggleSelected(card){
+      let updates = {'selected': !card.selected}
+      this.updateCard({card, updates})
+    },
   },
   created(){
     this.setNavbarTitle("Cards")
@@ -57,18 +67,37 @@ export default {
   .card-list
     overflow-y scroll
     display flex
-    justify-content space-between
+    flex-wrap wrap
+    justify-content space-around
     padding 2em
 
-    .card
-      padding 2em
-      margin 1em
-      flex-grow 1
-      cursor pointer
-      transition all .1s
+    .card-container
+      flex-basis 25%
 
-      &:hover, &.active
-        background-color lighten(orange, 25%)
+      .card
+        padding 2em
+        margin 1em
+        flex-grow 1
+        cursor pointer
+        transition all .1s
+        background white
+        box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+
+        &:hover
+          background lighten(orange, 80%)
+        &.selected
+          background lighten(orange, 20%)
+
+        .face
+          display flex
+          justify-content center
+          align-items center
+
+        .front
+          display flex
+
+        .back
+          display none
 
   .create-card-button
     position absolute

@@ -1,24 +1,30 @@
 <template lang="pug">
 #cards-page
-  .card-list
-    .card-container(v-for="card in cards" @click="toggleSelected(card)")
+  .card-list(v-if="cards.length")
+    .card-container(v-for="card in filteredCards" @click="toggleSelected(card)")
       .card(:class="{'selected': card.selected}")
         .face.front
           h1 {{card.front}}
         .face.back
           h1 {{card.back}}
 
+  .empty(v-else)
+    span No cards found
+      v-btn(color="success" @click="createCardModalOpen = !createCardModalOpen") Create a Card
 
 
-  .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
-    v-btn.on(fab dark large color="blue")
-      v-icon(dark) style
+  .actions-container
+    .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
+      v-btn.on(fab dark large color="blue")
+        v-icon(dark) style
+    .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
+      v-btn.on(fab dark large color="green")
+        v-icon(dark) add
 
-  .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
-    v-btn.on(fab dark large color="green")
-      v-icon(dark) add
+
 
   create-card-modal(:open="createCardModalOpen" :card="{}")
+  create-deck-modal(:open="createDeckModalOpen" :cards="selectedCards")
   v-snackbar(v-model="toast.open" :timeout="1000") {{toast.message}}
 
 
@@ -26,15 +32,18 @@
 
 <script>
 import CreateCardModal from '@/components/CreateCardModal.vue'
+import CreateDeckModal from '@/components/CreateDeckModal.vue'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'CardPage',
   components: {
-    CreateCardModal
+    CreateCardModal,
+    CreateDeckModal,
   },
   data() {
     return {
       createCardModalOpen: false,
+      createDeckModalOpen: false,
       card: {},
       toast: {open: false}
     }
@@ -43,6 +52,7 @@ export default {
     ...mapGetters({
       cards: 'cards/cards',
       selectedCards: 'cards/selectedCards',
+      filteredCards: 'cards/filteredCards',
     }),
   },
   methods: {
@@ -75,8 +85,8 @@ export default {
       flex-basis 25%
 
       .card
-        padding 2em
-        margin 1em
+        padding 2em .5em
+        margin .5em
         flex-grow 1
         cursor pointer
         transition all .1s
@@ -99,9 +109,15 @@ export default {
         .back
           display none
 
-  .create-card-button
+  .actions-container
+    display flex
     position absolute
     top 85%
-    left 85%
+    right 1em
+
+  //- .create-deck-button
+  //-   position absolute
+  //-   top 85%
+  //-   left 85%
 
 </style>

@@ -4,12 +4,30 @@ import API from '../api'
 const state = {
   cards: [],
   selectedCards: [],
+  filteredCards: [],
 }
 
 // Getters
 var getters = {
   cards: state => state.cards,
   selectedCards: state => state.cards.filter(card => card.selected),
+  filteredCards: (state, getters, rootState) => {
+
+    if(rootState.navbar.filter){
+      let filter = rootState.navbar.filter.toLowerCase()
+      console.log("filter :", filter)
+      return state.cards.filter(card => {
+        if(card.front.toLowerCase().includes(filter) ||
+           card.back.toLowerCase().includes(filter)){
+          return true
+        } else {
+          return false
+        }
+      })
+    } else {
+      return state.cards
+    }
+  }
 }
 
 // Mutations

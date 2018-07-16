@@ -19,6 +19,13 @@ var mutations = {
   ["ADD_DECK"] (state, deck) {
     state.decks.push(deck)
   },
+  ["DELETE_DECK"] (state, deck) {
+    let i = state.decks.indexOf(deck)
+    console.log(i)
+    if(i > -1){
+      state.decks.splice(i, 1)
+    }
+  },
   ["LOAD_DECKS"] (state, card) {
     let local_decks = localStorage.getItem('decks')
     state.decks = !!local_decks ? JSON.parse(local_decks) : []

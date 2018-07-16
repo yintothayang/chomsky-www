@@ -1,18 +1,10 @@
 <template lang="pug">
 #id
   v-app
-    //- v-toolbar
-    //-   v-toolbar-side-icon
-    //-   v-toolbar-title Title
-    //-   v-spacer
-    //-   v-toolbar-items.hidden-sm-and-down
-    //-     v-btn(flat='') Link One
-    //-     v-btn(flat='') Link Two
-    //-     v-btn(flat='') Link Three
-
     left-nav
     top-nav
-    router-view
+    transition(mode="out-in" name="fade")
+      router-view
 </template>
 
 <script>
@@ -37,5 +29,11 @@ export default {
   text-align center
   color #2c3e50
   background-color #efefef
+
+  .fade-enter-active, .fade-leave-active
+    transition: opacity .2s
+
+  .fade-enter, .fade-leave-to
+    opacity: 0
 
 </style>

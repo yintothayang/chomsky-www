@@ -4,7 +4,7 @@
     v-toolbar-side-icon(@click="toggleLeftNav()")
     v-toolbar-title.white--text {{title}}
     v-spacer
-    v-text-field(label="Search" single-line hide-details prepend-icon="search")
+    v-text-field(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
     v-spacer
 
 </template>
@@ -21,11 +21,21 @@ export default {
   computed: {
     ...mapGetters({
       title: 'navbar/title',
-    })
+      filter: 'navbar/filter',
+    }),
+    local_filter: {
+      get(){
+        return this.filter
+      },
+      set(e){
+        this.setFilter(e)
+      }
+    },
   },
   methods: {
     ...mapMutations({
-      toggleLeftNav: 'leftnav/TOGGLE_OPEN'
+      toggleLeftNav: 'leftnav/TOGGLE_OPEN',
+      setFilter: 'navbar/SET_FILTER',
     })
   }
 }

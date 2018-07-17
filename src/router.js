@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Decks from './pages/Decks.vue'
-import Cards from './pages/Cards.vue'
-import Game from './pages/Game.vue'
-import About from './pages/About.vue'
+import Decks from './pages/DecksPage.vue'
+import Cards from './pages/CardsPage.vue'
+import Game from './pages/GamePage.vue'
+import About from './pages/AboutPage.vue'
 
 Vue.use(Router)
 

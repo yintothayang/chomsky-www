@@ -4,7 +4,7 @@
     left-nav
     top-nav
     transition(mode="out-in" name="fade")
-      router-view
+      router-view.page-container
 </template>
 
 <script>
@@ -23,12 +23,16 @@ export default {
 
 <style lang="stylus">
 #app
+  height 100vh
   font-family 'Avenir', Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
   background-color #efefef
+  overflow hidden
+  .page-container
+    height calc(100% - 64px)
 
   .fade-enter-active, .fade-leave-active
     transition: opacity .2s

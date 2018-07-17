@@ -14,19 +14,22 @@
 
 
   .actions-container
-    .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
-      v-btn.on(fab dark large color="blue")
-        v-icon(dark) style
     .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
       v-btn.on(fab dark large color="green")
         v-icon(dark) add
+    .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
+      v-btn.on(fab dark large color="blue")
+        v-icon(dark) style
+    .import-cards-button(@click="$refs.cardUpload.click()")
+      v-btn.on(fab dark large color="purple")
+        v-icon(dark) cloud_upload
 
 
 
   create-card-modal(:open="createCardModalOpen" :card="{}")
   create-deck-modal(:open="createDeckModalOpen" :cards="selectedCards")
   v-snackbar(v-model="toast.open" :timeout="1000") {{toast.message}}
-
+  input#card-upload(type="file" @change="onCardsUploaded()" ref="cardUpload" multiple)
 
 </template>
 
@@ -59,11 +62,25 @@ export default {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
       updateCard: 'cards/UPDATE_CARD',
+      addCard: 'cards/ADD_CARD',
     }),
     toggleSelected(card){
       let updates = {'selected': !card.selected}
       this.updateCard({card, updates})
     },
+    onCardsUploaded(){
+      let files = this.$refs.cardUpload.files
+      let fr = new FileReader()
+      fr.onload = async(e) => {
+        var cards = JSON.parse(e.target.result)
+        cards.forEach(card => {
+          this.addCard(card)
+        })
+      }
+      for(let i=0; i<files.length; i++){
+        fr.readAsText(files.item(i))
+      }
+    }
   },
   created(){
     this.setNavbarTitle("Cards")
@@ -75,14 +92,16 @@ export default {
 <style lang="stylus" scoped>
 #cards-page
   .card-list
+    height 100%
     overflow-y scroll
     display flex
     flex-wrap wrap
-    justify-content space-around
+    justify-content flex-start
     padding 2em
 
+
     .card-container
-      flex-basis 25%
+      flex-basis 10%
 
       .card
         padding 2em .5em
@@ -114,6 +133,10 @@ export default {
     position absolute
     top 85%
     right 1em
+
+  #card-upload
+    height 0px
+    width 0px
 
   //- .create-deck-button
   //-   position absolute

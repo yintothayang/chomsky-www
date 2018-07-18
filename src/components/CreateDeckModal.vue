@@ -50,11 +50,14 @@ export default {
   methods: {
     ...mapMutations({
       addDeck: 'decks/ADD_DECK',
+      setSelected: 'cards/SET_SELECTED',
     }),
     createDeck(){
       this.deck.cards = this.cards
       this.addDeck(this.deck)
       this.deck = {}
+      this.setSelected([])
+      this.$router.push({name: 'decks'})
     }
   }
 }

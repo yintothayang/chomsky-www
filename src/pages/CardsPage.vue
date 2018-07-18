@@ -2,7 +2,7 @@
 #cards-page
   .card-list(v-if="cards.length")
     .card-container(v-for="card in filteredCards" @click="toggleSelected(card)")
-      .card(:class="{'selected': card.selected}")
+      .card(:class="{'selected': selectedCards.includes(card)}")
         .face.front
           h1 {{card.front}}
         .face.back
@@ -10,8 +10,7 @@
 
   .empty(v-else)
     span No cards found
-      v-btn(color="success" @click="createCardModalOpen = !createCardModalOpen") Create a Card
-
+    v-btn(color="success" @click="createCardModalOpen = !createCardModalOpen") Create a Card
 
   .actions-container
     .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
@@ -23,8 +22,6 @@
     .import-cards-button(@click="$refs.cardUpload.click()")
       v-btn.on(fab dark large color="purple")
         v-icon(dark) cloud_upload
-
-
 
   create-card-modal(:open="createCardModalOpen" :card="{}")
   create-deck-modal(:open="createDeckModalOpen" :cards="selectedCards")
@@ -63,11 +60,8 @@ export default {
       setNavbarTitle: 'navbar/SET_TITLE',
       updateCard: 'cards/UPDATE_CARD',
       addCard: 'cards/ADD_CARD',
+      toggleSelected: 'cards/TOGGLE_SELECTED',
     }),
-    toggleSelected(card){
-      let updates = {'selected': !card.selected}
-      this.updateCard({card, updates})
-    },
     onCardsUploaded(){
       let files = this.$refs.cardUpload.files
       let fr = new FileReader()
@@ -127,6 +121,17 @@ export default {
 
         .back
           display none
+  .empty
+    padding 5em 1em
+    display flex
+    flex-wrap wrap
+    align-items center
+    justify-content center
+    span
+      font-weight 500
+      font-size 1.8em
+      flex-basis 100%
+      margin-bottom 1em
 
   .actions-container
     display flex

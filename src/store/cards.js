@@ -1,4 +1,5 @@
 import API from '../api'
+import uuid from 'uuid/v4'
 
 // State
 const state = {
@@ -10,12 +11,10 @@ const state = {
 // Getters
 var getters = {
   cards: state => state.cards,
-  selectedCards: state => state.cards.filter(card => card.selected),
+  selectedCards: state => state.selectedCards,
   filteredCards: (state, getters, rootState) => {
-
     if(rootState.navbar.filter){
       let filter = rootState.navbar.filter.toLowerCase()
-      console.log("filter :", filter)
       return state.cards.filter(card => {
         if(card.front.toLowerCase().includes(filter) ||
            card.back.toLowerCase().includes(filter)){
@@ -36,7 +35,19 @@ var mutations = {
     state.cards = cards
   },
   ["ADD_CARD"] (state, card) {
+    card.id = uuid()
     state.cards.push(card)
+  },
+  ["TOGGLE_SELECTED"] (state, card) {
+    let i = state.selectedCards.indexOf(card)
+    if(i > -1){
+      state.selectedCards.splice(i, 1)
+    } else {
+      state.selectedCards.push(card)
+    }
+  },
+  ["SET_SELECTED"] (state, cards=[]) {
+    state.selectedCards = cards
   },
   ["UPDATE_CARD"] (state, {card, updates}) {
     Object.assign(card, updates)

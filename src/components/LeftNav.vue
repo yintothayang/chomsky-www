@@ -45,9 +45,20 @@ export default {
 <style lang="stylus" scoped>
 #left-nav
   .link
+    padding 1em 0em
+
+    i
+      font-size 2.5em
+
+    .v-list__tile__title
+      font-size 1.4em
+      font-weight 600
     &:hover
       background rgba(0, 0, 0, .07)
 
   .router-link-active
     background rgba(0, 0, 0, .15)
+
+  .v-list
+    padding 0px
 </style>

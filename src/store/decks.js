@@ -9,6 +9,7 @@ const state = {
 // Getters
 var getters = {
   decks: state => state.decks,
+  selectedDecks: state => state.selectedDecks,
 }
 
 // Mutations
@@ -19,9 +20,19 @@ var mutations = {
   ["ADD_DECK"] (state, deck) {
     state.decks.push(deck)
   },
+  ["TOGGLE_SELECTED"] (state, deck) {
+    let i = state.selectedDecks.indexOf(deck)
+    if(i > -1){
+      state.selectedDecks.splice(i, 1)
+    } else {
+      state.selectedDecks.push(deck)
+    }
+  },
+  ["SET_SELECTED"] (state, decks=[]) {
+    state.selectedDecks = decks
+  },
   ["DELETE_DECK"] (state, deck) {
     let i = state.decks.indexOf(deck)
-    console.log(i)
     if(i > -1){
       state.decks.splice(i, 1)
     }
@@ -29,9 +40,14 @@ var mutations = {
   ["LOAD_DECKS"] (state, card) {
     let local_decks = localStorage.getItem('decks')
     state.decks = !!local_decks ? JSON.parse(local_decks) : []
+
+    let local_selected_decks = localStorage.getItem('selectedDecks')
+    state.selectedDecks = !!local_selected_decks ? JSON.parse(local_selected_decks) : []
+
   },
   ["SAVE_DECKS"] (state, card) {
     localStorage.setItem('decks', JSON.stringify(state.decks))
+    localStorage.setItem('selectedDecks', JSON.stringify(state.selectedDecks))
   },
 }
 

@@ -53,7 +53,7 @@ export default {
       setSelected: 'cards/SET_SELECTED',
     }),
     createDeck(){
-      this.deck.cards = this.cards
+      this.deck.card_ids = this.cards.map(c => c.id)
       this.addDeck(this.deck)
       this.deck = {}
       this.setSelected([])

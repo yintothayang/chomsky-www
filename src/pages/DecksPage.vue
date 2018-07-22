@@ -6,7 +6,7 @@
         v-card-title(primary-title="")
           div
             h3.headline.mb-0 {{deck.name}}
-            span {{deck.cards.length}} total cards
+            span {{deck.card_ids.length}} total cards
         v-card-actions
           v-btn(flat="" color="orange" @click="deleteDeck(deck)") Delete
 

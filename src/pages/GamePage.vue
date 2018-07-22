@@ -24,6 +24,7 @@ export default {
   computed: {
     ...mapGetters({
       selectedDecks: 'decks/selectedDecks',
+      selectedDeckCards: 'cards/selectedDeckCards',
     }),
     currentCard(){
       return this.cards[0]
@@ -40,21 +41,15 @@ export default {
       if(this.cards.length > 1){
         this.seenCards.push(this.cards.shift())
       } else {
-        console.log('suffle')
-        console.log(this.deck)
-        console.log(this.seenCards)
-        // this.deck = this.suffle(this.seenCards.concat(this.deck))
+        this.cards = this.suffle(this.seenCards.concat(this.cards))
+        this.seenCards = []
       }
     },
     suffle(deck){
       var currentIndex = deck.length, temporaryValue, randomIndex;
-      // While there remain elements to shuffle...
       while (0 !== currentIndex) {
-        // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex)
         currentIndex -= 1
-
-        // And swap it with the current element.
         temporaryValue = deck[currentIndex]
         deck[currentIndex] = deck[randomIndex]
         deck[randomIndex] = temporaryValue
@@ -64,9 +59,7 @@ export default {
   },
   created(){
     this.setNavbarTitle("Game")
-    this.selectedDecks.forEach(deck => {
-      this.cards = this.cards.concat(deck.cards)
-    })
+    this.cards = this.selectedDeckCards.slice(0)
   }
 }
 </script>

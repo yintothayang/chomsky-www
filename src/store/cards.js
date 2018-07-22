@@ -12,6 +12,18 @@ const state = {
 var getters = {
   cards: state => state.cards,
   selectedCards: state => state.selectedCards,
+  selectedDeckCards: (state, getters, rootState) => {
+    let selectedDecks = rootState.decks.selectedDecks
+    if(selectedDecks.length){
+      let card_ids = []
+      selectedDecks.forEach(deck => {
+        card_ids = card_ids.concat(deck.card_ids)
+      })
+      return state.cards.filter(card => card_ids.includes(card.id))
+    } else {
+      return []
+    }
+  },
   filteredCards: (state, getters, rootState) => {
     if(rootState.navbar.filter){
       let filter = rootState.navbar.filter.toLowerCase()

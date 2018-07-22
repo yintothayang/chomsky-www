@@ -1,4 +1,5 @@
 import API from '../api'
+import uuid from 'uuid/v4'
 
 // State
 const state = {
@@ -18,6 +19,7 @@ var mutations = {
     state.decks = decks
   },
   ["ADD_DECK"] (state, deck) {
+    deck.id = uuid()
     state.decks.push(deck)
   },
   ["TOGGLE_SELECTED"] (state, deck) {
@@ -41,8 +43,8 @@ var mutations = {
     let local_decks = localStorage.getItem('decks')
     state.decks = !!local_decks ? JSON.parse(local_decks) : []
 
-    let local_selected_decks = localStorage.getItem('selectedDecks')
-    state.selectedDecks = !!local_selected_decks ? JSON.parse(local_selected_decks) : []
+    // let local_selected_decks = localStorage.getItem('selectedDecks')
+    // state.selectedDecks = !!local_selected_decks ? JSON.parse(local_selected_decks) : []
 
   },
   ["SAVE_DECKS"] (state, card) {

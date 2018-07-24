@@ -16,5 +16,6 @@ export default new Vuex.Store({
     // Components
     navbar: components.navbar,
     leftnav: components.leftnav,
+    modals: components.modals,
   },
 })

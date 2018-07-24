@@ -179,10 +179,102 @@
   },
   {
     "front": "を",
-    "back":  "o"
+    "back":  "wo"
   },
   {
     "front": "ん",
     "back":  "n"
+  },
+  {
+    "front": "が",
+    "back":  "ga"
+  },
+  {
+    "front": "ぎ",
+    "back":  "gi"
+  },
+  {
+    "front": "ぐ",
+    "back":  "gu"
+  },
+  {
+    "front": "げ",
+    "back":  "ge"
+  },
+  {
+    "front": "ご",
+    "back":  "go"
+  },
+  {
+    "front": "ざ",
+    "back":  "za"
+  },
+  {
+    "front": "じ",
+    "back":  "ji"
+  },
+  {
+    "front": "ず",
+    "back":  "zu"
+  },
+  {
+    "front": "ぜ",
+    "back":  "ze"
+  },
+  {
+    "front": "ぞ",
+    "back":  "zo"
+  },
+  {
+    "front": "だ",
+    "back":  "da"
+  },
+  {
+    "front": "で",
+    "back":  "de"
+  },
+  {
+    "front": "ど",
+    "back":  "do"
+  },
+  {
+    "front": "ば",
+    "back":  "ba"
+  },
+  {
+    "front": "び",
+    "back":  "bi"
+  },
+  {
+    "front": "ぶ",
+    "back":  "bu"
+  },
+  {
+    "front": "べ",
+    "back":  "be"
+  },
+  {
+    "front": "ぼ",
+    "back":  "bo"
+  },
+  {
+    "front": "ぱ",
+    "back":  "po"
+  },
+  {
+    "front": "ぴ",
+    "back":  "pi"
+  },
+  {
+    "front": "ぷ",
+    "back":  "pu"
+  },
+  {
+    "front": "ぺ",
+    "back":  "pe"
+  },
+  {
+    "front": "ぽ",
+    "back":  "po"
   }
 ]

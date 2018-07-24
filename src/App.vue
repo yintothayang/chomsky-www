@@ -2,20 +2,27 @@
 #id
   v-app
     left-nav
-    top-nav
+    navbar
     transition(mode="out-in" name="fade")
       router-view.page-container
+
+    create-card-modal
+    create-deck-modal
 </template>
 
 <script>
-import LeftNav from '@/components/LeftNav.vue'
-import TopNav from '@/components/TopNav.vue'
+import LeftNav from '@/components/LeftNav'
+import Navbar from '@/components/Navbar'
+import CreateCardModal from '@/components/CreateCardModal.vue'
+import CreateDeckModal from '@/components/CreateDeckModal.vue'
 
 export default {
   name: 'app',
   components: {
     LeftNav,
-    TopNav
+    Navbar,
+    CreateCardModal,
+    CreateDeckModal,
   },
 }
 </script>

@@ -10,40 +10,29 @@
 
   .empty(v-else)
     span No cards found
-    v-btn(color="success" @click="createCardModalOpen = !createCardModalOpen") Create a Card
+    v-btn(color="success" @click="setOpenModal('CreateCardModal')") Create a Card
 
   .actions-container
-    .create-card-button(@click="createCardModalOpen = !createCardModalOpen")
+    .create-card-button(@click="setOpenModal('CreateCardModal')")
       v-btn.on(fab dark large color="green")
         v-icon(dark) add
-    .create-deck-button(@click="createDeckModalOpen = !createDeckModalOpen" v-if="selectedCards.length")
+    .create-deck-button(@click="setOpenModal('CreateDeckModal')" v-if="selectedCards.length")
       v-btn.on(fab dark large color="blue")
         v-icon(dark) style
     .import-cards-button(@click="$refs.cardUpload.click()")
       v-btn.on(fab dark large color="purple")
         v-icon(dark) cloud_upload
 
-  create-card-modal(:open="createCardModalOpen" :card="{}")
-  create-deck-modal(:open="createDeckModalOpen" :cards="selectedCards")
   v-snackbar(v-model="toast.open" :timeout="1000") {{toast.message}}
   input#card-upload(type="file" @change="onCardsUploaded()" ref="cardUpload" multiple)
-
 </template>
 
 <script>
-import CreateCardModal from '@/components/CreateCardModal.vue'
-import CreateDeckModal from '@/components/CreateDeckModal.vue'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'CardPage',
-  components: {
-    CreateCardModal,
-    CreateDeckModal,
-  },
   data() {
     return {
-      createCardModalOpen: false,
-      createDeckModalOpen: false,
       card: {},
       toast: {open: false}
     }
@@ -61,6 +50,7 @@ export default {
       updateCard: 'cards/UPDATE_CARD',
       addCard: 'cards/ADD_CARD',
       toggleSelected: 'cards/TOGGLE_SELECTED',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     onCardsUploaded(){
       let files = this.$refs.cardUpload.files

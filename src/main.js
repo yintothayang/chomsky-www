@@ -14,8 +14,8 @@ store.commit('decks/LOAD_DECKS')
 
 // Save cards and decks from localStorage before leaving
 window.onbeforeunload = function(e) {
-  store.commit('cards/SAVE_CARDS')
-  store.commit('decks/SAVE_DECKS')
+  // store.commit('cards/SAVE_CARDS')
+  // store.commit('decks/SAVE_DECKS')
 };
 
 new Vue({

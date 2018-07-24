@@ -1,18 +1,18 @@
 <template lang="pug">
-#top-nav
+#navbar
   v-toolbar(dark="" color="primary")
     v-toolbar-side-icon(@click="toggleLeftNav()")
     v-toolbar-title.white--text {{title}}
     v-spacer
     v-text-field(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
     v-spacer
-
+    v-icon(dark @click="openFilterModal()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
 </template>
 
 <script>
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'TopNav',
+  name: 'Navbar',
   data() {
     return {
 
@@ -36,14 +36,21 @@ export default {
     ...mapMutations({
       toggleLeftNav: 'leftnav/TOGGLE_OPEN',
       setFilter: 'navbar/SET_FILTER',
-    })
+    }),
+    openFilterModal(){
+      if(this.$route.name == 'cards'){
+        // TODO create modal store
+      } else {
+        // TODO create modal store
+      }
+    }
   }
 }
 </script>
 
 
 <style lang="stylus" scoped>
-#top-nav
+#navbar
   h3
     margin 40px 0 0
 </style>

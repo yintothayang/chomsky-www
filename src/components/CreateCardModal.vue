@@ -1,7 +1,7 @@
 <template lang="pug">
 #create-card-modal
   v-layout(row='', justify-center='')
-    v-dialog(v-model='local_open', max-width='500px')
+    v-dialog(v-model='open', max-width='500px')
       v-card
         v-card-title
           span.headline New Card
@@ -15,8 +15,8 @@
           small *indicates required field
         v-card-actions
           v-spacer
-          v-btn(color='blue darken-1', flat='', @click.native='local_open = false') Close
-          v-btn(color='blue darken-1', flat='', @click.native='createCard(); local_open = false') Create
+          v-btn(color='blue darken-1', flat='', @click.native='open = ""') Close
+          v-btn(color='blue darken-1', flat='', @click.native='createCard()') Create
 
 </template>
 
@@ -24,34 +24,33 @@
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'CreateCardModal',
-  props: {
-    open: {
-      default: false
-    },
-    card: {
-      default: ()=>{}
-    }
-  },
-  watch: {
-    open: function(new_value){
-      this.local_open = true
-    },
-  },
-  data() {
+  data(){
     return {
-      local_open: false
+      card: {}
     }
   },
   computed: {
-
+    ...mapGetters({
+      openModal: 'modals/openModal',
+      options: 'modals/options'
+    }),
+    open: {
+      get(){
+        return this.openModal == "CreateCardModal"
+      },
+      set(value){
+        this.setOpenModal()
+      }
+    }
   },
   methods: {
     ...mapMutations({
       addCard: 'cards/ADD_CARD',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     createCard(){
       this.addCard(this.card)
-      this.card = {}
+      this.setOpenModal("")
     }
   }
 }

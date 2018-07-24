@@ -1,7 +1,7 @@
 <template lang="pug">
 #create-deck-modal
   v-layout(row='', justify-center='')
-    v-dialog(v-model='local_open', max-width='500px')
+    v-dialog(v-model='open', max-width='500px')
       v-card
         v-card-title
           span.headline New Deck
@@ -10,14 +10,15 @@
             v-layout(wrap='')
               v-flex(xs12='', sm6='', md12='')
                 v-text-field(label='Name*', required='' v-model="deck.name")
-            span {{cards.length}} card(s) selected
+            span {{selectedCards.length}} card(s) selected
               //- v-flex(xs12='')
               //-   v-text-field(label='Back*', required='' v-model="card.back")
           small *indicates required field
         v-card-actions
           v-spacer
-          v-btn(color='blue darken-1', flat='', @click.native='local_open = false') Close
-          v-btn(color='blue darken-1', flat='', @click.native='createDeck(); local_open = false') Create
+          v-btn(color='blue darken-1', flat='', @click.native='open = ""') Close
+          v-btn(color='blue darken-1', flat='', @click.native='createDeck()') Create
+
 
 </template>
 
@@ -25,38 +26,38 @@
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'CreateDeckModal',
-  props: {
-    open: {
-      default: false
-    },
-    cards: {
-      default: ()=>[]
-    },
-  },
-  watch: {
-    open: function(new_value){
-      this.local_open = true
-    },
-  },
   data() {
     return {
-      local_open: false,
       deck: {},
     }
   },
   computed: {
-
+    ...mapGetters({
+      openModal: 'modals/openModal',
+      options: 'modals/options',
+      selectedCards: 'cards/selectedCards',
+    }),
+    open: {
+      get(){
+        return this.openModal == "CreateDeckModal"
+      },
+      set(value){
+        this.setOpenModal()
+      }
+    }
   },
   methods: {
     ...mapMutations({
       addDeck: 'decks/ADD_DECK',
       setSelected: 'cards/SET_SELECTED',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     createDeck(){
-      this.deck.card_ids = this.cards.map(c => c.id)
+      this.deck.card_ids = this.selectedCards.map(c => c.id)
       this.addDeck(this.deck)
       this.deck = {}
       this.setSelected([])
+      this.setOpenModal()
       this.$router.push({name: 'decks'})
     }
   }

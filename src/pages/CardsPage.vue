@@ -23,7 +23,6 @@
       v-btn.on(fab dark large color="purple")
         v-icon(dark) cloud_upload
 
-  v-snackbar(v-model="toast.open" :timeout="1000") {{toast.message}}
   input#card-upload(type="file" @change="onCardsUploaded()" ref="cardUpload" multiple)
 </template>
 
@@ -34,7 +33,6 @@ export default {
   data() {
     return {
       card: {},
-      toast: {open: false}
     }
   },
   computed: {

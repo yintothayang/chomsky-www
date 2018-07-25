@@ -7,6 +7,7 @@
     v-text-field(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
     v-spacer
     v-icon(dark @click="openFilterModal()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
+    v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
 
 <script>
@@ -36,13 +37,17 @@ export default {
     ...mapMutations({
       toggleLeftNav: 'leftnav/TOGGLE_OPEN',
       setFilter: 'navbar/SET_FILTER',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     openFilterModal(){
       if(this.$route.name == 'cards'){
-        // TODO create modal store
+        // TODO create modal
       } else {
-        // TODO create modal store
+        // TODO create modal
       }
+    },
+    openGameSettingsModal(){
+      this.setOpenModal("GameSettingsModal")
     }
   }
 }

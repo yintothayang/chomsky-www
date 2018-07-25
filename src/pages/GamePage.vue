@@ -5,15 +5,20 @@
       span {{currentCard.front}}
   .text-input-container
     text-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
+  .speech-input-container
+    speech-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
+
 </template>
 
 <script>
 import TextInput from '@/components/TextInput'
+import SpeechInput from '@/components/SpeechInput'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'GamePage',
   components: {
     TextInput,
+    SpeechInput,
   },
   data() {
     return {
@@ -87,5 +92,10 @@ export default {
 
   .text-input-container
     margin-bottom 3em
+
+  .text-input-container
+    position absolute
+    top 85%
+    left 92%
 
 </style>

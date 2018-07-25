@@ -73,6 +73,11 @@ export default {
   font-size 1.5em
   border 2px solid white
 
+  input
+    &:focus
+      border none
+      outline none
+
   &.fail
     border 2px solid red
 

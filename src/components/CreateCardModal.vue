@@ -49,7 +49,9 @@ export default {
       setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     createCard(){
-      this.addCard(this.card)
+      let new_card = Object.assign({}, this.card)
+      this.addCard(new_card)
+      this.card = {}
       this.setOpenModal("")
     }
   }

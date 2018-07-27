@@ -5,7 +5,7 @@
       router-link.link(v-for='link in links' :key='link.title' :to="link.to" tag="div")
         v-list-tile
           v-list-tile-action
-            v-icon {{ link.icon }}
+            v-icon(:color="link.color") {{ link.icon }}
           v-list-tile-content
             v-list-tile-title {{ link.title }}
 </template>

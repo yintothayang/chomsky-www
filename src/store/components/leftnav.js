@@ -2,10 +2,10 @@
 const state = {
   open: false,
   links: [
-    { title: 'Decks', icon: 'style', to: {name: 'decks'} },
-    { title: 'Cards', icon: 'view_module', to: {name: 'cards'} },
-    { title: 'Game', icon: 'videogame_asset', to: {name: 'game'} },
-    { title: 'About', icon: 'contact_support', to: {name: 'about'} }
+    { title: 'Decks', icon: 'style', to: {name: 'decks'}, color: "purple" },
+    { title: 'Cards', icon: 'view_module', to: {name: 'cards'}, color: "orange"},
+    // { title: 'Game', icon: 'videogame_asset', to: {name: 'game'} },
+    { title: 'About', icon: 'contact_support', to: {name: 'about'}, color: "red" },
   ],
 }
 

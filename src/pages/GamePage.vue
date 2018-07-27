@@ -63,8 +63,12 @@ export default {
     }
   },
   created(){
-    this.setNavbarTitle("Game")
-    this.cards = this.selectedDeckCards.slice(0)
+    if(!this.selectedDeckCards.length){
+      this.$router.push({name: 'decks'})
+    } else {
+      this.setNavbarTitle("Game")
+      this.cards = this.selectedDeckCards.slice(0)
+    }
   }
 }
 </script>
@@ -93,7 +97,7 @@ export default {
   .text-input-container
     margin-bottom 3em
 
-  .text-input-container
+  .speech-input-container
     position absolute
     top 85%
     left 92%

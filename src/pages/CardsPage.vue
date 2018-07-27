@@ -13,20 +13,24 @@
     v-btn(color="success" @click="setOpenModal('CreateCardModal')") Create a Card
 
   .actions-container
-    .create-card-button(@click="setOpenModal('CreateCardModal')")
-      v-btn.on(fab dark large color="green")
+    v-tooltip(left)
+      v-btn.on(fab dark color="green" @click="setOpenModal('CreateCardModal')" slot="activator")
         v-icon(dark) add
-    .create-deck-button(@click="setOpenModal('CreateDeckModal')" v-if="selectedCards.length")
-      v-btn.on(fab dark large color="blue")
-        v-icon(dark) style
-    .import-cards-button(@click="$refs.cardUpload.click()")
-      v-btn.on(fab dark large color="purple")
+      span Create a Card
+    v-tooltip(left)
+      v-btn.on(fab dark color="purple" @click="$refs.cardUpload.click()" slot="activator")
         v-icon(dark) cloud_upload
+      span Import Cards
+    v-tooltip(left v-if="selectedCards.length")
+      v-btn.on(fab dark color="blue" @click="setOpenModal('CreateDeckModal')" slot="activator")
+        v-icon(dark) style
+      span Create a Deck
 
   input#card-upload(type="file" @change="onCardsUploaded()" ref="cardUpload" multiple)
 </template>
 
 <script>
+import DragSelect from 'dragselect'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'CardPage',
@@ -62,10 +66,23 @@ export default {
       for(let i=0; i<files.length; i++){
         fr.readAsText(files.item(i))
       }
+    },
+    onDragSelect(e){
+      if(e.length > 1){
+        e.forEach(e=>{
+          e.click()
+        })
+      }
     }
   },
   created(){
     this.setNavbarTitle("Cards")
+  },
+  mounted(){
+    new DragSelect({
+      selectables: document.getElementsByClassName('card'),
+      callback: this.onDragSelect,
+    });
   }
 }
 </script>
@@ -81,7 +98,6 @@ export default {
     justify-content flex-start
     padding 2em
 
-
     .card-container
       flex-basis 10%
 
@@ -93,6 +109,7 @@ export default {
         transition all .1s
         background white
         box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+        user-select none
 
         &:hover
           background lighten(orange, 80%)
@@ -122,18 +139,15 @@ export default {
       margin-bottom 1em
 
   .actions-container
-    display flex
     position absolute
-    top 85%
+    top 85px
     right 1em
+
+    .v-tooltip
+      display block
 
   #card-upload
     height 0px
     width 0px
-
-  //- .create-deck-button
-  //-   position absolute
-  //-   top 85%
-  //-   left 85%
 
 </style>

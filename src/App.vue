@@ -47,4 +47,7 @@ export default {
   .fade-enter, .fade-leave-to
     opacity: 0
 
+  .v-tooltip__content
+    line-height 1.2em !important
+
 </style>

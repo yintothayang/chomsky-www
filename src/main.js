@@ -16,7 +16,7 @@ store.commit('decks/LOAD_DECKS')
 window.onbeforeunload = function(e) {
   // store.commit('cards/SAVE_CARDS')
   // store.commit('decks/SAVE_DECKS')
-};
+}
 
 new Vue({
   router,

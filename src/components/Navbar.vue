@@ -5,7 +5,7 @@
     v-spacer.hidden-md-and-up
     v-toolbar-title.white--text {{title}}
     v-spacer
-    v-text-field.hidden-sm-and-down(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
+    v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
     v-spacer.hidden-sm-and-down
     v-icon(dark @click="openFilterModal()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
     v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
@@ -15,22 +15,27 @@
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'Navbar',
-  data() {
-    return {
-
-    }
-  },
   computed: {
     ...mapGetters({
       title: 'navbar/title',
-      filter: 'navbar/filter',
+      cardFilters: 'cards/filters',
     }),
-    local_filter: {
+    search: {
       get(){
-        return this.filter
+        if(this.$route.name == 'cards'){
+          return this.cardFilters.search
+        } else {
+          // TODO
+          // return this.deckFilters.search
+        }
       },
-      set(e){
-        this.setFilter(e)
+      set(value){
+        if(this.$route.name == 'cards'){
+          this.updateCardFilters({search: value})
+        } else {
+          // TODO
+          // this.updateFilters({search: value})
+        }
       }
     },
   },
@@ -39,6 +44,7 @@ export default {
       toggleLeftNav: 'leftnav/TOGGLE_OPEN',
       setFilter: 'navbar/SET_FILTER',
       setOpenModal: 'modals/SET_OPEN_MODAL',
+      updateCardFilters: 'cards/UPDATE_FILTERS',
     }),
     openFilterModal(){
       if(this.$route.name == 'cards'){

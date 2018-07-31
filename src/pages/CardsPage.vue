@@ -102,7 +102,7 @@ export default {
 <style lang="stylus" scoped>
 #cards-page
   .card-list
-    height 100%
+    max-height 100%
     overflow-y scroll
     display flex
     flex-wrap wrap
@@ -160,6 +160,7 @@ export default {
       display block
 
   #card-upload
+    display none
     height 0px
     width 0px
 

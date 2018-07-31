@@ -1,11 +1,12 @@
 <template lang="pug">
 #navbar
   v-toolbar(dark="" color="primary")
-    v-toolbar-side-icon(@click="toggleLeftNav()")
+    v-toolbar-side-icon.toggle(@click="toggleLeftNav()")
+    v-spacer.hidden-md-and-up
     v-toolbar-title.white--text {{title}}
     v-spacer
-    v-text-field(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
-    v-spacer
+    v-text-field.hidden-sm-and-down(v-model="local_filter" label="Search" single-line hide-details prepend-icon="search")
+    v-spacer.hidden-sm-and-down
     v-icon(dark @click="openFilterModal()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
     v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
@@ -41,9 +42,9 @@ export default {
     }),
     openFilterModal(){
       if(this.$route.name == 'cards'){
-        // TODO create modal
+        this.setOpenModal("FilterCardsModal")
       } else {
-        // TODO create modal
+        this.setOpenModal("FilterDecksModal")
       }
     },
     openGameSettingsModal(){
@@ -56,6 +57,7 @@ export default {
 
 <style lang="stylus" scoped>
 #navbar
-  h3
-    margin 40px 0 0
+  .v-toolbar__title
+    margin 0px
+    line-height 1em
 </style>

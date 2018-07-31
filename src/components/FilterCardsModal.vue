@@ -1,26 +1,26 @@
 <template lang="pug">
   v-layout(row='', justify-center='')
     v-dialog(v-model='open', max-width='500px')
-      v-card#create-card-modal
+      v-card#filter-cards-modal
         v-card-title
-          span.headline New Card
+          span.headline Filter Cards
         v-container(grid-list-md='')
           v-layout(wrap='')
             v-flex(xs12='', sm6='', md12='')
-              v-text-field(label='Front', required='' v-model="card.front")
-            v-flex(xs12='')
-              v-text-field(label='Back', required='' v-model="card.back")
+              v-text-field(label='Search' v-model="search")
+            v-flex(xs12='', sm6='', md12='')
+              v-select(v-model="cardsPerRow" :items="['auto', 1, 2, 3, 4, 5, 'max']" label="Cards per row")
+          label="Standard"
         v-card-actions
-          v-btn(color='red' flat='' @click.native='open = ""') Close
           v-spacer
-          v-btn(color='green' flat='' @click.native='createCard()') Create
+          v-btn(color='red' flat='' @click.native='open = ""') Close
 
 </template>
 
 <script>
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'CreateCardModal',
+  name: 'FilterCardsModal',
   data(){
     return {
       card: {}
@@ -29,21 +29,38 @@ export default {
   computed: {
     ...mapGetters({
       openModal: 'modals/openModal',
-      options: 'modals/options'
+      options: 'modals/options',
+      filters: 'cards/filters',
     }),
     open: {
       get(){
-        return this.openModal == "CreateCardModal"
+        return this.openModal == "FilterCardsModal"
       },
       set(value){
         this.setOpenModal()
       }
-    }
+    },
+    search: {
+      get(){
+        return this.filters.search
+      },
+      set(value){
+        this.updateFilters({search: value})
+      }
+    },
+    cardsPerRow: {
+      get(){
+        return this.filters.cardsPerRow
+      },
+      set(value){
+        this.updateFilters({cardsPerRow: value})
+      }
+    },
   },
   methods: {
     ...mapMutations({
-      addCard: 'cards/ADD_CARD',
       setOpenModal: 'modals/SET_OPEN_MODAL',
+      updateFilters: 'cards/UPDATE_FILTERS',
     }),
     createCard(){
       let new_card = Object.assign({}, this.card)
@@ -57,7 +74,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#create-card-modal
+#filter-cards-modal
   .v-card__title
     padding-bottom 0px
 

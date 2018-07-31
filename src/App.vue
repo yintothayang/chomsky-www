@@ -8,6 +8,7 @@
 
     create-card-modal
     create-deck-modal
+    filter-cards-modal
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import LeftNav from '@/components/LeftNav'
 import Navbar from '@/components/Navbar'
 import CreateCardModal from '@/components/CreateCardModal.vue'
 import CreateDeckModal from '@/components/CreateDeckModal.vue'
+import FilterCardsModal from '@/components/FilterCardsModal.vue'
 
 export default {
   name: 'app',
@@ -23,6 +25,7 @@ export default {
     Navbar,
     CreateCardModal,
     CreateDeckModal,
+    FilterCardsModal,
   },
 }
 </script>

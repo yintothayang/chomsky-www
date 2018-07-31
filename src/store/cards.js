@@ -6,6 +6,11 @@ const state = {
   cards: [],
   selectedCards: [],
   filteredCards: [],
+  filters: {
+    search: null,
+    tags: [],
+    cardsPerRow: 'auto',
+  }
 }
 
 // Getters
@@ -24,20 +29,22 @@ var getters = {
       return []
     }
   },
-  filteredCards: (state, getters, rootState) => {
-    if(rootState.navbar.filter){
-      let filter = rootState.navbar.filter.toLowerCase()
-      return state.cards.filter(card => {
-        if(card.front.toLowerCase().includes(filter) ||
-           card.back.toLowerCase().includes(filter)){
+  filters: state => state.filters,
+  filteredCards: (state, getters) => {
+    let search = getters.filters.search
+    let cards = state.cards
+    if(search != null && search != ''){
+      search = search.toLowerCase()
+      cards = cards.filter(card => {
+        if(card.front.toLowerCase().includes(search) ||
+           card.back.toLowerCase().includes(search)){
           return true
         } else {
           return false
         }
       })
-    } else {
-      return state.cards
     }
+    return cards
   }
 }
 
@@ -63,6 +70,9 @@ var mutations = {
   },
   ["UPDATE_CARD"] (state, {card, updates}) {
     Object.assign(card, updates)
+  },
+  ["UPDATE_FILTERS"] (state, updates) {
+    state.filters = Object.assign(state.filters, updates)
   },
   ["LOAD_CARDS"] (state, card) {
     let local_cards = localStorage.getItem('cards')

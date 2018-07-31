@@ -1,7 +1,7 @@
 <template lang="pug">
 #cards-page
   .card-list(v-if="cards.length")
-    .card-container(v-for="card in filteredCards" @click="toggleSelected(card)")
+    .card-container(v-for="card in filteredCards" @click="toggleSelected(card)" :style="'flex-basis: ' + cardFlexBasis")
       .card(:class="{'selected': selectedCards.includes(card)}")
         .face.front
           h1 {{card.front}}
@@ -42,9 +42,20 @@ export default {
   computed: {
     ...mapGetters({
       cards: 'cards/cards',
+      cardFilters: 'cards/filters',
       selectedCards: 'cards/selectedCards',
       filteredCards: 'cards/filteredCards',
     }),
+    cardFlexBasis(){
+      if(this.cardFilters.cardsPerRow === 'auto'){return "auto"}
+      if(this.cardFilters.cardsPerRow === 'max'){return "1%"}
+      if(this.cardFilters.cardsPerRow === 1){return "100%"}
+      if(this.cardFilters.cardsPerRow === 2){return "50%"}
+      if(this.cardFilters.cardsPerRow === 3){return "33.3%"}
+      if(this.cardFilters.cardsPerRow === 4){return "25%"}
+      if(this.cardFilters.cardsPerRow === 5){return "20%"}
+      if(this.cardFilters.cardsPerRow === 10){return "10%"}
+    }
   },
   methods: {
     ...mapMutations({
@@ -97,10 +108,9 @@ export default {
     flex-wrap wrap
     justify-content flex-start
     padding 2em
+    padding-bottom 5em
 
     .card-container
-      flex-basis 10%
-
       .card
         padding 2em .5em
         margin .5em
@@ -140,8 +150,11 @@ export default {
 
   .actions-container
     position absolute
-    top 85px
-    right 1em
+    bottom 10px
+    display flex
+    align-items center
+    justify-content space-around
+    width 100%
 
     .v-tooltip
       display block

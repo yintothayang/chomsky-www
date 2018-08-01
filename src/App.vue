@@ -2,7 +2,7 @@
 #id
   v-app
     left-nav
-    navbar
+    navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
       router-view.page-container
 
@@ -41,6 +41,7 @@ export default {
   color #2c3e50
   background-color #efefef
   overflow hidden
+
   .page-container
     height calc(100% - 64px)
 

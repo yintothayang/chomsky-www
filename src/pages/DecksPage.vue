@@ -12,8 +12,7 @@
 
   .empty(v-else)
     span No decks found
-    router-link(:to="{name: 'cards'}")
-      v-btn(color="success") Create a Deck
+    v-btn(color="success" @click="$router.push({name: 'cards'})") Create a Deck
 
   .actions-container
     .item.create-card-button(@click="play()" v-if="selectedDecks.length")

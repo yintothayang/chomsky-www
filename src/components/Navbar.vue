@@ -1,14 +1,13 @@
 <template lang="pug">
-#navbar
-  v-toolbar(dark="" color="primary")
-    v-toolbar-side-icon.toggle(@click="toggleLeftNav()")
-    v-spacer.hidden-md-and-up
-    v-toolbar-title.white--text {{title}}
-    v-spacer
-    v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
-    v-spacer.hidden-sm-and-down
-    v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
-    v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
+v-toolbar#navbar(dark="" color="primary")
+  v-toolbar-side-icon.toggle(@click="toggleLeftNav()")
+  v-spacer.hidden-md-and-up
+  v-toolbar-title.white--text {{title}}
+  v-spacer
+  v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
+  v-spacer.hidden-sm-and-down
+  v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
+  v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
 
 <script>
@@ -67,7 +66,9 @@ export default {
 
 <style lang="stylus" scoped>
 #navbar
+  background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f88f14, #f15a24 )
   .v-toolbar__title
     margin 0px
+    font-size 1.7em
     line-height 1em
 </style>

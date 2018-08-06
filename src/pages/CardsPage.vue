@@ -10,7 +10,7 @@
 
   .empty(v-else)
     span No Cards found
-    v-btn(color="success" @click="setOpenModal('CreateCardModal')" large) Create a Card
+    v-btn(color="info" @click="setOpenModal('CreateCardModal')" large) Create a Card
 
   .actions-container
     v-tooltip(left)
@@ -37,6 +37,16 @@ export default {
   data() {
     return {
       card: {},
+    }
+  },
+  watch: {
+    cards: function(){
+      this.$nextTick(()=>{
+        new DragSelect({
+          selectables: document.getElementsByClassName('card'),
+          callback: this.onDragSelect,
+        })
+      })
     }
   },
   computed: {
@@ -93,7 +103,7 @@ export default {
     new DragSelect({
       selectables: document.getElementsByClassName('card'),
       callback: this.onDragSelect,
-    });
+    })
   }
 }
 </script>

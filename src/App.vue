@@ -2,7 +2,8 @@
 #id
   v-app
     left-nav
-    navbar(v-if="$route.name != 'home'")
+    transition(mode="out-in" name="fade")
+      navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
       router-view.page-container
     right-nav

@@ -79,7 +79,6 @@ export default {
   display flex
   flex-direction column
   align-items center
-  justify-content center
   height 100%
 
   .card-container
@@ -87,6 +86,7 @@ export default {
     align-items center
     justify-content center
     margin-bottom 3em
+    margin-top 4em
 
     .card
       font-size 3.5em

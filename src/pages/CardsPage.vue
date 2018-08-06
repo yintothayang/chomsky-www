@@ -9,8 +9,8 @@
           h1 {{card.back}}
 
   .empty(v-else)
-    span No cards found
-    v-btn(color="success" @click="setOpenModal('CreateCardModal')") Create a Card
+    span No Cards found
+    v-btn(color="success" @click="setOpenModal('CreateCardModal')" large) Create a Card
 
   .actions-container
     v-tooltip(left)
@@ -143,10 +143,11 @@ export default {
     align-items center
     justify-content center
     span
-      font-weight 500
+      font-weight 600
       font-size 1.8em
       flex-basis 100%
-      margin-bottom 1em
+      margin-bottom 2em
+      color rgba(0, 0, 0, .6)
 
   .actions-container
     position absolute

@@ -5,27 +5,29 @@
     navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
       router-view.page-container
+    right-nav
+
 
     create-card-modal
     create-deck-modal
-    filter-cards-modal
 </template>
 
 <script>
 import LeftNav from '@/components/LeftNav'
+import RightNav from '@/components/RightNav'
 import Navbar from '@/components/Navbar'
 import CreateCardModal from '@/components/CreateCardModal.vue'
 import CreateDeckModal from '@/components/CreateDeckModal.vue'
-import FilterCardsModal from '@/components/FilterCardsModal.vue'
+
 
 export default {
   name: 'app',
   components: {
     LeftNav,
+    RightNav,
     Navbar,
     CreateCardModal,
     CreateDeckModal,
-    FilterCardsModal,
   },
 }
 </script>

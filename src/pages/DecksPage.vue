@@ -1,18 +1,17 @@
 <template lang="pug">
 #decks-page
   .deck-list(v-if="decks.length")
-    .deck(v-for="deck in decks" @click="toggleSelected(deck)")
-      v-card(:class="{'selected': selectedDecks.includes(deck)}")
-        v-card-title(primary-title="")
-          div
-            h3.headline.mb-0 {{deck.name}}
-            span {{deck.card_ids.length}} total cards
-        v-card-actions
-          v-btn(flat="" color="orange" @click="deleteDeck(deck)") Delete
+    .deck-container(v-for="deck in decks" @click="toggleSelected(deck)")
+      .deck(:class="{'selected': selectedDecks.includes(deck)}")
+        span.name {{deck.name}}
+        span.card-count {{deck.card_ids.length}} card(s)
+
+        .deck-actions-container
+          v-btn(color="orange" @click="deleteDeck(deck)" flat="") Delete
 
   .empty(v-else)
-    span No decks found
-    v-btn(color="success" @click="$router.push({name: 'cards'})") Create a Deck
+    span No Decks Found
+    v-btn(color="success" @click="$router.push({name: 'cards'})" large) Create a Deck
 
   .actions-container
     .item.create-card-button(@click="play()" v-if="selectedDecks.length")
@@ -68,11 +67,26 @@ export default {
     flex-wrap wrap
     padding 2em
 
-    .deck
-      flex-basis 25%
-      padding 1em
+    .deck-container
+      display flex
+      flex-basis 100%
+      padding 1em 0em
+      justify-content center
+      align-items center
 
-      .v-card
+      .deck
+        display flex
+        padding 1em 2em .5em 2em
+        margin .5em
+        flex-grow 1
+        cursor pointer
+        transition all .1s
+        background white
+        box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+        user-select none
+        flex-basis 100%
+        flex-wrap wrap
+
         &:hover
           background lighten(orange, 80%)
         &.selected
@@ -81,17 +95,40 @@ export default {
           .v-btn
             color white !important
 
+        .name
+          font-size 1.8em
+          font-weight 600
+          flex-basis 100%
+          text-align left
+        .card-count
+          font-size 1em
+          font-weight 500
+          flex-basis 100%
+          text-align left
+
+        .deck-actions-container
+          display flex
+          justify-content flex-end
+          align-items center
+          flex-basis 100%
+
+          button
+            margin 0px
+            padding 0px
+
   .empty
     padding 5em 1em
     display flex
     flex-wrap wrap
     align-items center
     justify-content center
+
     span
-      font-weight 500
+      font-weight 600
       font-size 1.8em
       flex-basis 100%
-      margin-bottom 1em
+      margin-bottom 2em
+      color rgba(0, 0, 0, .6)
 
   .actions-container
     display flex

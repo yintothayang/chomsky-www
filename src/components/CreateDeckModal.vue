@@ -9,11 +9,10 @@
           v-container(grid-list-md='')
             v-layout(wrap='')
               v-flex(xs12='', sm6='', md12='')
-                v-text-field(label='Name*', required='' v-model="deck.name")
+                v-text-field(label='Name' v-model="deck.name")
             span {{selectedCards.length}} card(s) selected
               //- v-flex(xs12='')
               //-   v-text-field(label='Back*', required='' v-model="card.back")
-          small *indicates required field
         v-card-actions
           v-spacer
           v-btn(color='blue darken-1', flat='', @click.native='open = ""') Close

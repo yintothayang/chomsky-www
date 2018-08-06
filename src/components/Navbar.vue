@@ -7,7 +7,7 @@
     v-spacer
     v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
     v-spacer.hidden-sm-and-down
-    v-icon(dark @click="openFilterModal()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
+    v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
     v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
 
@@ -44,13 +44,17 @@ export default {
       toggleLeftNav: 'leftnav/TOGGLE_OPEN',
       setFilter: 'navbar/SET_FILTER',
       setOpenModal: 'modals/SET_OPEN_MODAL',
+      toggleRightNav: 'rightnav/TOGGLE_OPEN',
+      setRightNavForm: 'rightnav/SET_FORM',
       updateCardFilters: 'cards/UPDATE_FILTERS',
     }),
-    openFilterModal(){
+    openRightNav(){
       if(this.$route.name == 'cards'){
-        this.setOpenModal("FilterCardsModal")
+        this.setRightNavForm('FilterCardsForm')
+        this.toggleRightNav()
       } else {
-        this.setOpenModal("FilterDecksModal")
+        this.setRightNavForm('FilterDecksForm')
+        this.toggleRightNav()
       }
     },
     openGameSettingsModal(){

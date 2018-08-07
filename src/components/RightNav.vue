@@ -1,16 +1,22 @@
 <template lang="pug">
 v-navigation-drawer#right-nav(v-model="local_open" temporary="" absolute="" right="")
-  filter-cards-modal(v-if="form === 'FilterCardsForm'")
+  filter-cards-form(v-if="form === 'FilterCardsForm'")
+  filter-decks-form(v-if="form === 'FilterDecksForm'")
+  game-settings-form(v-if="form === 'GameSettingsForm'")
 </template>
 
 <script>
 
-import FilterCardsModal from '@/components/FilterCardsForm.vue'
+import FilterCardsForm from '@/components/FilterCardsForm.vue'
+import FilterDecksForm from '@/components/FilterDecksForm.vue'
+import GameSettingsForm from '@/components/GameSettingsForm.vue'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'RightNav',
   components: {
-    FilterCardsModal,
+    FilterCardsForm,
+    FilterDecksForm,
+    GameSettingsForm,
   },
   data() {
     return {

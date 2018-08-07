@@ -57,7 +57,8 @@ export default {
       }
     },
     openGameSettingsModal(){
-      this.setOpenModal("GameSettingsModal")
+      this.setRightNavForm('GameSettingsForm')
+      this.toggleRightNav()
     }
   }
 }

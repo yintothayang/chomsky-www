@@ -3,9 +3,9 @@
   .card-container
     .card
       span {{currentCard.front}}
-  .text-input-container
+  .text-input-container(v-if="mode === 'type'")
     text-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
-  .speech-input-container
+  .speech-input-container(v-if="mode === 'voice'")
     speech-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
 
 </template>
@@ -22,13 +22,13 @@ export default {
   },
   data() {
     return {
-      cards: [],
-      seenCards: [],
+
     }
   },
   computed: {
     ...mapGetters({
-      selectedDecks: 'decks/selectedDecks',
+      mode: 'game/mode',
+      cards: 'game/cards',
       selectedDeckCards: 'cards/selectedDeckCards',
     }),
     currentCard(){
@@ -38,36 +38,31 @@ export default {
   methods: {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
+      setGameCards: 'game/SET_CARDS',
+      shuffle: 'game/SHUFFLE_CARDS',
+      nextCard: 'game/NEXT_CARD',
+      resetCards: 'game/RESET_CARDS',
     }),
     onAttempt(answer){
       console.log("attempt", answer)
     },
     onSuccess(){
       if(this.cards.length > 1){
-        this.seenCards.push(this.cards.shift())
+        this.nextCard()
       } else {
-        this.cards = this.suffle(this.seenCards.concat(this.cards))
-        this.seenCards = []
+        this.nextCard()
+        this.resetCards()
+        this.shuffle()
       }
     },
-    suffle(deck){
-      var currentIndex = deck.length, temporaryValue, randomIndex;
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex)
-        currentIndex -= 1
-        temporaryValue = deck[currentIndex]
-        deck[currentIndex] = deck[randomIndex]
-        deck[randomIndex] = temporaryValue
-      }
-      return deck
-    }
   },
   created(){
     if(!this.selectedDeckCards.length){
       this.$router.push({name: 'decks'})
     } else {
       this.setNavbarTitle("Game")
-      this.cards = this.selectedDeckCards.slice(0)
+      this.setGameCards(JSON.parse(JSON.stringify(this.selectedDeckCards)))
+      this.shuffle()
     }
   }
 }

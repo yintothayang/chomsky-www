@@ -80,21 +80,20 @@ export default {
     display flex
     align-items center
     justify-content center
-    margin-bottom 3em
+    margin-bottom 4em
     margin-top 4em
 
     .card
       font-size 3.5em
-      padding 1em 3em
+      padding .4em 2.8em
       background white
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
 
   .text-input-container
-    margin-bottom 3em
+    margin-bottom 1em
 
   .speech-input-container
-    position absolute
-    top 85%
-    left 92%
+    margin-top 3em
+    margin-bottom 1em
 
 </style>

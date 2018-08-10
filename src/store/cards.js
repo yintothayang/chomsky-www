@@ -57,6 +57,14 @@ var mutations = {
     card.id = uuid()
     state.cards.push(card)
   },
+  ["COPY_CARDS"] (state, cards) {
+    cards.forEach(card => {
+      if(!card.id){
+        card.id = uuid()
+      }
+      state.cards.push(card)
+    })
+  },
   ["TOGGLE_SELECTED"] (state, card) {
     let i = state.selectedCards.indexOf(card)
     if(i > -1){

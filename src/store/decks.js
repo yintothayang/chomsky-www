@@ -39,13 +39,14 @@ var mutations = {
       state.decks.splice(i, 1)
     }
   },
+  ["COPY_DECK"] (state, deck) {
+    this.decks.push(deck)
+  },
   ["LOAD_DECKS"] (state, card) {
     let local_decks = localStorage.getItem('decks')
     state.decks = !!local_decks ? JSON.parse(local_decks) : []
-
     // let local_selected_decks = localStorage.getItem('selectedDecks')
     // state.selectedDecks = !!local_selected_decks ? JSON.parse(local_selected_decks) : []
-
   },
   ["SAVE_DECKS"] (state, card) {
     localStorage.setItem('decks', JSON.stringify(state.decks))

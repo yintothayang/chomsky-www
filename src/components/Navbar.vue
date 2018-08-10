@@ -6,7 +6,7 @@ v-toolbar#navbar(dark="" color="primary")
   v-spacer
   v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
   v-spacer.hidden-sm-and-down
-  v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks'") filter_list
+  v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks' || $route.name == 'library'") filter_list
   v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
 
@@ -50,11 +50,14 @@ export default {
     openRightNav(){
       if(this.$route.name == 'cards'){
         this.setRightNavForm('FilterCardsForm')
-        this.toggleRightNav()
-      } else {
-        this.setRightNavForm('FilterDecksForm')
-        this.toggleRightNav()
       }
+      if(this.$route.name == 'decks'){
+        this.setRightNavForm('FilterDecksForm')
+      }
+      if(this.$route.name == 'library'){
+        this.setRightNavForm('FilterDecksForm')
+      }
+      this.toggleRightNav()
     },
     openGameSettingsModal(){
       this.setRightNavForm('GameSettingsForm')
@@ -70,6 +73,8 @@ export default {
   background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f88f14, #f15a24 )
   .v-toolbar__title
     margin 0px
-    font-size 1.7em
+    font-size 1.5em
     line-height 1em
+    font-family 'Cinzel', serif
+    font-weight 600
 </style>

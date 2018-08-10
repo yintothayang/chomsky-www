@@ -4,6 +4,7 @@ const state = {
   links: [
     { title: 'Decks', icon: 'style', to: {name: 'decks'}, color: "purple" },
     { title: 'Cards', icon: 'view_module', to: {name: 'cards'}, color: "orange"},
+    { title: 'Library', icon: 'local_library', to: {name: 'library'}, color: "blue"},
     // { title: 'Game', icon: 'videogame_asset', to: {name: 'game'} },
     { title: 'About', icon: 'contact_support', to: {name: 'about'}, color: "red" },
   ],

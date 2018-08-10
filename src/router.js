@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './pages/HomePage.vue'
 import Decks from './pages/DecksPage.vue'
 import Cards from './pages/CardsPage.vue'
+import Library from './pages/LibraryPage.vue'
 import Game from './pages/GamePage.vue'
 import About from './pages/AboutPage.vue'
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/cards',
       name: 'cards',
       component: Cards
+    },
+    {
+      path: '/library',
+      name: 'library',
+      component: Library
     },
     {
       path: '/game',

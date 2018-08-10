@@ -7,7 +7,7 @@
           v-list-tile-action
             v-icon(:color="link.color") {{ link.icon }}
           v-list-tile-content
-            v-list-tile-title {{ link.title }}
+            v-list-tile-title.title {{ link.title }}
 </template>
 
 <script>
@@ -61,4 +61,7 @@ export default {
 
   .v-list
     padding 0px
+
+    .title
+      color rgba(0, 0, 0, .7)
 </style>

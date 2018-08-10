@@ -40,7 +40,7 @@ var mutations = {
     }
   },
   ["COPY_DECK"] (state, deck) {
-    this.decks.push(deck)
+    state.decks.push(deck)
   },
   ["LOAD_DECKS"] (state, card) {
     let local_decks = localStorage.getItem('decks')

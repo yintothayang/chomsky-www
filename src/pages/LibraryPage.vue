@@ -1,18 +1,18 @@
 <template lang="pug">
 #library-page
   .deck-list(v-if="localDecks.length")
-    .deck-container(v-for="deck in localDecks" @click="toggleSelected(deck)")
+    .deck-container(v-for="deck in localDecks")
       .deck(:class="{'selected': selectedDecks.includes(deck)}")
         span.name {{deck.name}}
         span.card-count {{deck.card_ids.length}} card(s)
 
         .deck-actions-container
-          v-btn(color="orange" @click="copyDeck(deck)" flat="") Copy
+          v-btn(color="orange" @click="copyLocalDeck(deck)" flat="") Copy
 
-  .actions-container
-    .item.create-card-button(@click="play()" v-if="selectedDecks.length")
-      v-btn.on(fab dark large color="green")
-        v-icon(dark) play_arrow
+  //- .actions-container
+  //-   .item.create-card-button(@click="play()" v-if="selectedDecks.length")
+  //-     v-btn.on(fab dark large color="green")
+  //-       v-icon(dark) play_arrow
 
 
 </template>
@@ -42,12 +42,20 @@ export default {
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      addCard: 'cards/ADD_CARD',
-      copyDeck: 'decks/COPY_DECK',
       setSelected: 'decks/SET_SELECTED',
       toggleSelected: 'decks/TOGGLE_SELECTED',
+      copyDeck: 'decks/COPY_DECK',
       copyCards: 'cards/COPY_CARDS',
     }),
+    copyLocalDeck(deck){
+      this.copyCards(deck._cards)
+      delete deck._cards
+      if(!deck.id){
+        deck.id = uuid()
+      }
+
+      this.copyDeck(deck)
+    }
   },
   created(){
     this.setNavbarTitle("Library")

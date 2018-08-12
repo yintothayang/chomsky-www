@@ -13,7 +13,7 @@
     span.none No Decks Found
     v-btn(color="info" @click="$router.push({name: 'cards'})" large) Create a Deck
     span.or or
-    v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
+    v-btn(color="info" @click="$router.push({name:'library'})" large) Visit Library
 
   .actions-container
     .item.create-card-button(@click="play()" v-if="selectedDecks.length")

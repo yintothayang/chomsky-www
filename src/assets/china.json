@@ -1,0 +1,14 @@
+[
+  {
+    "front": "Dog",
+    "back":  "狗"
+  },
+  {
+    "front": "Cat",
+    "back":  "猫"
+  },
+  {
+    "front": "Bird",
+    "back":  "鸟"
+  }
+]

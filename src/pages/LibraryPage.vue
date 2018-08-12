@@ -22,6 +22,7 @@ import uuid from 'uuid/v4'
 import hirigana from '@/assets/hirigana'
 import katakana from '@/assets/katakana'
 import animals from '@/assets/animals'
+import china from '@/assets/china'
 
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
@@ -95,6 +96,18 @@ export default {
       }),
       _cards: animals
     })
+
+    this.localDecks.push({
+      name: 'China Animals',
+      card_ids: china.map(c => {
+        if(!c.id){
+          c.id = uuid()
+        }
+        return c.id
+      }),
+      _cards: china
+    })
+
   }
 }
 </script>

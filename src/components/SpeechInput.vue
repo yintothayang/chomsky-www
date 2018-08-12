@@ -2,6 +2,7 @@
 #speech-input
   .attempt-container(:class="status")
     span {{attempt}}
+    span {{error}}
   .record-button(@click="toggleRecording()")
     v-btn.on(fab dark large color="red" v-if="listening")
       v-icon(dark) mic
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       attempt: "",
+      error: "",
       listening: false,
       status: []
     }
@@ -109,6 +111,7 @@ export default {
     },
     onerror(event){
       console.error('onerror: ', event)
+      this.error = event.message
       this.listening = false
     }
   },

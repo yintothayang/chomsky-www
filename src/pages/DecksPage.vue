@@ -10,8 +10,10 @@
           v-btn(color="orange" @click="deleteDeck(deck)" flat="") Delete
 
   .empty(v-else)
-    span No Decks Found
+    span.none No Decks Found
     v-btn(color="info" @click="$router.push({name: 'cards'})" large) Create a Deck
+    span.or or
+    v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 
   .actions-container
     .item.create-card-button(@click="play()" v-if="selectedDecks.length")
@@ -123,12 +125,16 @@ export default {
     align-items center
     justify-content center
 
-    span
+    span.none
       font-weight 600
       font-size 1.8em
       flex-basis 100%
       margin-bottom 2em
       color rgba(0, 0, 0, .6)
+    span.or
+      flex-basis 100%
+      font-weight 600
+      font-size 1.2em
 
   .actions-container
     display flex

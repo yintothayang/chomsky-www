@@ -1,6 +1,6 @@
 {
-  "name": "chomsky-www",
-  "short_name": "chomsky-www",
+  "name": "Einstein",
+  "short_name": "Einstein",
   "icons": [
     {
       "src": "/img/icons/android-chrome-192x192.png",
@@ -16,5 +16,13 @@
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#4DBA87"
+  "theme_color": "#4DBA87",
+  "permissions": {
+    "audio-capture" : {
+      "description" : "Audio capture"
+    },
+    "speech-recognition" : {
+      "description" : "Speech recognition"
+    }
+  }
 }

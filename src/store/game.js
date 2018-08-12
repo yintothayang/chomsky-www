@@ -1,6 +1,8 @@
 // State
 const state = {
-  mode: 'type',
+  mode: 'text',
+  lang: '日本語',
+  dialect: 'ja-JP',
   cards: [],
   pile: [],
 }
@@ -8,6 +10,8 @@ const state = {
 // Getters
 var getters = {
   mode: state => state.mode,
+  lang: state => state.lang,
+  dialect: state => state.dialect,
   cards: state => state.cards,
 }
 
@@ -15,6 +19,12 @@ var getters = {
 var mutations = {
   ["SET_MODE"] (state, mode) {
     state.mode = mode
+  },
+  ["SET_LANG"] (state, lang) {
+    state.lang = lang
+  },
+  ["SET_DIALECT"] (state, dialect) {
+    state.dialect = dialect
   },
   ["SET_CARDS"] (state, cards) {
     state.cards = cards

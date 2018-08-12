@@ -3,9 +3,9 @@
   .card-container
     .card
       span {{currentCard.front}}
-  .text-input-container(v-if="mode === 'type'")
+  .text-input-container(v-if="mode === 'text'")
     text-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
-  .speech-input-container(v-if="mode === 'voice'")
+  .speech-input-container(v-if="mode === 'speech'")
     speech-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
 
 </template>

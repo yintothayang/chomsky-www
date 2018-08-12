@@ -43,10 +43,20 @@ export default {
       } else if(value.length >= this.card.back.length){
         this.status = ['fail']
       }
+    },
+    dialect: function(value){
+      console.log("dialect updated")
+      if(this.recognition && this.listening){
+        this.recognition.stop()
+      }
+      this.initRecognition()
     }
   },
   computed: {
-
+    ...mapGetters({
+      lang: 'game/lang',
+      dialect: 'game/dialect',
+    })
   },
   methods: {
     ...mapMutations({
@@ -58,15 +68,14 @@ export default {
     },
     initRecognition(){
       var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-      var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
-      var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
-
-      var grammar = '#JSGF V1.grammar;'
+      // var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
+      // var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+      // var grammar = '#JSGF V1.grammar;'
 
       this.recognition = new SpeechRecognition()
       this.recognition.continuous = true
       // this.recognition.lang = 'en-US'
-      this.recognition.lang = 'ja-JP'
+      this.recognition.lang = this.dialect
       this.recognition.interimResults = true
       this.recognition.maxAlternatives = 1
 

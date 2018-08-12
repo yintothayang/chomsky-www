@@ -21,6 +21,7 @@
 import uuid from 'uuid/v4'
 import hirigana from '@/assets/hirigana'
 import katakana from '@/assets/katakana'
+import animals from '@/assets/animals'
 
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
@@ -55,6 +56,7 @@ export default {
       }
 
       this.copyDeck(deck)
+      this.$router.push({name: 'decks'})
     }
   },
   created(){
@@ -83,7 +85,16 @@ export default {
       _cards: katakana
     })
 
-
+    this.localDecks.push({
+      name: 'Animals',
+      card_ids: animals.map(c => {
+        if(!c.id){
+          c.id = uuid()
+        }
+        return c.id
+      }),
+      _cards: animals
+    })
   }
 }
 </script>

@@ -1,7 +1,9 @@
 <template lang="pug">
 #speech-input
+  .attempt-container(:class="status")
+    span {{attempt}}
   .record-button(@click="toggleRecording()")
-    v-btn.on(fab dark large color="red" v-if="recording")
+    v-btn.on(fab dark large color="red" v-if="listening")
       v-icon(dark) mic
     v-btn.off(fab outline dark large color="red" v-else)
       v-icon(dark) mic_none
@@ -19,10 +21,30 @@ export default {
   },
   data() {
     return {
-      recording: false
+      attempt: "",
+      listening: false,
+      status: []
     }
   },
+  watch: {
+    attempt: function(value){
+      this.status = []
+      if(value.toLowerCase() == this.card.back){
+        this.status = ['success']
+        setTimeout(()=>{
+          this.$emit('success')
+          this.status = []
+          this.attempt = ""
 
+          // this.recognition.stop()
+          // this.recognition.start()
+        }, 400)
+
+      } else if(value.length >= this.card.back.length){
+        this.status = ['fail']
+      }
+    }
+  },
   computed: {
 
   },
@@ -31,8 +53,8 @@ export default {
 
     }),
     toggleRecording(){
-      this.recognition.start()
-      console.log('Ready to receive a color command.');
+      console.log('toggleRecording()')
+      this.listening ? this.recognition.stop() : this.recognition.start()
     },
     initRecognition(){
       var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
@@ -42,14 +64,10 @@ export default {
       var grammar = '#JSGF V1.grammar;'
 
       this.recognition = new SpeechRecognition()
-      // var speechRecognitionList = new SpeechGrammarList()
-      // speechRecognitionList.addFromString(grammar, 1)
-      // this.recognition.grammars = speechRecognitionList
-
       this.recognition.continuous = true
       // this.recognition.lang = 'en-US'
       this.recognition.lang = 'ja-JP'
-      this.recognition.interimResults = false
+      this.recognition.interimResults = true
       this.recognition.maxAlternatives = 1
 
       this.recognition.onstart = this.onstart
@@ -60,27 +78,29 @@ export default {
     },
     onstart(event){
       console.log("onstart: ", event)
-      this.recording = true
+      this.listening = true
     },
     onresult(event){
+      console.log("onresult: ", event)
       var last = event.results.length - 1
       var word = event.results[last][0].transcript
-      console.log("onresult: ", event)
+      this.attempt = word
       console.log("word: ", word)
       // console.log('Confidence: ' + event.results[0][0].confidence);
       this.recognition.stop()
-      this.recording = false
     },
     onspeechend(event){
       console.log('onspeechend: ', event)
       this.recognition.stop()
-      this.recording = false
+      this.listening = false
     },
     onnomatch(event){
       console.log('onnomatch: ', event)
+      this.listening = false
     },
     onerror(event){
       console.error('onerror: ', event)
+      this.listening = false
     }
   },
   created(){
@@ -95,9 +115,26 @@ export default {
 
 <style lang="stylus" scoped>
 #speech-input
+  .attempt-container
+    font-size 1.6em
+    padding .2em .8em
+    background white !important
+    box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+    margin-bottom 2em
+    display flex
+    align-items center
+    justify-content center
+    min-height 50px
+
+    &.fail
+      border 2px solid red
+
+    &.success
+      border 2px solid lightgreen
+
   .record-button
     .on
-      animation blinker .5s cubic-bezier(.5, .5, 1, 1) infinite alternate
+      animation recording .5s cubic-bezier(.5, .5, 1, 1) infinite alternate
 
   @keyframes recording
     from

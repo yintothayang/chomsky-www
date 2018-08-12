@@ -92,8 +92,5 @@ export default {
   .text-input-container
     margin-bottom 1em
 
-  .speech-input-container
-    margin-top 3em
-    margin-bottom 1em
 
 </style>

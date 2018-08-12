@@ -24,7 +24,7 @@ export default {
   watch: {
     attempt: function(value){
       this.status = []
-      if(value == this.card.back){
+      if(value.toLowerCase() == this.card.back){
         this.status = ['success']
         this.$emit('success')
 

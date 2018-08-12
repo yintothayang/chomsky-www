@@ -5,7 +5,7 @@
   v-container(grid-list-md='')
     v-layout(wrap='')
       v-flex(xs12='', sm6='', md12='')
-        v-select(v-model="mode" :items="['type', 'speech']" label="Game Mode")
+        v-select(v-model="mode" :items="['text', 'speech']" label="Game Mode")
       v-flex(xs12='', sm6='', md12='' v-if="mode == 'speech'")
         v-select(v-model="lang" :items="langOptions" label="Speech Language")
       v-flex(xs12='', sm6='', md12='' v-if="mode == 'speech'")

@@ -5,11 +5,18 @@ import uuid from 'uuid/v4'
 const state = {
   decks: [],
   selectedDecks: [],
+  filters: {
+    search: null,
+    tags: [],
+    decksPerRow: 'auto',
+  }
+
 }
 
 // Getters
 var getters = {
   decks: state => state.decks,
+  filters: state => state.filters,
   selectedDecks: state => state.selectedDecks,
 }
 
@@ -21,6 +28,9 @@ var mutations = {
   ["ADD_DECK"] (state, deck) {
     deck.id = uuid()
     state.decks.push(deck)
+  },
+  ["UPDATE_FILTERS"] (state, updates) {
+    state.filters = Object.assign(state.filters, updates)
   },
   ["TOGGLE_SELECTED"] (state, deck) {
     let i = state.selectedDecks.indexOf(deck)

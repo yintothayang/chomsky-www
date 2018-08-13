@@ -5,8 +5,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store/store'
 import './registerServiceWorker'
+import VueResource from 'vue-resource'
 
 Vue.config.productionTip = false
+Vue.use(VueResource)
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
+
 
 // Load cards and decks from localStorage
 store.commit('cards/LOAD_CARDS')

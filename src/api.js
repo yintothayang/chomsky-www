@@ -1,5 +1,6 @@
 import Vue from 'vue'
 const API_URL = "http://localhost:3000"
+const GOOGLE_API_KEY = "AIzaSyBfHrwMrbB3KtRmg1W74NCw8MrHc47Nx8g"
 
 // CARDS
 const cards = {
@@ -41,8 +42,24 @@ const decks = {
   }
 }
 
+// GOOGLE
+const google = {
+  translate: async(text, sourceLang, targetLang) => {
+    let data = {
+      q: text,
+      source: sourceLang,
+      target: targetLang,
+      format: 'text',
+    }
+    return Vue.http.post("https://translation.googleapis.com/language/translate/v2", data).then(results=>{
+      return results
+    })
+  }
+}
+
 
 export default {
   cards,
-  decks
+  decks,
+  google
 }

@@ -14,6 +14,8 @@
 import TextInput from '@/components/TextInput'
 import SpeechInput from '@/components/SpeechInput'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
+import API from '@/api'
+
 export default {
   name: 'GamePage',
   components: {

@@ -20,6 +20,7 @@ import Navbar from '@/components/Navbar'
 import CreateCardModal from '@/components/CreateCardModal.vue'
 import CreateDeckModal from '@/components/CreateDeckModal.vue'
 
+import API from '@/api'
 
 export default {
   name: 'app',
@@ -30,6 +31,10 @@ export default {
     CreateCardModal,
     CreateDeckModal,
   },
+  created(){
+    console.log(API)
+    // API.google.translate('dog', 'en', 'jp')
+  }
 }
 </script>
 

@@ -32,8 +32,9 @@ export default {
     CreateDeckModal,
   },
   created(){
-    console.log(API)
-    // API.google.translate('dog', 'en', 'jp')
+    // API.google.translate('dog', 'ja').then(results => {
+    //   console.log(results)
+    // })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-const API_URL = "http://localhost:3000"
-const GOOGLE_API_KEY = "AIzaSyBfHrwMrbB3KtRmg1W74NCw8MrHc47Nx8g"
+import firebase from 'firebase'
+import functions from 'firebase/functions'
 
 // CARDS
 const cards = {
@@ -44,16 +44,17 @@ const decks = {
 
 // GOOGLE
 const google = {
-  translate: async(text, sourceLang, targetLang) => {
+  translate: async(text, target) => {
     let data = {
-      q: text,
-      source: sourceLang,
-      target: targetLang,
-      format: 'text',
+      text,
+      target
     }
-    return Vue.http.post("https://translation.googleapis.com/language/translate/v2", data).then(results=>{
-      return results
-    })
+    let func = firebase.functions().httpsCallable("translate")
+    return await func(data)
+
+    // return Vue.http.post("https://us-central1-einstein-213121.cloudfunctions.net/translate", data).then(results=>{
+    //   return results
+    // })
   }
 }
 

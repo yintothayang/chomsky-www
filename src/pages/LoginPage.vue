@@ -1,18 +1,15 @@
 <template lang="pug">
-#home-page
+#signup-page
   .card-container
     .card
-      span.name Einstein
 
-  .auth-container
-    v-btn(color="white" @click="$router.push({name: 'login'})") Log In
-    v-btn(color="white" @click="$router.push({name: 'signup'})") Sign Up
+
 </template>
 
 <script>
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'HomePage',
+  name: 'SignupPage',
   data() {
     return {
 
@@ -20,12 +17,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'users/activeUser',
+      user: 'user/activeUser',
     }),
   },
   methods: {
     ...mapMutations({
-
+      updateUser: 'cards/UPDATE_ACTIVE_USER',
     }),
   },
   created(){
@@ -41,7 +38,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#home-page
+#signup-page
   height 100%
   background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
   display flex

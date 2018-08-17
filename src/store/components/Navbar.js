@@ -1,6 +1,6 @@
 // State
 const state = {
-  title: "Chomsky",
+  title: "Einstein",
 }
 
 // Getters

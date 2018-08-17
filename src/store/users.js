@@ -1,3 +1,6 @@
+import firebase from 'firebase'
+// const db = firebase.firestore()
+
 // State
 const state = {
   activeUser: null
@@ -16,7 +19,16 @@ var mutations = {
 }
 
 // Actions
-var actions = {}
+var actions = {
+  signup: async ({commit}, data) => {
+    console.log(data)
+    let results = await firebase.auth().createUserWithEmailAndPassword(data.email, data.password).catch((e) =>{
+
+    })
+
+    console.log("results: ", results)
+  }
+}
 
 export default {
   namespaced: true,

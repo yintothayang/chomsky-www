@@ -73,7 +73,7 @@ export default {
   background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f88f14, #f15a24 )
   .v-toolbar__title
     margin 0px
-    font-size 1.5em
+    font-size 1.8em
     line-height 1em
     font-family 'Cinzel', serif
     font-weight 600

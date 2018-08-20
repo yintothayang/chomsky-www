@@ -8,6 +8,15 @@
             v-icon(:color="link.color") {{ link.icon }}
           v-list-tile-content
             v-list-tile-title.title {{ link.title }}
+    v-list.logout(dense='')
+      router-link.link(:to="{name: 'login'}" tag="div" @click.native="logout()")
+        v-list-tile
+          v-list-tile-action
+            v-icon(color="green") exit_to_app
+          v-list-tile-content
+            v-list-tile-title.title Logout
+
+
 </template>
 
 <script>
@@ -30,8 +39,19 @@ export default {
   computed: {
     ...mapGetters({
       open: 'leftnav/open',
-      links: 'leftnav/links',
     }),
+    ...mapActions({
+      logout: 'users/logout',
+    }),
+    links(){
+      return [
+        // { title: 'Decks', icon: 'style', to: {name: 'decks'}, color: "purple" },
+        // { title: 'Cards', icon: 'view_module', to: {name: 'cards'}, color: "purple"},
+        { title: 'Books', icon: 'book', to: {name: 'books'}, color: "blue"},
+        { title: 'Library', icon: 'local_library', to: {name: 'library'}, color: "purple"},
+        { title: 'About', icon: 'contact_support', to: {name: 'about'}, color: "red" },
+      ]
+    }
   },
   methods: {
     ...mapMutations({
@@ -63,5 +83,9 @@ export default {
     padding 0px
 
     .title
+      line-height 1.3em !important
       color rgba(0, 0, 0, .7)
+
+  .logout
+    margin-top 2em
 </style>

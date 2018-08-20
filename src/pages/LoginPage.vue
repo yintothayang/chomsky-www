@@ -1,33 +1,64 @@
 <template lang="pug">
-#signup-page
+#login-page
   .card-container
     .card
+      v-form(ref="form")
+        v-text-field(v-model="email" label="Email" type="email")
+        v-text-field(v-model="password" label="Password" type="password")
+        v-btn(:disabled="!valid" @click="submit") submit
 
+  .router-link(:disabled="!valid" :to="{name: 'signup'}")
+    v-btn(@click="$router.push({name: 'signup'})") sign up
 
 </template>
 
 <script>
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'SignupPage',
+  name: 'LoginPage',
   data() {
     return {
-
+      email: "",
+      password: ""
     }
   },
   computed: {
     ...mapGetters({
-      user: 'user/activeUser',
+      activeUser: 'users/activeUser',
     }),
+    valid(){
+      if(this.email.length && this.password.length){
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapMutations({
-      updateUser: 'cards/UPDATE_ACTIVE_USER',
+      setNavbarTitle: 'navbar/SET_TITLE',
     }),
+    ...mapActions({
+      login: 'users/login'
+    }),
+    submit(){
+      let data = {
+        email: this.email,
+        password: this.password
+      }
+      this.login(data).then(()=>{
+        this.$router.push({name: 'cards'})
+      }).catch(e => {
+        // TODO ->
+        console.error("TODO!, need error feedback")
+      })
+    }
   },
   created(){
-    if(this.user){
-      this.$router.push({name: 'decks'})
+    if(this.activeUser){
+      this.$router.push({name: 'books'})
+    } else {
+      this.setNavbarTitle("Login")
     }
   },
   mounted(){
@@ -38,7 +69,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#signup-page
+#login-page
   height 100%
   background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
   display flex

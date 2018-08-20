@@ -1,9 +1,8 @@
 import firebase from 'firebase'
-// const db = firebase.firestore()
 
 // State
 const state = {
-  activeUser: null
+  activeUser: null //firebase.auth().currentUser
 }
 
 // Getters
@@ -13,21 +12,34 @@ var getters = {
 
 // Mutations
 var mutations = {
-  ["UPDATE_ACTIVE_USER"] (state, updates) {
-    state.activeUser = Object.assign(state.activeUser, updates)
+  ["SET_ACTIVE_USER"] (state, user) {
+    state.activeUser = user
   },
 }
 
 // Actions
 var actions = {
   signup: async ({commit}, data) => {
-    console.log(data)
-    let results = await firebase.auth().createUserWithEmailAndPassword(data.email, data.password).catch((e) =>{
+    return firebase.auth().createUserWithEmailAndPassword(data.email, data.password).then(results => {
+      commit("SET_ACTIVE_USER", results)
+    })
+  },
+  login: async ({commit}, data) => {
+    return await firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(results => {
+      commit("SET_ACTIVE_USER", results)
+    }).catch((error) => {
+      var errorCode = error.code
+      var errorMessage = error.message
+    })
+  },
+  logout: async ({commit}) => {
+    return await firebase.auth().signOut().then(results => {
+
+    }).catch((e) =>{
 
     })
 
-    console.log("results: ", results)
-  }
+  },
 }
 
 export default {

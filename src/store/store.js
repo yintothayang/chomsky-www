@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import users from './users'
 import cards from './cards'
 import decks from './decks'
+import books from './books'
 import game from './game'
 
 import components from './components'
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     users,
     cards,
     decks,
+    books,
     game,
 
     // Components

@@ -7,6 +7,9 @@
         v-text-field(v-model="email" label="Email" type="email")
         v-text-field(v-model="password" label="Password" type="password")
         v-btn(:disabled="!valid" @click="submit") submit
+
+  .router-link(:disabled="!valid" :to="{name: 'login'}")
+    v-btn(@click="$router.push({name: 'login'})") login
 </template>
 
 <script>
@@ -25,7 +28,7 @@ export default {
       user: 'users/activeUser',
     }),
     valid(){
-      if(this.email.length && this.password.length){
+      if(this.email.length && this.password.length > 5){
         return true
       } else {
         return false
@@ -34,7 +37,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-
+      setNavbarTitle: 'navbar/SET_TITLE',
     }),
     ...mapActions({
       signup: 'users/signup',
@@ -44,12 +47,18 @@ export default {
         email: this.email,
         password: this.password
       }
-      this.signup(data)
+      this.signup(data).then(results => {
+        this.$router.push({name: 'decks'})
+      }).catch(e => {
+
+      })
     }
   },
   created(){
     if(this.user){
       this.$router.push({name: 'decks'})
+    } else {
+      this.setNavbarTitle("Sign up")
     }
   },
   mounted(){
@@ -69,6 +78,7 @@ export default {
 
   .card-container
     margin-top 6em
+
     .card
       padding 1em 3em
       transition all .1s
@@ -79,5 +89,8 @@ export default {
 
     span
       font-size 1.5em
+
+  .router-link
+    flex-basis 100%
 
 </style>

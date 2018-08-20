@@ -5,6 +5,8 @@ import Home from './pages/HomePage.vue'
 import Signup from './pages/SignupPage.vue'
 import Login from './pages/LoginPage.vue'
 import Decks from './pages/DecksPage.vue'
+import Books from './pages/BooksPage.vue'
+import EditBook from './pages/EditBookPage.vue'
 import Cards from './pages/CardsPage.vue'
 import Library from './pages/LibraryPage.vue'
 import Game from './pages/GamePage.vue'
@@ -37,6 +39,16 @@ export default new Router({
       path: '/decks',
       name: 'decks',
       component: Decks
+    },
+    {
+      path: '/books',
+      name: 'books',
+      component: Books
+    },
+    {
+      path: '/books/:id',
+      name: 'edit-book',
+      component: EditBook
     },
     {
       path: '/cards',

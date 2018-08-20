@@ -7,14 +7,6 @@ import store from './store/store'
 import './registerServiceWorker'
 import VueResource from 'vue-resource'
 
-Vue.config.productionTip = false
-Vue.use(VueResource)
-Vue.http.headers.common['Content-Type'] = "application/json"
-
-// Load cards and decks from localStorage
-store.commit('cards/LOAD_CARDS')
-store.commit('decks/LOAD_DECKS')
-
 import firebase from 'firebase'
 var config = {
     apiKey: "AIzaSyBeXUpuVfJSD4QDEp4hhjWDM_0w_5F1g18",
@@ -27,11 +19,23 @@ var config = {
 firebase.initializeApp(config)
 
 
+firebase.auth().onAuthStateChanged(user => {
+  store.commit('users/SET_ACTIVE_USER', user)
+})
+
+Vue.config.productionTip = false
+Vue.use(VueResource)
+Vue.http.headers.common['Content-Type'] = "application/json"
+
+// Load cards and decks from localStorage
+// store.commit('cards/LOAD_CARDS')
+// store.commit('decks/LOAD_DECKS')
+
 // Save cards and decks from localStorage before leaving
-window.onbeforeunload = function(e) {
-  // store.commit('cards/SAVE_CARDS')
-  // store.commit('decks/SAVE_DECKS')
-}
+// window.onbeforeunload = function(e) {
+//   store.commit('cards/SAVE_CARDS')
+//   store.commit('decks/SAVE_DECKS')
+// }
 
 new Vue({
   router,

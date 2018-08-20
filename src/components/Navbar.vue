@@ -1,6 +1,6 @@
 <template lang="pug">
 v-toolbar#navbar(dark="" color="primary")
-  v-toolbar-side-icon.toggle(@click="toggleLeftNav()")
+  v-toolbar-side-icon.toggle(@click="toggleLeftNav()" v-if="activeUser")
   v-spacer.hidden-md-and-up
   v-toolbar-title.white--text {{title}}
   v-spacer
@@ -16,6 +16,7 @@ export default {
   name: 'Navbar',
   computed: {
     ...mapGetters({
+      activeUser: 'users/activeUser',
       title: 'navbar/title',
       cardFilters: 'cards/filters',
     }),

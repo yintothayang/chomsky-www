@@ -11,7 +11,7 @@
 
   .empty(v-else)
     span.none No Books Found
-    v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book!
+    v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book
     span.or or
     v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 

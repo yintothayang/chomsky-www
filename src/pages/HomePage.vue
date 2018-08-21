@@ -24,17 +24,17 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations({
 
-    }),
   },
   created(){
     if(this.user){
-      this.$router.push({name: 'decks'})
+      this.$router.push({name: 'books'})
     }
   },
   mounted(){
-
+    if(this.user){
+      this.$router.push({name: 'books'})
+    }
   }
 }
 </script>

@@ -19,7 +19,7 @@
 
     .actions-container
       v-tooltip(left)
-        v-btn.on(fab dark color="blue lighten-1" @click="saveBook()" slot="activator")
+        v-btn.on(fab dark color="blue lighten-1" @click="save()" slot="activator")
           v-icon(dark) save
         span Save Book
 
@@ -50,11 +50,12 @@ export default {
   },
   methods: {
     ...mapActions({
-
+      deleteBook: 'books/DELETE_BOOK',
+      updateBook: 'books/updateBook',
+      createBook: 'books/createBook',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      deleteBook: 'books/DELETE_BOOK',
     }),
     addPage(){
       this.book.pages.push({
@@ -65,8 +66,13 @@ export default {
     deletePage(page){
       this.book.pages.splice(this.book.pages.indexOf(page), 1)
     },
-    saveBook(){
-      console.log("TODO: ")
+    save(){
+      console.log("Save Book: ", this.book)
+      if(this.book.id){
+        this.updateBook(this.book)
+      } else {
+        this.createBook(this.book)
+      }
     }
   },
   created(){

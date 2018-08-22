@@ -1,5 +1,11 @@
-import API from '../api'
-import uuid from 'uuid/v4'
+import config from '../firebaseConfig'
+import firebase from 'firebase'
+
+if(!firebase.apps.length){
+  firebase.initializeApp(config)
+}
+
+
 
 // State
 const state = {
@@ -53,29 +59,26 @@ var mutations = {
 
 // Actions
 var actions = {
-  fetchBooks: ({commit}, data = {}) => {
-    return API.books.fetch(data).then(results => {
-      commit("SET_BOOKS", results.body)
-      return results.body
+  fetchBooks: async ({commit}) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    let res = await firestore.collection("books").get()
+    let books = []
+    res.forEach((doc) =>{
+      books.push(doc.data())
     })
+    commit("SET_BOOKS", books)
   },
-  createBook: ({commit}, data = {}) => {
-    return API.books.add(data).then(results => {
-      commit("ADD_BOOK", results.body)
-      return results.body
-    })
+  createBook: async ({commit}, book) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    let res = await firestore.collection("books").add(book)
   },
-  updateBook: ({commit}, data = {}) => {
-    return API.books.add(data).then(results => {
-      commit("ADD_BOOK", results.body)
-      return results.body
-    })
+  updateBook: async ({commit}, book) => {
+
   },
-  deleteBook: ({commit}, data = {}) => {
-    return API.books.add(data).then(results => {
-      commit("ADD_BOOK", results.body)
-      return results.body
-    })
+  deleteBook: async ({commit}, book) => {
+
   },
 }
 

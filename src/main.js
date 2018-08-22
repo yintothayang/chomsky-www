@@ -8,20 +8,18 @@ import './registerServiceWorker'
 import VueResource from 'vue-resource'
 
 import firebase from 'firebase'
-var config = {
-    apiKey: "AIzaSyBeXUpuVfJSD4QDEp4hhjWDM_0w_5F1g18",
-    authDomain: "einstein-213121.firebaseapp.com",
-    databaseURL: "https://einstein-213121.firebaseio.com",
-    projectId: "einstein-213121",
-    storageBucket: "einstein-213121.appspot.com",
-    messagingSenderId: "27920995926"
-}
-firebase.initializeApp(config)
+import config from './firebaseConfig'
 
+if(!firebase.apps.length){
+  firebase.initializeApp(config)
+}
 
 firebase.auth().onAuthStateChanged(user => {
   store.commit('users/SET_ACTIVE_USER', user)
 })
+
+// Get all books
+store.dispatch('books/fetchBooks')
 
 Vue.config.productionTip = false
 Vue.use(VueResource)

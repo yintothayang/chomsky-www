@@ -1,26 +1,30 @@
 <template lang="pug">
 #books-page
-  .book-list(v-if="books.length")
-    .book-container(v-for="book in books" @click="toggleSelected(book)")
+  .book-list(v-if="books.length && !loading")
+    .book-container(v-for="book in books")
       .book(:class="{'selected': selectedBooks.includes(book)}")
         span.name {{book.name}}
-        span.card-count {{book.card_ids.length}} card(s)
 
         .book-actions-container
-          v-btn(color="orange" @click="deleteBook(book)" flat="") Delete
+          v-btn(color="red" @click="deleteBook(book)" flat="") Delete
+          router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
+            v-btn(color="blue" flat="") Edit
 
-  .empty(v-else)
+  .empty(v-if="!books.length && !loading")
     span.none No Books Found
     v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book
     span.or or
     v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 
   .actions-container
-    .item.create-card-button(@click="play()" v-if="selectedBooks.length")
-      v-btn.on(fab dark large color="green")
-        v-icon(dark) play_arrow
+    .item
+      router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
+        v-tooltip(left)
+          v-btn.on(fab dark color="blue lighten-1" slot="activator")
+            v-icon(dark) add
+          span Create a Book
 
-
+  v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
 
 <script>
@@ -30,7 +34,7 @@ export default {
   name: 'BooksPage',
   data() {
     return {
-
+      loading: true
     }
   },
   computed: {
@@ -41,12 +45,11 @@ export default {
   },
   methods: {
     ...mapActions({
-
+      fetchBooks: 'books/fetchBooks',
+      deleteBook: 'books/deleteBook',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      addCard: 'cards/ADD_CARD',
-      deleteBook: 'books/DELETE_BOOK',
       setSelected: 'books/SET_SELECTED',
       toggleSelected: 'books/TOGGLE_SELECTED',
     }),
@@ -54,8 +57,10 @@ export default {
       this.$router.push({name: 'game'})
     }
   },
-  created(){
+  async created(){
     this.setNavbarTitle("Books")
+    await this.fetchBooks()
+    this.loading = false
   }
 }
 </script>
@@ -65,28 +70,21 @@ export default {
 #books-page
   .book-list
     overflow-y scroll
-    display flex
-    flex-wrap wrap
-    padding 2em
+    padding 1em 1.5em
+    height 100%
 
     .book-container
-      display flex
-      flex-basis 100%
-      padding 1em 0em
-      justify-content center
-      align-items center
+      padding .2em 0em
 
       .book
         display flex
         padding 1em 2em .5em 2em
         margin .5em
-        flex-grow 1
         cursor pointer
         transition all .1s
         background white
         box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
         user-select none
-        flex-basis 100%
         flex-wrap wrap
 
         &:hover
@@ -98,7 +96,7 @@ export default {
             color white !important
 
         .name
-          font-size 1.8em
+          font-size 1.4em
           font-weight 600
           flex-basis 100%
           text-align left
@@ -142,4 +140,6 @@ export default {
     top 85%
     right 1em
 
+  .loading
+    margin-top 8em
 </style>

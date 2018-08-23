@@ -1,6 +1,8 @@
 <template lang="pug">
 #edit-book-page
-  v-form.book
+  v-form.book(v-if="!loading")
+    v-text-field.name(v-model="book.name" label="Name")
+
     transition-group(mode="out-in" name="fade")
       .page(v-for="page in book.pages" :key="book.pages.indexOf(page)")
         v-text-field.front(v-model="page.front" label="Front")
@@ -22,7 +24,7 @@
         v-btn.on(fab dark color="blue lighten-1" @click="save()" slot="activator")
           v-icon(dark) save
         span Save Book
-
+  v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
 
 <script>
@@ -32,6 +34,7 @@ export default {
   name: 'EditBookPage',
   data() {
     return {
+      loading: false,
       book: {
         name: "New Book",
         pages: [
@@ -66,12 +69,16 @@ export default {
     deletePage(page){
       this.book.pages.splice(this.book.pages.indexOf(page), 1)
     },
-    save(){
-      console.log("Save Book: ", this.book)
+    async save(){
+      this.loading = true
       if(this.book.id){
-        this.updateBook(this.book)
+        let res = await this.updateBook(this.book)
+        this.loading = false
+        this.$router.push({name: 'books'})
       } else {
-        this.createBook(this.book)
+        let res = await this.createBook(this.book)
+        this.loading = false
+        this.$router.push({name: 'books'})
       }
     }
   },
@@ -130,5 +137,6 @@ export default {
       margin-left auto
       margin-right auto
 
-
+  .loading
+    margin-top 8em
 </style>

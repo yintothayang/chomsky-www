@@ -5,8 +5,6 @@ if(!firebase.apps.length){
   firebase.initializeApp(config)
 }
 
-
-
 // State
 const state = {
   books: [],
@@ -65,19 +63,31 @@ var actions = {
     let res = await firestore.collection("books").get()
     let books = []
     res.forEach((doc) =>{
-      books.push(doc.data())
+      let book = doc.data()
+      book.id = doc.id
+      books.push(book)
     })
     commit("SET_BOOKS", books)
   },
-  createBook: async ({commit}, book) => {
+  createBook: async ({commit, rootState}, book) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    let res = await firestore.collection("books").add(book)
+    book.created_by = rootState.users.activeUser.uid
+    return firestore.collection("books").add(book).then(res => {
+      book.id = res.id
+    })
   },
   updateBook: async ({commit}, book) => {
-
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    return firestore.collection("books").doc(book.id).update(book)
   },
   deleteBook: async ({commit}, book) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    return firestore.collection("books").doc(book.id).delete().then(res => {
+      commit("DELETE_BOOK", book)
+    })
 
   },
 }

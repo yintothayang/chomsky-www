@@ -3,7 +3,7 @@ const state = {
   mode: 'text',
   lang: '日本語',
   dialect: 'ja-JP',
-  cards: [],
+  pages: [],
   pile: [],
 }
 
@@ -12,7 +12,7 @@ var getters = {
   mode: state => state.mode,
   lang: state => state.lang,
   dialect: state => state.dialect,
-  cards: state => state.cards,
+  pages: state => state.pages,
 }
 
 // Mutations
@@ -26,27 +26,27 @@ var mutations = {
   ["SET_DIALECT"] (state, dialect) {
     state.dialect = dialect
   },
-  ["SET_CARDS"] (state, cards) {
-    state.cards = cards
+  ["SET_PAGES"] (state, pages) {
+    state.pages = pages
   },
-  ["NEXT_CARD"] (state) {
-    state.pile.push(state.cards.shift())
+  ["NEXT_PAGE"] (state) {
+    state.pile.push(state.pages.shift())
   },
-  ["PREVIOUS_CARD"] (state) {
-    state.cards.push(state.pile.shift())
+  ["PREVIOUS_PAGE"] (state) {
+    state.pages.push(state.pile.shift())
   },
-  ["RESET_CARDS"] (state) {
-    state.cards = state.pile
+  ["RESET_PAGES"] (state) {
+    state.pages = state.pile
     state.pile = []
   },
-  ["SHUFFLE_CARDS"] (state) {
-    var currentIndex = state.cards.length, temporaryValue, randomIndex;
+  ["SHUFFLE_PAGES"] (state) {
+    var currentIndex = state.pages.length, temporaryValue, randomIndex;
     while (0 !== currentIndex) {
       randomIndex = Math.floor(Math.random() * currentIndex)
       currentIndex -= 1
-      temporaryValue = state.cards[currentIndex]
-      state.cards[currentIndex] = state.cards[randomIndex]
-      state.cards[randomIndex] = temporaryValue
+      temporaryValue = state.pages[currentIndex]
+      state.pages[currentIndex] = state.pages[randomIndex]
+      state.pages[randomIndex] = temporaryValue
     }
   },
 }

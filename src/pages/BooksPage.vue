@@ -9,6 +9,8 @@
           v-btn(color="red" @click="deleteBook(book)" flat="") Delete
           router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
             v-btn(color="blue" flat="") Edit
+          router-link(:to="{name: 'game', params: {id: book.id}}" tag="div")
+            v-btn(color="green" flat="") Play
 
   .empty(v-if="!books.length && !loading")
     span.none No Books Found

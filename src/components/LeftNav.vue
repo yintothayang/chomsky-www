@@ -45,8 +45,6 @@ export default {
     }),
     links(){
       return [
-        // { title: 'Decks', icon: 'style', to: {name: 'decks'}, color: "purple" },
-        // { title: 'Cards', icon: 'view_module', to: {name: 'cards'}, color: "purple"},
         { title: 'Books', icon: 'book', to: {name: 'books'}, color: "blue"},
         { title: 'Library', icon: 'local_library', to: {name: 'library'}, color: "purple"},
         { title: 'About', icon: 'contact_support', to: {name: 'about'}, color: "red" },

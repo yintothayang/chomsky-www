@@ -13,6 +13,13 @@
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'HomePage',
+  watch: {
+    user: function(){
+      if(this.user){
+        this.$router.push({name: 'books'})
+      }
+    }
+  },
   data() {
     return {
 

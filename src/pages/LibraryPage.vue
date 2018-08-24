@@ -57,7 +57,7 @@ export default {
       }
 
       this.copyDeck(deck)
-      this.$router.push({name: 'decks'})
+      this.$router.push({name: 'books'})
     }
   },
   created(){

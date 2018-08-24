@@ -48,7 +48,7 @@ export default {
         password: this.password
       }
       this.signup(data).then(results => {
-        this.$router.push({name: 'decks'})
+        this.$router.push({name: 'books'})
       }).catch(e => {
 
       })
@@ -56,7 +56,7 @@ export default {
   },
   created(){
     if(this.user){
-      this.$router.push({name: 'decks'})
+      this.$router.push({name: 'books'})
     } else {
       this.setNavbarTitle("Sign up")
     }

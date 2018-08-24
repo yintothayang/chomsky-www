@@ -4,10 +4,8 @@ import Router from 'vue-router'
 import Home from './pages/HomePage.vue'
 import Signup from './pages/SignupPage.vue'
 import Login from './pages/LoginPage.vue'
-import Decks from './pages/DecksPage.vue'
 import Books from './pages/BooksPage.vue'
 import EditBook from './pages/EditBookPage.vue'
-import Cards from './pages/CardsPage.vue'
 import Library from './pages/LibraryPage.vue'
 import Game from './pages/GamePage.vue'
 import About from './pages/AboutPage.vue'
@@ -36,11 +34,6 @@ export default new Router({
       component: Login
     },
     {
-      path: '/decks',
-      name: 'decks',
-      component: Decks
-    },
-    {
       path: '/books',
       name: 'books',
       component: Books
@@ -51,17 +44,12 @@ export default new Router({
       component: EditBook
     },
     {
-      path: '/cards',
-      name: 'cards',
-      component: Cards
-    },
-    {
       path: '/library',
       name: 'library',
       component: Library
     },
     {
-      path: '/game',
+      path: '/game/:id',
       name: 'game',
       component: Game
     },

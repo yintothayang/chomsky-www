@@ -5,9 +5,11 @@
     transition(mode="out-in" name="fade")
       navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
-      router-view.page-container
+      router-view.page-container(v-if="!loading")
+    transition(mode="out-in" name="fade" v-if="loading")
+      .load-container(v-if="loading")
+        v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
     right-nav
-
 
     create-card-modal
     create-deck-modal
@@ -21,6 +23,7 @@ import CreateCardModal from '@/components/CreateCardModal.vue'
 import CreateDeckModal from '@/components/CreateDeckModal.vue'
 
 import API from '@/api'
+import {mapActions, mapMutations, mapGetters} from 'vuex'
 
 export default {
   name: 'app',
@@ -31,7 +34,19 @@ export default {
     CreateCardModal,
     CreateDeckModal,
   },
-  created(){
+  data(){
+    return {
+      loading: true
+    }
+  },
+  methods: {
+    ...mapActions({
+      fetchBooks: 'books/fetchBooks',
+    })
+  },
+  async created(){
+    await this.fetchBooks()
+    this.loading = false
     // API.google.translate('dog', 'ja').then(results => {
     //   console.log(results)
     // })
@@ -50,6 +65,7 @@ export default {
   color #2c3e50
   background-color #efefef
   overflow hidden
+  //- background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
 
   .page-container
     height calc(100% - 64px)
@@ -63,4 +79,9 @@ export default {
   .v-tooltip__content
     line-height 1.2em !important
 
+  .load-container
+    display flex
+    align-items center
+    justify-content center
+    margin-top 8em
 </style>

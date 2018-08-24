@@ -1,12 +1,12 @@
 <template lang="pug">
 #game-page
-  .card-container
-    .card
-      span {{currentCard.front}}
+  .page-container(v-if="currentPage")
+    .page
+      span {{currentPage.front}}
   .text-input-container(v-if="mode === 'text'")
-    text-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
+    text-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech'")
-    speech-input(:card="currentCard" @attempt="onAttempt" @success="onSuccess")
+    speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
 
 </template>
 
@@ -29,43 +29,66 @@ export default {
   },
   computed: {
     ...mapGetters({
+      lang: 'game/lang',
+      dialect: 'game/dialect',
       mode: 'game/mode',
-      cards: 'game/cards',
-      selectedDeckCards: 'cards/selectedDeckCards',
+      pages: 'game/pages',
+      books: 'books/books',
+      selectedDeckPages: 'pages/selectedDeckPages',
     }),
-    currentCard(){
-      return this.cards[0]
+    currentPage(){
+      return this.pages[0]
     }
   },
   methods: {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      setGameCards: 'game/SET_CARDS',
-      shuffle: 'game/SHUFFLE_CARDS',
-      nextCard: 'game/NEXT_CARD',
-      resetCards: 'game/RESET_CARDS',
+      setGamePages: 'game/SET_PAGES',
+      shuffle: 'game/SHUFFLE_PAGES',
+      nextPage: 'game/NEXT_PAGE',
+      resetPages: 'game/RESET_PAGES',
+    }),
+    ...mapActions({
+      fetchBooks: 'books/fetchBooks',
     }),
     onAttempt(answer){
       console.log("attempt", answer)
     },
     onSuccess(){
-      if(this.cards.length > 1){
-        this.nextCard()
+      if(this.pages.length > 1){
+        this.nextPage()
       } else {
-        this.nextCard()
-        this.resetCards()
+        this.nextPage()
+        this.resetPages()
         this.shuffle()
       }
     },
-  },
-  created(){
-    if(!this.selectedDeckCards.length){
-      this.$router.push({name: 'decks'})
-    } else {
-      this.setNavbarTitle("Game")
-      this.setGameCards(JSON.parse(JSON.stringify(this.selectedDeckCards)))
-      this.shuffle()
+    async translatePages(pages){
+      let promises = []
+      pages.forEach(page => {
+        if(page.back === '$translate'){
+          console.log("translage: ", page.front)
+          console.log("translage: ", this.dialect.substr(0, 2))
+          promises.push(API.google.translate(page.front, this.dialect.substr(0, 2)).then(results =>{
+            page._back = page.back
+            console.log("res: ", results)
+            page.back = results.data[0]
+          }))
+        }
+      })
+      await Promise.all(promises)
+      return pages
     }
+  },
+  async created(){
+    await this.fetchBooks()
+    let book = this.books.find(book => book.id === this.$route.params.id)
+    this.setNavbarTitle("Study: " + book.name)
+
+    let pages = await this.translatePages(book.pages)
+    // let pages = book.pages
+    this.setGamePages(JSON.parse(JSON.stringify(pages)))
+    this.shuffle()
   }
 }
 </script>
@@ -78,14 +101,14 @@ export default {
   align-items center
   height 100%
 
-  .card-container
+  .page-container
     display flex
     align-items center
     justify-content center
     margin-bottom 4em
     margin-top 4em
 
-    .card
+    .page
       font-size 3.5em
       padding .4em 2.8em
       background white

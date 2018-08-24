@@ -10,7 +10,7 @@ import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'TextInput',
   props: {
-    card: {
+    page: {
       default: ()=>{}
     }
   },
@@ -24,7 +24,7 @@ export default {
   watch: {
     attempt: function(value){
       this.status = []
-      if(value.toLowerCase() == this.card.back){
+      if(value.toLowerCase() == this.page.back){
         this.status = ['success']
         this.$emit('success')
 
@@ -33,7 +33,7 @@ export default {
           this.attempt = ""
         }, 100)
 
-      } else if(value.length >= this.card.back.length){
+      } else if(value.length >= this.page.back.length){
         this.status = ['fail']
       }
 

@@ -47,7 +47,7 @@ export default {
         password: this.password
       }
       this.login(data).then(()=>{
-        this.$router.push({name: 'cards'})
+        this.$router.push({name: 'books'})
       }).catch(e => {
         // TODO ->
         console.error("TODO!, need error feedback")

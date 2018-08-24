@@ -51,10 +51,6 @@ const google = {
     }
     let func = firebase.functions().httpsCallable("translate")
     return await func(data)
-
-    // return Vue.http.post("https://us-central1-einstein-213121.cloudfunctions.net/translate", data).then(results=>{
-    //   return results
-    // })
   }
 }
 

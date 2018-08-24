@@ -3,7 +3,7 @@
   v-form.book(v-if="!loading")
     v-text-field.name(v-model="book.name" label="Name")
 
-    transition-group(mode="out-in" name="fade")
+    transition-group.pages(mode="out-in" name="fade" tag="div")
       .page(v-for="page in book.pages" :key="book.pages.indexOf(page)")
         v-text-field.front(v-model="page.front" label="Front")
         v-text-field.back(v-model="page.back" label="Back")
@@ -110,6 +110,10 @@ export default {
     background white
     height 100%
 
+  .pages
+    overflow-y auto
+    height 75%
+    margin-bottom 1em
     .page
       padding 0em 1em
       margin-bottom 1em

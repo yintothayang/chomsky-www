@@ -16,7 +16,7 @@ import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'SpeechInput',
   props: {
-    card: {
+    page: {
       default: ()=>{}
     }
   },
@@ -31,7 +31,7 @@ export default {
   watch: {
     attempt: function(value){
       this.status = []
-      if(value.toLowerCase() == this.card.back){
+      if(value.toLowerCase() == this.page.back){
         this.status = ['success']
         setTimeout(()=>{
           this.$emit('success')
@@ -42,7 +42,7 @@ export default {
           // this.recognition.start()
         }, 400)
 
-      } else if(value.length >= this.card.back.length){
+      } else if(value.length >= this.page.back.length){
         this.status = ['fail']
       }
     },

@@ -1,12 +1,14 @@
 <template lang="pug">
 #game-page
-  .page-container(v-if="currentPage")
+  .page-container(v-if="currentPage && !loading")
     .page
       span {{currentPage.front}}
-  .text-input-container(v-if="mode === 'text'")
+  .text-input-container(v-if="mode === 'text' && !loading")
     text-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
-  .speech-input-container(v-if="mode === 'speech'")
+  .speech-input-container(v-if="mode === 'speech' && !loading")
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
+  .load-container(v-if="loading")
+    v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
 
 </template>
 
@@ -24,7 +26,7 @@ export default {
   },
   data() {
     return {
-
+      loading: true
     }
   },
   computed: {
@@ -83,12 +85,13 @@ export default {
   async created(){
     await this.fetchBooks()
     let book = this.books.find(book => book.id === this.$route.params.id)
-    this.setNavbarTitle("Study: " + book.name)
+    this.setNavbarTitle(book.name)
 
     let pages = await this.translatePages(book.pages)
     // let pages = book.pages
     this.setGamePages(JSON.parse(JSON.stringify(pages)))
     this.shuffle()
+    this.loading = false
   }
 }
 </script>
@@ -99,7 +102,7 @@ export default {
   display flex
   flex-direction column
   align-items center
-  height 100%
+  height auto !important
 
   .page-container
     display flex

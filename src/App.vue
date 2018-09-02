@@ -36,7 +36,7 @@ export default {
   },
   data(){
     return {
-      loading: true
+      loading: false
     }
   },
   methods: {
@@ -45,11 +45,8 @@ export default {
     })
   },
   async created(){
-    await this.fetchBooks()
-    this.loading = false
-    // API.google.translate('dog', 'ja').then(results => {
-    //   console.log(results)
-    // })
+    // await this.fetchBooks()
+    // this.loading = false
   }
 }
 </script>

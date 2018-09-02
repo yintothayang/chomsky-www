@@ -22,9 +22,15 @@
     .item
       router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
         v-tooltip(left)
-          v-btn.on(fab dark color="blue lighten-1" slot="activator")
+          v-btn.on(small fab dark color="blue lighten-1" slot="activator")
             v-icon(dark) add
           span Create a Book
+    .item
+      router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
+        v-tooltip(left)
+          v-btn.on(small fab dark color="purple lighten-1" slot="activator")
+            v-icon(dark) cloud_upload
+          span Upload a Book
 
   v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
@@ -36,7 +42,7 @@ export default {
   name: 'BooksPage',
   data() {
     return {
-      loading: true
+      loading: false
     }
   },
   computed: {
@@ -61,8 +67,12 @@ export default {
   },
   async created(){
     this.setNavbarTitle("Books")
-    await this.fetchBooks()
-    this.loading = false
+    this.$nextTick(()=> {
+      if(this.books){
+        this.loading = true
+        this.fetchBooks().then(()=>{this.loading = false})
+      }
+    })
   }
 }
 </script>
@@ -138,9 +148,15 @@ export default {
 
   .actions-container
     display flex
+    flex-wrap wrap
     position absolute
-    top 85%
-    right 1em
+    top 40%
+    right 0em
+    width 100px
+
+    .item
+      flex-basis 100%
+      margin-bottom .5em
 
   .loading
     margin-top 8em

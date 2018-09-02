@@ -33,6 +33,14 @@ var mutations = {
   ["ADD_BOOK"] (state, book) {
     state.books.push(book)
   },
+  ["UPDATE_BOOK"] (state, book) {
+    let i = state.books.indexOf(book)
+    if(i > -1){
+      state.books[i] = book
+    } else {
+      console.error("book not found while UPDATE_BOOK", book)
+    }
+  },
   ["DELETE_BOOK"] (state, book) {
     let i = state.books.indexOf(book)
     if(i > -1){
@@ -75,12 +83,14 @@ var actions = {
     book.created_by = rootState.users.activeUser.uid
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
+      commit("ADD_BOOK", book)
     })
   },
   updateBook: async ({commit}, book) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
     return firestore.collection("books").doc(book.id).update(book)
+    commit("UPDATE_BOOK", book)
   },
   deleteBook: async ({commit}, book) => {
     const firestore = firebase.firestore()

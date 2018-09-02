@@ -79,7 +79,7 @@ export default {
       // this.recognition.lang = 'en-US'
       this.recognition.lang = this.dialect
       this.recognition.interimResults = true
-      this.recognition.maxAlternatives = 1
+      this.recognition.maxAlternatives = 10
 
       this.recognition.onstart = this.onstart
       this.recognition.onresult = this.onresult

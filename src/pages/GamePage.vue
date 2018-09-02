@@ -69,11 +69,8 @@ export default {
       let promises = []
       pages.forEach(page => {
         if(page.back === '$translate'){
-          console.log("translage: ", page.front)
-          console.log("translage: ", this.dialect.substr(0, 2))
           promises.push(API.google.translate(page.front, this.dialect.substr(0, 2)).then(results =>{
             page._back = page.back
-            console.log("res: ", results)
             page.back = results.data[0]
           }))
         }

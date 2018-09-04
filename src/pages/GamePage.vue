@@ -7,6 +7,21 @@
     text-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
+
+  .actions-container
+    v-tooltip(right)
+      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
+        v-icon(dark) visibility
+      span Show Answer
+
+    v-tooltip(right)
+      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="skip()")
+        v-icon(dark) fast_forward
+      span Skip
+
+  .answer-modal(v-if="showAnswer")
+    span {{currentPage.answer}}
+
   .load-container(v-if="loading")
     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
 
@@ -26,7 +41,8 @@ export default {
   },
   data() {
     return {
-      loading: true
+      loading: true,
+      showAnswer: false,
     }
   },
   computed: {
@@ -57,6 +73,15 @@ export default {
       console.log("attempt", answer)
     },
     onSuccess(){
+      if(this.pages.length > 1){
+        this.nextPage()
+      } else {
+        this.nextPage()
+        this.resetPages()
+        this.shuffle()
+      }
+    },
+    skip(){
       if(this.pages.length > 1){
         this.nextPage()
       } else {
@@ -118,6 +143,24 @@ export default {
 
   .text-input-container
     margin-bottom 1em
+    width 60%
+
+  .actions-container
+    padding 0em 1em
+    position absolute
+    bottom 5%
+    display flex
+    justify-content space-between
+    width 100%
+
+  .answer-modal
+    position absolute
+    top 45%
+    z-index 3
+    background white
+    box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+    font-size 2em
+    padding .3em .5em
 
 
 </style>

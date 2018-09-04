@@ -29,23 +29,6 @@ export default {
     }
   },
   watch: {
-    attempt: function(value){
-      this.status = []
-      if(value.toLowerCase() == this.page.back){
-        this.status = ['success']
-        setTimeout(()=>{
-          this.$emit('success')
-          this.status = []
-          this.attempt = ""
-
-          // this.recognition.stop()
-          // this.recognition.start()
-        }, 400)
-
-      } else if(value.length >= this.page.back.length){
-        this.status = ['fail']
-      }
-    },
     dialect: function(value){
       console.log("dialect updated")
       if(this.recognition && this.listening){
@@ -70,13 +53,9 @@ export default {
     },
     initRecognition(){
       var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-      // var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
-      // var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
-      // var grammar = '#JSGF V1.grammar;'
 
       this.recognition = new SpeechRecognition()
       this.recognition.continuous = true
-      // this.recognition.lang = 'en-US'
       this.recognition.lang = this.dialect
       this.recognition.interimResults = true
       this.recognition.maxAlternatives = 10
@@ -94,10 +73,14 @@ export default {
     onresult(event){
       console.log("onresult: ", event)
       var last = event.results.length - 1
-      var word = event.results[last][0].transcript
-      this.attempt = word
-      console.log("word: ", word)
-      // console.log('Confidence: ' + event.results[0][0].confidence);
+      this.attempt = event.results[last][0].transcript
+      let results = []
+      for(let i=0; i<event.results[last].length; i++){
+        results.push(event.results[last][i].transcript)
+      }
+
+      this.onAttempt(results)
+
       this.recognition.stop()
     },
     onspeechend(event){
@@ -113,6 +96,24 @@ export default {
       console.error('onerror: ', event)
       this.error = event.message
       this.listening = false
+    },
+    onAttempt(answers){
+      console.log("onAttempt: ", answers)
+      this.status = []
+      if(answers.includes(this.page.answer.toLowerCase())){
+        this.status = ['success']
+        setTimeout(()=>{
+          this.$emit('success')
+          this.status = []
+          this.attempt = ""
+
+          // this.recognition.stop()
+          // this.recognition.start()
+        }, 400)
+
+      } else {
+        this.status = ['fail']
+      }
     }
   },
   created(){

@@ -47,6 +47,7 @@ export default {
   async created(){
     // await this.fetchBooks()
     // this.loading = false
+    console.log("0.0.1")
   }
 }
 </script>

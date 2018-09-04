@@ -24,7 +24,7 @@ export default {
   watch: {
     attempt: function(value){
       this.status = []
-      if(value.toLowerCase() == this.page.back){
+      if(value.toLowerCase() == this.page.answer.toLowerCase()){
         this.status = ['success']
         this.$emit('success')
 
@@ -33,7 +33,7 @@ export default {
           this.attempt = ""
         }, 100)
 
-      } else if(value.length >= this.page.back.length){
+      } else if(value.length >= this.page.answer.length){
         this.status = ['fail']
       }
 

@@ -152,7 +152,7 @@ export default {
     position absolute
     top 40%
     right 0em
-    width 100px
+    width 65px
 
     .item
       flex-basis 100%

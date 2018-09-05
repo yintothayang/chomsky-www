@@ -148,7 +148,7 @@ export default {
   .actions-container
     padding 0em 1em
     position absolute
-    bottom 5%
+    bottom 10%
     display flex
     justify-content space-between
     width 100%

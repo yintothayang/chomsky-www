@@ -19,18 +19,18 @@
     v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 
   .actions-container
-    .item
+    .item.add-book
       router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
         v-tooltip(left)
           v-btn.on(small fab dark color="blue lighten-1" slot="activator")
             v-icon(dark) add
           span Create a Book
-    .item
-      router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
-        v-tooltip(left)
-          v-btn.on(small fab dark color="purple lighten-1" slot="activator")
-            v-icon(dark) cloud_upload
-          span Upload a Book
+    .item.upload-book
+      input(type="file" id="input" ref="fileUpload" multiple @change="onFilesUploaded()")
+      v-tooltip(left)
+        v-btn.on(small fab dark color="purple lighten-1" slot="activator" @click="upload()")
+          v-icon(dark) cloud_upload
+        span Upload a Book
 
   v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
@@ -63,6 +63,33 @@ export default {
     }),
     play(){
       this.$router.push({name: 'game'})
+    },
+    upload(){
+      this.$refs.fileUpload.click()
+    },
+    async onFilesUploaded(){
+      let files = this.$refs.fileUpload.files
+      let book = await this.fileToObject(files[0])
+
+      // TODO -> add book to DB
+    },
+    async fileToObject(file){
+      const FR = new FileReader()
+      return new Promise((resolve, reject) => {
+        FR.onerror = () => {
+          FR.abort()
+          reject(new DOMException("Problem parsing input file."))
+        }
+        FR.onload = (e) => {
+          try {
+            let obj = JSON.parse(e.target.result)
+            resolve(obj)
+          } catch(e) {
+            reject(e)
+          }
+        }
+        FR.readAsText(file)
+      })
     }
   },
   async created(){
@@ -157,6 +184,10 @@ export default {
     .item
       flex-basis 100%
       margin-bottom .5em
+
+    .upload-book
+      input
+        display none
 
   .loading
     margin-top 8em

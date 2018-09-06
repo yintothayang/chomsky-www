@@ -81,6 +81,9 @@ var actions = {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
     book.created_by = rootState.users.activeUser.uid
+    book.created_at = new Date().toJSON()
+    book.owned_by = rootState.users.activeUser.uid
+    book.version = "0.0.1"
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
       commit("ADD_BOOK", book)

@@ -55,6 +55,7 @@ export default {
     ...mapActions({
       fetchBooks: 'books/fetchBooks',
       deleteBook: 'books/deleteBook',
+      createBook: 'books/createBook',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
@@ -68,10 +69,12 @@ export default {
       this.$refs.fileUpload.click()
     },
     async onFilesUploaded(){
+      this.loading = true
       let files = this.$refs.fileUpload.files
       let book = await this.fileToObject(files[0])
 
-      // TODO -> add book to DB
+      await this.createBook(book)
+      this.loading = false
     },
     async fileToObject(file){
       const FR = new FileReader()

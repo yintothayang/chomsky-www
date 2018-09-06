@@ -1,14 +1,17 @@
-[
-  {
+{
+  "name": "Animals from JSON",
+  "public": true,
+  "pages": [{
     "front": "Dog",
     "back":  "犬"
   },
   {
-    "front": "Cat",
-    "back":  "猫"
+  "front": "Cat",
+  "back":  "猫"
   },
   {
     "front": "Bird",
     "back":  "鳥"
   }
-]
+ ]
+}

@@ -65,7 +65,7 @@ var mutations = {
 
 // Actions
 var actions = {
-  fetchBooks: async ({commit}) => {
+  fetchBooks: async ({commit}, filters) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
     let res = await firestore.collection("books").get()

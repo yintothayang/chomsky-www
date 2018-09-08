@@ -1,6 +1,6 @@
 <template lang="pug">
 #text-input(:class="status")
-  input(v-model="attempt" ref="input" type="text")
+  input(ref="input" type="text" @input="onChange")
 
 
 </template>
@@ -16,27 +16,8 @@ export default {
   },
   data() {
     return {
-      attempt: "",
       focused: true,
       status: []
-    }
-  },
-  watch: {
-    attempt: function(value){
-      this.status = []
-      if(value.toLowerCase() == this.page.answer.toLowerCase()){
-        this.status = ['success']
-        this.$emit('success')
-
-        setTimeout(()=>{
-          this.status = []
-          this.attempt = ""
-        }, 100)
-
-      } else if(value.length >= this.page.answer.length){
-        this.status = ['fail']
-      }
-
     }
   },
   computed: {
@@ -48,9 +29,21 @@ export default {
     ...mapMutations({
 
     }),
+    onChange(e){
+      let attempt = e.target.value
+      this.status = []
+      if(attempt.toLowerCase() == this.page.answer.toLowerCase()){
+        this.status = ['success']
+        this.$emit('success')
 
-    onAttempt(attempt){
+        setTimeout(()=>{
+          this.status = []
+          this.$refs.input.value = ""
+        }, 100)
 
+      } else if(attempt.length >= this.page.answer.length){
+        this.status = ['fail']
+      }
     }
   },
   created(){

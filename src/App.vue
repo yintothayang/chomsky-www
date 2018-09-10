@@ -5,10 +5,10 @@
     transition(mode="out-in" name="fade")
       navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
-      router-view.page-container(v-if="!loading")
-    transition(mode="out-in" name="fade" v-if="loading")
-      .load-container(v-if="loading")
-        v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
+      router-view.page-container
+    //- transition(mode="out-in" name="fade" v-if="loading")
+    //-   .load-container(v-if="loading")
+    //-     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
     right-nav
 
     create-card-modal
@@ -45,8 +45,6 @@ export default {
     })
   },
   async created(){
-    // await this.fetchBooks()
-    // this.loading = false
     console.log("0.0.1")
   }
 }

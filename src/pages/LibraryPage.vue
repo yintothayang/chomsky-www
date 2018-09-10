@@ -1,113 +1,55 @@
 <template lang="pug">
 #library-page
-  .deck-list(v-if="localDecks.length")
-    .deck-container(v-for="deck in localDecks")
-      .deck(:class="{'selected': selectedDecks.includes(deck)}")
-        span.name {{deck.name}}
-        span.card-count {{deck.card_ids.length}} card(s)
+  .book-list(v-if="books.length && !loading")
+    .book-container(v-for="book in books")
+      .book
+        span.name {{book.name}}
 
-        .deck-actions-container
-          v-btn(color="orange" @click="copyLocalDeck(deck)" flat="") Copy
+        .book-actions-container
+          v-btn(color="red" @click="copyBook(book)" flat="") Copy
+          router-link(:to="{name: 'game', params: {id: book.id}}" tag="div")
+            v-btn(color="green" flat="") Play
 
-  //- .actions-container
-  //-   .item.create-card-button(@click="play()" v-if="selectedDecks.length")
-  //-     v-btn.on(fab dark large color="green")
-  //-       v-icon(dark) play_arrow
+  .empty(v-if="!books.length && !loading")
+    span.none No Books Found
+    v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book
 
 
 </template>
 
 <script>
-import uuid from 'uuid/v4'
-import hirigana from '@/assets/hirigana'
-import katakana from '@/assets/katakana'
-import animals from '@/assets/animals'
-import china from '@/assets/china'
 
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'LibraryPage',
   data() {
     return {
+      loading: false,
       localDecks: []
     }
   },
   computed: {
     ...mapGetters({
-      decks: 'decks/decks',
-      selectedDecks: 'decks/selectedDecks',
+      books: 'books/publicBooks',
     }),
   },
   methods: {
     ...mapActions({
-
+      fetchBooks: 'books/fetchBooks',
+      copyBook: 'books/copyBook',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      setSelected: 'decks/SET_SELECTED',
-      toggleSelected: 'decks/TOGGLE_SELECTED',
-      copyDeck: 'decks/COPY_DECK',
-      copyCards: 'cards/COPY_CARDS',
     }),
-    copyLocalDeck(deck){
-      this.copyCards(deck._cards)
-      delete deck._cards
-      if(!deck.id){
-        deck.id = uuid()
-      }
-
-      this.copyDeck(deck)
-      this.$router.push({name: 'books'})
-    }
   },
   created(){
     this.setNavbarTitle("Library")
-
-
-    this.localDecks.push({
-      name: 'Hirigana',
-      card_ids: hirigana.map(c => {
-        if(!c.id){
-          c.id = uuid()
-        }
-        return c.id
-      }),
-      _cards: hirigana
+    this.$nextTick(()=> {
+      if(this.books){
+        this.loading = true
+        this.fetchBooks().then(()=>{this.loading = false})
+      }
     })
-
-    this.localDecks.push({
-      name: 'Katakana',
-      card_ids: katakana.map(c => {
-        if(!c.id){
-          c.id = uuid()
-        }
-        return c.id
-      }),
-      _cards: katakana
-    })
-
-    this.localDecks.push({
-      name: 'Animals',
-      card_ids: animals.map(c => {
-        if(!c.id){
-          c.id = uuid()
-        }
-        return c.id
-      }),
-      _cards: animals
-    })
-
-    this.localDecks.push({
-      name: 'China Animals',
-      card_ids: china.map(c => {
-        if(!c.id){
-          c.id = uuid()
-        }
-        return c.id
-      }),
-      _cards: china
-    })
-
   }
 }
 </script>
@@ -115,29 +57,23 @@ export default {
 
 <style lang="stylus" scoped>
 #library-page
-  .deck-list
+  .book-list
     overflow-y scroll
-    display flex
-    flex-wrap wrap
-    padding 2em
+    padding 1em 1.5em
+    height 100%
 
-    .deck-container
-      display flex
-      flex-basis 100%
-      margin-bottom 1em
-      justify-content center
-      align-items center
+    .book-container
+      padding .2em 0em
 
-      .deck
+      .book
         display flex
         padding 1em 2em .5em 2em
-        flex-grow 1
+        margin .5em
         cursor pointer
         transition all .1s
         background white
         box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
         user-select none
-        flex-basis 100%
         flex-wrap wrap
 
         &:hover
@@ -149,7 +85,7 @@ export default {
             color white !important
 
         .name
-          font-size 1.8em
+          font-size 1.4em
           font-weight 600
           flex-basis 100%
           text-align left
@@ -159,7 +95,7 @@ export default {
           flex-basis 100%
           text-align left
 
-        .deck-actions-container
+        .book-actions-container
           display flex
           justify-content flex-end
           align-items center
@@ -176,17 +112,34 @@ export default {
     align-items center
     justify-content center
 
-    span
+    span.none
       font-weight 600
       font-size 1.8em
       flex-basis 100%
       margin-bottom 2em
       color rgba(0, 0, 0, .6)
+    span.or
+      flex-basis 100%
+      font-weight 600
+      font-size 1.2em
 
   .actions-container
     display flex
+    flex-wrap wrap
     position absolute
-    top 85%
-    right 1em
+    top 40%
+    right 0em
+    width 65px
+
+    .item
+      flex-basis 100%
+      margin-bottom .5em
+
+    .upload-book
+      input
+        display none
+
+  .loading
+    margin-top 8em
 
 </style>

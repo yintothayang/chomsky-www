@@ -130,6 +130,8 @@ export default {
 
   .page-container
     display flex
+    width 100%
+    flex-basis 100%
     align-items center
     justify-content center
     margin-bottom 4em
@@ -137,7 +139,8 @@ export default {
 
     .page
       font-size 3.5em
-      padding .4em 2.8em
+      padding .4em 0em
+      flex-basis 80%
       background white
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
 

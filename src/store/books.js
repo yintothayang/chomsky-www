@@ -9,12 +9,14 @@ if(!firebase.apps.length){
 const state = {
   books: [],
   selectedBooks: [],
+  usersBooks: [],
   filters: {
     search: null,
     tags: [],
     booksPerRow: 'auto',
   },
   filteredBooks: [],
+  publicBooks: [],
 }
 
 // Getters
@@ -22,6 +24,8 @@ var getters = {
   books: state => state.books,
   selectedBook: state => state.selectedBook,
   selectedBooks: state => state.selectedBooks,
+  usersBooks: (state, commit, rootState) => state.books.filter(book => book.owned_by == rootState.users.activeUser.uid),
+  publicBooks: (state, commit, rootState) => state.books.filter(book => (book.public && book.owned_by != rootState.users.activeUser.uid)),
   filters: state => state.filters,
 }
 
@@ -84,6 +88,15 @@ var actions = {
     book.created_at = new Date().toJSON()
     book.owned_by = rootState.users.activeUser.uid
     book.version = "0.0.1"
+    return firestore.collection("books").add(book).then(res => {
+      book.id = res.id
+      commit("ADD_BOOK", book)
+    })
+  },
+  copyBook: async ({commit, rootState}, book) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    book.owned_by = rootState.users.activeUser.uid
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
       commit("ADD_BOOK", book)

@@ -2,7 +2,7 @@
 #books-page
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
-      .book(:class="{'selected': selectedBooks.includes(book)}")
+      .book
         span.name {{book.name}}
 
         .book-actions-container
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      books: 'books/books',
+      books: 'books/usersBooks',
       selectedBooks: 'books/selectedBooks',
     }),
   },
@@ -59,8 +59,6 @@ export default {
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      setSelected: 'books/SET_SELECTED',
-      toggleSelected: 'books/TOGGLE_SELECTED',
     }),
     play(){
       this.$router.push({name: 'game'})

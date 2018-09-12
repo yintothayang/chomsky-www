@@ -71,13 +71,12 @@ export default {
 <style lang="stylus" scoped>
 #signup-page
   height 100%
-  background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
   display flex
   flex-wrap wrap
   justify-content center
 
   .card-container
-    margin-top 6em
+    margin-top 3em
 
     .card
       padding 1em 3em

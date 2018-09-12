@@ -1,5 +1,5 @@
 <template lang="pug">
-v-toolbar#navbar(dark="" color="primary")
+v-toolbar#navbar(dark="" color="light-blue accent-3")
   v-toolbar-side-icon.toggle(@click="toggleLeftNav()" v-if="activeUser")
   v-spacer.hidden-md-and-up
   v-toolbar-title.white--text {{title}}
@@ -71,7 +71,6 @@ export default {
 
 <style lang="stylus" scoped>
 #navbar
-  background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f88f14, #f15a24 )
   .v-toolbar__title
     margin 0px
     font-size 1.8em

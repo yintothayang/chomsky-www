@@ -71,15 +71,16 @@ export default {
 <style lang="stylus" scoped>
 #login-page
   height 100%
-  background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
   display flex
   flex-wrap wrap
   justify-content center
 
   .card-container
-    margin-top 6em
+    margin-top 3em
+    flex-basis 80%
+
     .card
-      padding 3em 4em
+      padding 1em 2em
       transition all .1s
       background white
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .2)
@@ -95,6 +96,7 @@ export default {
     flex-basis 100%
 
     button
+      flex-basis 100%
       font-weight 400
       margin-right 2em
       margin-left 2em

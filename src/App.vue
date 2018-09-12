@@ -61,7 +61,6 @@ export default {
   color #2c3e50
   background-color #efefef
   overflow hidden
-  //- background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
 
   .page-container
     height calc(100% - 64px)

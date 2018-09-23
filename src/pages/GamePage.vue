@@ -9,15 +9,12 @@
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
 
   .actions-container
-    v-tooltip(right)
-      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
-        v-icon(dark) visibility
-      span Show Answer
+    v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
+      v-icon(dark) visibility
 
-    v-tooltip(right)
-      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="skip()")
-        v-icon(dark) fast_forward
-      span Skip
+    v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="skip()")
+      v-icon(dark) fast_forward
+
 
   .answer-modal(v-if="showAnswer")
     span {{currentPage.answer}}

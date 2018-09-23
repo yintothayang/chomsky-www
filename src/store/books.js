@@ -8,8 +8,6 @@ if(!firebase.apps.length){
 // State
 const state = {
   books: [],
-  selectedBooks: [],
-  usersBooks: [],
   filters: {
     search: null,
     tags: [],
@@ -22,8 +20,6 @@ const state = {
 // Getters
 var getters = {
   books: state => state.books,
-  selectedBook: state => state.selectedBook,
-  selectedBooks: state => state.selectedBooks,
   usersBooks: (state, commit, rootState) => state.books.filter(book => book.owned_by == rootState.users.activeUser.uid),
   publicBooks: (state, commit, rootState) => state.books.filter(book => (book.public && book.owned_by != rootState.users.activeUser.uid)),
   filters: state => state.filters,
@@ -38,9 +34,10 @@ var mutations = {
     state.books.push(book)
   },
   ["UPDATE_BOOK"] (state, book) {
-    let i = state.books.indexOf(book)
+    let book_to_update = state.books.find(b => b.id === book.id)
+    let i = state.books.indexOf(book_to_update)
     if(i > -1){
-      state.books[i] = book
+      state.books.splice(i, 1, book)
     } else {
       console.error("book not found while UPDATE_BOOK", book)
     }
@@ -105,8 +102,9 @@ var actions = {
   updateBook: async ({commit}, book) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    return firestore.collection("books").doc(book.id).update(book)
+    await firestore.collection("books").doc(book.id).update(book)
     commit("UPDATE_BOOK", book)
+    return book
   },
   deleteBook: async ({commit}, book) => {
     const firestore = firebase.firestore()

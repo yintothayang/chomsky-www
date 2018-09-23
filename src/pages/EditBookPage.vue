@@ -1,23 +1,25 @@
 <template lang="pug">
 #edit-book-page
   v-form.book(v-if="!loading")
-    v-text-field.name(v-model="book.name" label="Name")
+    .name-container
+      v-text-field.name(v-model="book.name" label="Name")
+      v-switch(label="public" v-model="book.public")
 
-    transition-group.pages(mode="out-in" name="fade" tag="div")
-      .page(v-for="page in book.pages" :key="book.pages.indexOf(page)")
-        v-text-field.front(v-model="page.front" label="Front")
-        v-text-field.back(v-model="page.back" label="Back")
-        .action(v-if="book.pages.length > 1")
-          v-tooltip(top)
-            v-btn.on(fab dark small color="red lighten-1" @click="deletePage(page)" slot="activator")
-              v-icon(dark) remove
-            span Delete
+    .pages-container
+      span.label Pages
+      transition-group.pages(mode="out-in" name="fade" tag="div")
+        .page(v-for="page in book.pages" :key="book.pages.indexOf(page)")
+          v-text-field.front(v-model="page.front" label="Front")
+          v-text-field.back(v-model="page.back" label="Back")
+          .action(v-if="book.pages.length > 1")
+            v-tooltip(top)
+              v-btn.on(fab dark small color="red lighten-1" @click="deletePage(page)" slot="activator")
+                v-icon(dark) remove
+              span Delete
 
     .add-page
-      v-tooltip(top)
-        v-btn.on(dark small color="green lighten-1" @click="addPage()" slot="activator")
-          v-icon(dark) add
-        span Add
+      v-btn.on(dark small color="green lighten-1" @click="addPage()" slot="activator")
+        v-icon(dark) add
 
     .actions-container
       v-tooltip(left)
@@ -37,12 +39,7 @@ export default {
       loading: false,
       book: {
         name: "New Book",
-        pages: [
-          {
-            front: "",
-            back: ""
-          },
-        ]
+        pages: []
       }
     }
   },
@@ -56,6 +53,7 @@ export default {
       deleteBook: 'books/DELETE_BOOK',
       updateBook: 'books/updateBook',
       createBook: 'books/createBook',
+      fetchBooks: 'books/fetchBooks',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
@@ -71,27 +69,25 @@ export default {
     },
     async save(){
       this.loading = true
-      if(this.book.id){
-        let res = await this.updateBook(this.book)
-        this.loading = false
-        this.$router.push({name: 'books'})
-      } else {
-        let res = await this.createBook(this.book)
-        this.loading = false
-        this.$router.push({name: 'books'})
-      }
+      this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)
+      this.loading = false
+      this.$router.push({name: 'books'})
     }
   },
-  created(){
+  async created(){
     let bookId = this.$route.params.id
-    if(bookId === 'new'){
-
-    } else {
+    if(bookId != 'new'){
+      if(!this.books.length){
+        this.loading = true
+        await this.fetchBooks()
+        this.loading = false
+      }
       let book_to_edit = this.books.find(book => book.id === bookId)
       if(!book_to_edit){
         this.$router.push({name: 'books'})
       } else {
         this.book = Object.assign({}, book_to_edit)
+        this.loading = false
       }
     }
     this.setNavbarTitle(this.book.name)
@@ -110,10 +106,24 @@ export default {
     background white
     height 100%
 
+  .name-container
+    display flex
+    .name
+      margin-right 3em
+
+  .pages-container
+    display flex
+    flex-wrap wrap
+    height 75%
+    overflow-y hidden
+
+    .label
+      font-size .9em
   .pages
     overflow-y auto
-    height 75%
-    margin-bottom 1em
+    padding-top .5em
+    padding-bottom 1em
+    height 100%
     .page
       padding 0em 1em
       margin-bottom 1em

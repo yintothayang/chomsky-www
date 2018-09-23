@@ -96,7 +96,7 @@ export default {
   async created(){
     this.setNavbarTitle("Books")
     this.$nextTick(()=> {
-      if(this.books){
+      if(!this.books.length){
         this.loading = true
         this.fetchBooks().then(()=>{this.loading = false})
       }
@@ -126,14 +126,6 @@ export default {
         box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
         user-select none
         flex-wrap wrap
-
-        &:hover
-          background lighten(orange, 80%)
-        &.selected
-          background lighten(orange, 20%)
-          color white
-          .v-btn
-            color white !important
 
         .name
           font-size 1.4em

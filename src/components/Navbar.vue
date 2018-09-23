@@ -74,7 +74,6 @@ export default {
   .v-toolbar__title
     margin 0px
     font-size 1.8em
-    line-height 1em
-    font-family 'Cinzel', serif
-    font-weight 600
+    font-family 'Raleway', sans-serif
+    font-weight 500
 </style>

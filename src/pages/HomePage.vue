@@ -50,7 +50,7 @@ export default {
 <style lang="stylus" scoped>
 #home-page
   height 100%
-  background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
+  // background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
   display flex
   flex-wrap wrap
   justify-content center

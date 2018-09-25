@@ -20,8 +20,20 @@ const state = {
 // Getters
 var getters = {
   books: state => state.books,
-  usersBooks: (state, commit, rootState) => state.books.filter(book => book.owned_by == rootState.users.activeUser.uid),
-  publicBooks: (state, commit, rootState) => state.books.filter(book => (book.public && book.owned_by != rootState.users.activeUser.uid)),
+  usersBooks: (state, commit, rootState) => state.books.filter(book => {
+    if(!rootState.users.activeUser){
+      return false
+    } else {
+      return book.owned_by == rootState.users.activeUser.uid
+    }
+  }),
+  publicBooks: (state, commit, rootState) => state.books.filter(book => {
+    if(!rootState.users.activeUser){
+      return false
+    } else {
+      return book.public && book.owned_by != rootState.users.activeUser.uid
+    }
+  }),
   filters: state => state.filters,
 }
 

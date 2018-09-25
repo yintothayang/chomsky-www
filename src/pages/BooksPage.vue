@@ -47,6 +47,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      activeUser: 'users/activeUser',
       books: 'books/usersBooks',
       selectedBooks: 'books/selectedBooks',
     }),
@@ -95,12 +96,10 @@ export default {
   },
   async created(){
     this.setNavbarTitle("Books")
-    this.$nextTick(()=> {
-      if(!this.books.length){
-        this.loading = true
-        this.fetchBooks().then(()=>{this.loading = false})
-      }
-    })
+    if(!this.books.length){
+      this.loading = true
+      this.fetchBooks().then(()=>{this.loading = false})
+    }
   }
 }
 </script>
@@ -109,9 +108,9 @@ export default {
 <style lang="stylus" scoped>
 #books-page
   .book-list
-    overflow-y scroll
+    overflow-y auto
     padding 1em 1.5em
-    height 100%
+    height 90%
 
     .book-container
       padding .2em 0em
@@ -168,11 +167,9 @@ export default {
 
   .actions-container
     display flex
-    flex-wrap wrap
     position absolute
-    top 40%
-    right 0em
-    width 65px
+    top 90%
+    width 100%
 
     .item
       flex-basis 100%

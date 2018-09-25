@@ -76,4 +76,10 @@ export default {
     font-size 1.8em
     font-family 'Raleway', sans-serif
     font-weight 500
+
+  .toggle
+    position absolute
+    margin 0px
+
 </style>
+p

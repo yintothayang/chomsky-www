@@ -11,16 +11,14 @@
     //-     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
     right-nav
 
-    create-card-modal
-    create-deck-modal
+    new-book-modal
 </template>
 
 <script>
 import LeftNav from '@/components/LeftNav'
 import RightNav from '@/components/RightNav'
 import Navbar from '@/components/Navbar'
-import CreateCardModal from '@/components/CreateCardModal.vue'
-import CreateDeckModal from '@/components/CreateDeckModal.vue'
+import NewBookModal from '@/components/NewBookModal.vue'
 
 import API from '@/api'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
@@ -31,8 +29,7 @@ export default {
     LeftNav,
     RightNav,
     Navbar,
-    CreateCardModal,
-    CreateDeckModal,
+    NewBookModal,
   },
   data(){
     return {

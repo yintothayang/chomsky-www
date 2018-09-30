@@ -6,7 +6,7 @@ v-toolbar#navbar(dark="" color="light-blue accent-3")
   v-spacer
   v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
   v-spacer.hidden-sm-and-down
-  v-icon(dark @click="openRightNav()" v-if="$route.name == 'cards' || $route.name == 'decks' || $route.name == 'library'") filter_list
+  v-icon(dark @click="openRightNav()" v-if="$route.name == 'books' || $route.name == 'library'") filter_list
   v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
 </template>
 
@@ -77,9 +77,5 @@ export default {
     font-family 'Raleway', sans-serif
     font-weight 500
 
-  .toggle
-    position absolute
-    margin 0px
 
 </style>
-p

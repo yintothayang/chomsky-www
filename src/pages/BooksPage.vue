@@ -20,11 +20,9 @@
 
   .actions-container
     .item.add-book
-      router-link(:to="{name: 'edit-book', params: {id: 'new'}}" tag="div")
-        v-tooltip(left)
-          v-btn.on(small fab dark color="blue lighten-1" slot="activator")
-            v-icon(dark) add
-          span Create a Book
+      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="setOpenModal('NewBookModal')")
+        v-icon(dark) add
+
     .item.upload-book
       input(type="file" id="input" ref="fileUpload" multiple @change="onFilesUploaded()")
       v-tooltip(left)
@@ -60,6 +58,7 @@ export default {
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
     play(){
       this.$router.push({name: 'game'})

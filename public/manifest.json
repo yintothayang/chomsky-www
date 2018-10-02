@@ -5,7 +5,7 @@
     {
       "src": "/img/icons/logo.png",
       "type": "image/png"
-    },
+    }
   ],
   "start_url": "/index.html",
   "display": "standalone",

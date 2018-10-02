@@ -95,8 +95,8 @@ export default {
         page.front = ""
         page.back = ""
       } else {
-        page['key' + i] = "value" + i
-        this.bookKeys.push(['key' + i])
+        page['key0'] = "value0"
+        this.bookKeys.push(['key0'])
       }
       this.book.pages.push(page)
     },

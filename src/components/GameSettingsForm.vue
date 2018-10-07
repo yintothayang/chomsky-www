@@ -26,9 +26,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gameMode: 'game/mode',
-      gameLang: 'game/lang',
-      gameDialect: 'game/dialect',
+      gameMode: 'tests/mode',
+      gameLang: 'tests/lang',
+      gameDialect: 'tests/dialect',
     }),
     mode: {
       get(){
@@ -66,9 +66,9 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setMode: 'game/SET_MODE',
-      setLang: 'game/SET_LANG',
-      setDialect: 'game/SET_DIALECT',
+      setMode: 'tests/SET_MODE',
+      setLang: 'tests/SET_LANG',
+      setDialect: 'tests/SET_DIALECT',
     }),
   },
   created(){

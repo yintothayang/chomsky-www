@@ -9,8 +9,7 @@
           v-btn(color="red" @click="deleteBook(book)" flat="") Delete
           router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
             v-btn(color="blue" flat="") Edit
-          router-link(:to="{name: 'game', params: {id: book.id}}" tag="div")
-            v-btn(color="green" flat="") Play
+          v-btn(color="green" flat="" @click="play(book)") Play
 
   .empty(v-if="!books.length && !loading")
     span.none No Books Found
@@ -47,7 +46,7 @@ export default {
     ...mapGetters({
       activeUser: 'users/activeUser',
       books: 'books/usersBooks',
-      selectedBooks: 'books/selectedBooks',
+      tests: 'tests/tests',
     }),
   },
   methods: {
@@ -55,13 +54,38 @@ export default {
       fetchBooks: 'books/fetchBooks',
       deleteBook: 'books/deleteBook',
       createBook: 'books/createBook',
+      fetchTests: 'tests/fetchTests',
+      createTest: 'tests/createTest',
+      deleteTest: 'tests/deleteTest',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
       setOpenModal: 'modals/SET_OPEN_MODAL',
     }),
-    play(){
-      this.$router.push({name: 'game'})
+    async play(book){
+      if(book.type === "basic"){
+        // If this basic book already has a Test created for it, just go
+        let test = this.tests.find(t => t.book_id === book.id)
+        if(test){
+          this.$router.push({name: 'test', params: {id: test.id}})
+        } else {
+          this.loading = true
+          test = await this.createTest({
+            name: book.name,
+            book_id: book.id,
+            pages: book.pages.map(page => {
+              return {
+                question: page.front,
+                answer: page.back,
+              }
+            })
+          })
+          this.$router.push({name: 'test', params: {id: test.id}})
+          this.loading = false
+        }
+      } else {
+        // TODO open up Test creation modal
+      }
     },
     upload(){
       this.$refs.fileUpload.click()
@@ -95,9 +119,11 @@ export default {
   },
   async created(){
     this.setNavbarTitle("Books")
+    this.tests.length ? this.fetchTests() : void(0)
     if(!this.books.length){
       this.loading = true
-      this.fetchBooks().then(()=>{this.loading = false})
+      await this.fetchBooks()
+      this.loading = false
     }
   }
 }

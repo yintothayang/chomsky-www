@@ -1,5 +1,6 @@
 <template lang="pug">
-#game-page
+#test-page
+  span active
   .page-container(v-if="currentPage && !loading")
     .page
       span {{currentPage.front}}
@@ -38,33 +39,30 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       showAnswer: false,
     }
   },
   computed: {
     ...mapGetters({
-      lang: 'game/lang',
-      dialect: 'game/dialect',
-      mode: 'game/mode',
-      pages: 'game/pages',
-      books: 'books/books',
-      selectedDeckPages: 'pages/selectedDeckPages',
+      lang: 'tests/lang',
+      dialect: 'tests/dialect',
+      mode: 'tests/mode',
+      test: 'tests/test',
+      active: 'tests/active',
+      currentPage: 'tests/currentPage',
     }),
-    currentPage(){
-      return this.pages[0]
-    }
   },
   methods: {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
-      setGamePages: 'game/SET_PAGES',
-      shuffle: 'game/SHUFFLE_PAGES',
-      nextPage: 'game/NEXT_PAGE',
-      resetPages: 'game/RESET_PAGES',
+      previousPage: 'tests/PREVIOUS_PAGE',
+      nextPage: 'tests/NEXT_PAGE',
+      randomize: 'tests/RANDOMIZE_PAGES',
+      resetPages: 'tests/RESET_PAGES',
     }),
     ...mapActions({
-      fetchBooks: 'books/fetchBooks',
+      initTest: 'tests/initTest',
     }),
     onAttempt(answer){
       console.log("attempt", answer)
@@ -87,39 +85,18 @@ export default {
         this.shuffle()
       }
     },
-    async translatePages(pages){
-      let promises = []
-      pages.forEach(page => {
-        if(page.back === '$translate'){
-          promises.push(API.google.translate(page.front, this.dialect.substr(0, 2)).then(results =>{
-            page.back = page.back
-            page.answer = results.data[0]
-          }))
-        } else {
-          page.answer = page.back
-        }
-      })
-      await Promise.all(promises)
-      return pages
-    }
   },
   async created(){
-    await this.fetchBooks()
-    let book = this.books.find(book => book.id === this.$route.params.id)
-    this.setNavbarTitle(book.name)
-
-    let pages = await this.translatePages(book.pages)
-    // let pages = book.pages
-    this.setGamePages(JSON.parse(JSON.stringify(pages)))
-    this.shuffle()
-    this.loading = false
+    !this.test ? this.$router.push({name: 'books'}) : void(0)
+    this.setNavbarTitle(this.test.name)
+    await this.initTest()
   }
 }
 </script>
 
 
 <style lang="stylus">
-#game-page
+#test-page
   display flex
   flex-direction column
   align-items center

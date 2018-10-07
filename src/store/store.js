@@ -2,10 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import users from './users'
-import cards from './cards'
-import decks from './decks'
 import books from './books'
-import game from './game'
+import tests from './tests'
 
 import components from './components'
 
@@ -14,10 +12,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     users,
-    cards,
-    decks,
     books,
-    game,
+    tests,
 
     // Components
     navbar: components.navbar,

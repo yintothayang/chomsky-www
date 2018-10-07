@@ -12,6 +12,7 @@
     right-nav
 
     new-book-modal
+    create-test-modal
 </template>
 
 <script>
@@ -19,6 +20,7 @@ import LeftNav from '@/components/LeftNav'
 import RightNav from '@/components/RightNav'
 import Navbar from '@/components/Navbar'
 import NewBookModal from '@/components/NewBookModal.vue'
+import CreateTestModal from '@/components/CreateTestModal.vue'
 
 import API from '@/api'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
@@ -30,6 +32,7 @@ export default {
     RightNav,
     Navbar,
     NewBookModal,
+    CreateTestModal,
   },
   data(){
     return {

@@ -121,10 +121,9 @@ var actions = {
   deleteBook: async ({commit}, book) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    return firestore.collection("books").doc(book.id).delete().then(res => {
+    return await firestore.collection("books").doc(book.id).delete().then(res => {
       commit("DELETE_BOOK", book)
     })
-
   },
 }
 

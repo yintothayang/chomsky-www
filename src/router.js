@@ -7,7 +7,7 @@ import Login from './pages/LoginPage.vue'
 import Books from './pages/BooksPage.vue'
 import EditBook from './pages/EditBookPage.vue'
 import Library from './pages/LibraryPage.vue'
-import Game from './pages/GamePage.vue'
+import Test from './pages/TestPage.vue'
 import About from './pages/AboutPage.vue'
 
 Vue.use(Router)
@@ -49,9 +49,9 @@ export default new Router({
       component: Library
     },
     {
-      path: '/game/:id',
-      name: 'game',
-      component: Game
+      path: '/test/:id',
+      name: 'test',
+      component: Test
     },
     {
       path: '/about',

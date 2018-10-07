@@ -4,7 +4,7 @@
     .page
       span {{currentPage.question}}
   .text-input-container(v-if="mode === 'text' && !loading")
-    text-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
+    text-input(:page="currentPage" :state="state" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
 
@@ -14,7 +14,6 @@
 
     v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="skip()")
       v-icon(dark) fast_forward
-
 
   .answer-modal(v-if="showAnswer")
     span {{currentPage.answer}}
@@ -31,7 +30,7 @@ import {mapActions, mapMutations, mapGetters} from 'vuex'
 import API from '@/api'
 
 export default {
-  name: 'GamePage',
+  name: 'TestPage',
   components: {
     TextInput,
     SpeechInput,
@@ -40,6 +39,7 @@ export default {
     return {
       loading: false,
       showAnswer: false,
+      state: null,
     }
   },
   computed: {
@@ -64,18 +64,21 @@ export default {
     }),
     ...mapActions({
       fetchTests: 'tests/fetchTests',
+      attempt: 'tests/attempt',
     }),
-    onAttempt(answer){
-      console.log("attempt", answer)
+    async onAttempt(attempt){
+      // console.log("attempt", attempt)
+      let result = await this.attempt(attempt)
+      this.state = result.state
+      if(this.state === "success"){
+        this.onSuccess()
+      }
+      // if(this.state === "fail"){
+      //   this.onFail()
+      // }
     },
     onSuccess(){
-      if(this.pages.length > 1){
-        this.nextPage()
-      } else {
-        this.nextPage()
-        this.resetPages()
-        this.shuffle()
-      }
+      this.skip()
     },
     skip(){
       if((this.test.pages.length - 1) === this.pageIndex){
@@ -95,6 +98,7 @@ export default {
     } else {
       this.$router.push({name: 'books'})
     }
+    this.shuffle()
     this.loading = false
     this.setNavbarTitle(this.test.name)
   }

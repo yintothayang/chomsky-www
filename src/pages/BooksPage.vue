@@ -64,12 +64,10 @@ export default {
     }),
     async play(book){
       if(book.type === "basic"){
-        // If this basic book already has a Test created for it, just go
         let test = this.tests.find(t => t.book_id === book.id)
         if(test){
           this.$router.push({name: 'test', params: {id: test.id}})
         } else {
-          consloe.log("creating test")
           this.loading = true
           test = await this.createTest({
             name: book.name,
@@ -120,7 +118,7 @@ export default {
   },
   async created(){
     this.setNavbarTitle("Books")
-    this.tests.length ? this.fetchTests() : void(0)
+    !this.tests.length ? this.fetchTests() : void(0)
     if(!this.books.length){
       this.loading = true
       await this.fetchBooks()

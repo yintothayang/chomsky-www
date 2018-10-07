@@ -106,8 +106,20 @@ var actions = {
     })
   },
 
-  attempt: async ({state}, answer) => {
+  attempt: ({state, getters}, attempt) => {
+    let currentAnswer = getters.currentPage.answer
+    let result = {state: null}
+    if(attempt.mode === 'text'){
+      if(attempt.input.toLowerCase() === currentAnswer.toLowerCase()){
+        result.state = "success"
+      } else if(attempt.input.length >= currentAnswer.length){
+        result.state = "fail"
+      }
+    } else {
 
+    }
+    // console.log("result: ", result)
+    return result
   },
 
     // async translatePages(pages){

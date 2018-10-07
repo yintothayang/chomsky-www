@@ -1,8 +1,6 @@
 <template lang="pug">
-#text-input(:class="status")
+#text-input(:class="state")
   input(ref="input" type="text" @input="onChange")
-
-
 </template>
 
 <script>
@@ -12,42 +10,29 @@ export default {
   props: {
     page: {
       default: ()=>{}
+    },
+    state: {
+      default: null
     }
   },
-  data() {
-    return {
-      focused: true,
-      status: []
-    }
-  },
-  computed: {
-    ...mapGetters({
-
-    })
-  },
-  methods: {
-    ...mapMutations({
-
-    }),
-    onChange(e){
-      let attempt = e.target.value
-      this.status = []
-      if(attempt.toLowerCase() == this.page.answer.toLowerCase()){
-        this.status = ['success']
-        this.$emit('success')
-
+  watch: {
+    state: function(newVal, oldVal){
+      if(newVal === 'success'){
         setTimeout(()=>{
-          this.status = []
           this.$refs.input.value = ""
-        }, 100)
-
-      } else if(attempt.length >= this.page.answer.length){
-        this.status = ['fail']
+          this.onChange({target: {value: ""}})
+        }, 150)
       }
     }
   },
-  created(){
-
+  methods: {
+    async onChange(e){
+      let attempt = e.target.value
+      this.$emit('attempt', {
+        mode: 'text',
+        input: attempt,
+      })
+    }
   },
   mounted(){
     this.$refs.input.focus()

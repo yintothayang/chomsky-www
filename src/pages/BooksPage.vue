@@ -69,6 +69,7 @@ export default {
         if(test){
           this.$router.push({name: 'test', params: {id: test.id}})
         } else {
+          consloe.log("creating test")
           this.loading = true
           test = await this.createTest({
             name: book.name,

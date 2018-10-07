@@ -1,9 +1,8 @@
 <template lang="pug">
 #test-page
-  span active
   .page-container(v-if="currentPage && !loading")
     .page
-      span {{currentPage.front}}
+      span {{currentPage.question}}
   .text-input-container(v-if="mode === 'text' && !loading")
     text-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
@@ -45,24 +44,26 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lang: 'tests/lang',
-      dialect: 'tests/dialect',
-      mode: 'tests/mode',
-      test: 'tests/test',
-      active: 'tests/active',
+      test: 'tests/currentTest',
+      tests: 'tests/tests',
       currentPage: 'tests/currentPage',
+      pageIndex: 'tests/pageIndex',
+      mode: 'tests/mode',
     }),
   },
   methods: {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
+      setCurrentTest: 'tests/SET_CURRENT_TEST',
       previousPage: 'tests/PREVIOUS_PAGE',
       nextPage: 'tests/NEXT_PAGE',
       randomize: 'tests/RANDOMIZE_PAGES',
       resetPages: 'tests/RESET_PAGES',
+      shuffle: 'tests/SHUFFLE',
+      setPageIndex: 'tests/SET_PAGE_INDEX',
     }),
     ...mapActions({
-      initTest: 'tests/initTest',
+      fetchTests: 'tests/fetchTests',
     }),
     onAttempt(answer){
       console.log("attempt", answer)
@@ -77,19 +78,25 @@ export default {
       }
     },
     skip(){
-      if(this.pages.length > 1){
-        this.nextPage()
+      if((this.test.pages.length - 1) === this.pageIndex){
+        this.shuffle()
+        this.setPageIndex(0)
       } else {
         this.nextPage()
-        this.resetPages()
-        this.shuffle()
       }
     },
   },
   async created(){
-    !this.test ? this.$router.push({name: 'books'}) : void(0)
+    this.loading = true
+    !this.tests.length ? await this.fetchTests() : void(0)
+    let test = this.tests.find(t => t.id == this.$route.params.id)
+    if(test){
+      this.setCurrentTest(test)
+    } else {
+      this.$router.push({name: 'books'})
+    }
+    this.loading = false
     this.setNavbarTitle(this.test.name)
-    await this.initTest()
   }
 }
 </script>

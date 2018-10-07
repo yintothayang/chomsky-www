@@ -16,13 +16,16 @@ const DEFAULTS = {
 const state = {
   currentTest: null,
   tests: [],
+  pageIndex: 0,
 }
 
 // Getters
 var getters = {
-  currenTest: state => state.currentTest,
+  currentTest: state => state.currentTest,
   tests: state => state.tests,
-  // mode: state => state.currentTest.mode ? state.currentTest.mode : state.test.default_mode,
+  pageIndex: state => state.pageIndex,
+  currentPage: state => state.currentTest ? state.currentTest.pages[state.pageIndex] : null,
+  mode: state => (state.currentTest && state.currentTest.mode) ? state.currentTest.mode : DEFAULTS.mode,
   // lang: state => state.currentTest.lang ? state.currentTest.lang : state.currenest.default_lang,
   // dialect: state => state.test.dialect ? state.test.dialect : state.test.dialect,
 }
@@ -42,27 +45,27 @@ var mutations = {
     let i = state.tests.indexOf(test)
     if(i > -1){ state.tests.splice(i, 1) }
   },
+  ["SET_PAGE_INDEX"] (state, index) {
+    state.pageIndex = index
+  },
   ["SET_TESTS"] (state, tests) {
     state.tests = tests
   },
   ["PREVIOUS_PAGE"] (state) {
-    state.pages.push(state.pile.shift())
+    state.pageIndex--
   },
   ["NEXT_PAGE"] (state) {
-    state.pile.push(state.pages.shift())
+    state.pageIndex++
   },
-  ["RESET_PAGES"] (state) {
-    state.pages = state.pile
-    state.pile = []
-  },
-  ["RANDOMIZE_PAGES"] (state) {
-    var currentIndex = state.pages.length, temporaryValue, randomIndex
+  ["SHUFFLE"] (state) {
+    let pages = state.currentTest.pages
+    var currentIndex = pages.length, temporaryValue, randomIndex
     while (0 !== currentIndex) {
       randomIndex = Math.floor(Math.random() * currentIndex)
       currentIndex -= 1
-      temporaryValue = state.pages[currentIndex]
-      state.pages[currentIndex] = state.pages[randomIndex]
-      state.pages[randomIndex] = temporaryValue
+      temporaryValue = pages[currentIndex]
+      pages[currentIndex] = pages[randomIndex]
+      pages[randomIndex] = temporaryValue
     }
   },
 }

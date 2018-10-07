@@ -26,8 +26,8 @@ var getters = {
   pageIndex: state => state.pageIndex,
   currentPage: state => state.currentTest ? state.currentTest.pages[state.pageIndex] : null,
   mode: state => (state.currentTest && state.currentTest.mode) ? state.currentTest.mode : DEFAULTS.mode,
-  // lang: state => state.currentTest.lang ? state.currentTest.lang : state.currenest.default_lang,
-  // dialect: state => state.test.dialect ? state.test.dialect : state.test.dialect,
+  lang: state => (state.currentTest && state.currentTest.lang) ? state.currentTest.lang : DEFAULTS.lang,
+  dialect: state => (state.currentTest && state.currentTest.dialect) ? state.currentTest.dialect : DEFAULTS.dialect,
 }
 
 // Mutations
@@ -44,6 +44,15 @@ var mutations = {
   ["REMOVE_TEST"] (state, test) {
     let i = state.tests.indexOf(test)
     if(i > -1){ state.tests.splice(i, 1) }
+  },
+  ["UPDATE_TEST"] (state, test) {
+    let test_to_update = state.tests.find(b => b.id === test.id)
+    let i = state.tests.indexOf(test_to_update)
+    if(i > -1){
+      state.tests.splice(i, 1, test)
+    } else {
+      console.error("test not found while UPDATE_TEST", test)
+    }
   },
   ["SET_PAGE_INDEX"] (state, index) {
     state.pageIndex = index
@@ -96,6 +105,13 @@ var actions = {
       commit("ADD_TEST", test)
     })
 
+    return test
+  },
+  updateTest: async ({commit}, test) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    await firestore.collection("tests").doc(test.id).update(test)
+    commit("UPDATE_TEST", test)
     return test
   },
   deleteTest: async ({commit}, test) => {

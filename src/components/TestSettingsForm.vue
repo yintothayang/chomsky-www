@@ -1,11 +1,11 @@
 <template lang="pug">
-#game-settings-form
+#test-settings-form
   v-card-title
-    span.headline Game Settings
+    span.headline Test Settings
   v-container(grid-list-md='')
     v-layout(wrap='')
       v-flex(xs12='', sm6='', md12='')
-        v-select(v-model="mode" :items="['text', 'speech']" label="Game Mode")
+        v-select(v-model="mode" :items="['text', 'speech']" label="Test Mode")
       v-flex(xs12='', sm6='', md12='' v-if="mode == 'speech'")
         v-select(v-model="lang" :items="langOptions" label="Speech Language")
       v-flex(xs12='', sm6='', md12='' v-if="mode == 'speech'")
@@ -18,7 +18,7 @@
 import langs from '@/assets/langs'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'FilterCardsForm',
+  name: 'TestSettingsForm',
   data(){
     return {
       card: {}
@@ -26,33 +26,34 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gameMode: 'tests/mode',
-      gameLang: 'tests/lang',
-      gameDialect: 'tests/dialect',
+      test: 'tests/currentTest',
+      testMode: 'tests/mode',
+      testLang: 'tests/lang',
+      testDialect: 'tests/dialect',
     }),
     mode: {
       get(){
-        return this.gameMode
+        return this.testMode
       },
       set(value){
-        this.setMode(value)
+        this.updateTest(Object.assign(this.test, {mode: value}))
       }
     },
     lang: {
       get(){
-        return this.gameLang
+        return this.testLang
       },
       set(value){
-        this.setLang(value)
+        this.updateTest(Object.assign(this.test, {lang: value}))
         this.dialect = langs.find(l => l[0] === value)[1][0]
       }
     },
     dialect: {
       get(){
-        return this.gameDialect
+        return this.testDialect
       },
       set(value){
-        this.setDialect(value)
+        this.updateTest(Object.assign(this.test, {dialect: value}))
       }
     },
     langOptions(){
@@ -65,10 +66,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      setMode: 'tests/SET_MODE',
-      setLang: 'tests/SET_LANG',
-      setDialect: 'tests/SET_DIALECT',
+    ...mapActions({
+      updateTest: 'tests/updateTest',
     }),
   },
   created(){
@@ -79,7 +78,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#filter-cards-form
+#test-settings-form
   background rgba(0, 0, 0, 0)
   .v-card__title
     padding-bottom 0px

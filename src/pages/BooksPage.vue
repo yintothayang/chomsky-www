@@ -71,6 +71,9 @@ export default {
           this.loading = true
           test = await this.createTest({
             name: book.name,
+            mode: 'text',
+            lang: '日本語',
+            dialect: 'ja-JP',
             book_id: book.id,
             pages: book.pages.map(page => {
               return {

@@ -7,7 +7,7 @@ v-toolbar#navbar(dark="" color="light-blue accent-3")
   v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
   v-spacer.hidden-sm-and-down
   v-icon(dark @click="openRightNav()" v-if="$route.name == 'books' || $route.name == 'library'") filter_list
-  v-icon(dark @click="openGameSettingsModal()" v-if="$route.name == 'game'") settings
+  v-icon(dark @click="openTestSettingsModal()" v-if="$route.name == 'test'") settings
 </template>
 
 <script>
@@ -60,8 +60,8 @@ export default {
       }
       this.toggleRightNav()
     },
-    openGameSettingsModal(){
-      this.setRightNavForm('GameSettingsForm')
+    openTestSettingsModal(){
+      this.setRightNavForm('TestSettingsForm')
       this.toggleRightNav()
     }
   }

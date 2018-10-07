@@ -1,19 +1,19 @@
 <template lang="pug">
 v-navigation-drawer#right-nav(v-model="local_open" temporary="" absolute="" right="")
   filter-books-form(v-if="form === 'FilterBooksForm'")
-  game-settings-form(v-if="form === 'GameSettingsForm'")
+  test-settings-form(v-if="form === 'TestSettingsForm'")
 </template>
 
 <script>
 
 import FilterBooksForm from '@/components/FilterBooksForm.vue'
-import GameSettingsForm from '@/components/GameSettingsForm.vue'
+import TestSettingsForm from '@/components/TestSettingsForm.vue'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'RightNav',
   components: {
     FilterBooksForm,
-    GameSettingsForm,
+    TestSettingsForm,
   },
   data() {
     return {

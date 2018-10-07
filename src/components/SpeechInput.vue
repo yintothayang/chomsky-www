@@ -39,8 +39,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lang: 'game/lang',
-      dialect: 'game/dialect',
+      lang: 'tests/lang',
+      dialect: 'tests/dialect',
     })
   },
   methods: {

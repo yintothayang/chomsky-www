@@ -3,18 +3,16 @@
     v-dialog(v-model='open', max-width='500px')
       v-card#create-test-modal
         v-card-title
-          span.headline Create a new Book
-        .types
-          router-link.type(:to="{name: 'edit-book', params: {id: 'new_basic'}}" tag="div" @click.native='open = ""')
-            v-icon() view_agenda
-            span Basic
-          router-link.type(:to="{name: 'edit-book', params: {id: 'new_advanced'}}" tag="div" @click.native='open = ""')
-            v-icon() view_list
-            span Advanced
+          span.headline Create a new Test
+
+        .name-container
+          v-text-field.name(v-model="test.name" label="Name")
+
 
         v-card-actions
           v-spacer
           v-btn(color='red' flat='' @click.native='open = ""') Cancel
+          v-btn(color='blue' flat='' @click.native='open = ""') Save
 
 
 </template>
@@ -23,6 +21,16 @@
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'CreateTestModal',
+  data() {
+    return {
+      loading: false,
+      test: {
+        name: "New Test",
+        pages: []
+      },
+      bookKeys: []
+    }
+  },
   computed: {
     ...mapGetters({
       openModal: 'modals/openModal',
@@ -40,6 +48,9 @@ export default {
     ...mapMutations({
       setOpenModal: 'modals/SET_OPEN_MODAL'
     })
+  },
+  async created(){
+
   }
 }
 </script>

@@ -55,7 +55,7 @@ export default {
       deleteBook: 'books/deleteBook',
       createBook: 'books/createBook',
       fetchTests: 'tests/fetchTests',
-      createTest: 'tests/createTest',
+      createBasicTest: 'tests/createBasicTest',
       deleteTest: 'tests/deleteTest',
     }),
     ...mapMutations({
@@ -69,24 +69,12 @@ export default {
           this.$router.push({name: 'test', params: {id: test.id}})
         } else {
           this.loading = true
-          test = await this.createTest({
-            name: book.name,
-            mode: 'text',
-            lang: '日本語',
-            dialect: 'ja-JP',
-            book_id: book.id,
-            pages: book.pages.map(page => {
-              return {
-                question: page.front,
-                answer: page.back,
-              }
-            })
-          })
+          test = await this.createBasicTest(book)
           this.$router.push({name: 'test', params: {id: test.id}})
           this.loading = false
         }
       } else {
-        // TODO open up Test creation modal
+        this.setOpenModal('CreateTestModal')
       }
     },
     upload(){

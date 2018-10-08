@@ -107,6 +107,23 @@ var actions = {
 
     return test
   },
+  createBasicTest: async ({commit, dispatch, rootState}, book) => {
+    let test = {
+      name: book.name,
+      mode: 'text',
+      lang: '日本語',
+      dialect: 'ja-JP',
+      book_id: book.id,
+      pages: book.pages.map(page => {
+        return {
+          question: page.front,
+          answer: page.back,
+        }
+      })
+    }
+    await dispatch('createTest', test)
+    return test
+  },
   updateTest: async ({commit}, test) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
@@ -121,7 +138,6 @@ var actions = {
       commit("REMOVE_TEST", test)
     })
   },
-
   attempt: ({state, getters}, attempt) => {
     let currentAnswer = getters.currentPage.answer
     let result = {state: null}

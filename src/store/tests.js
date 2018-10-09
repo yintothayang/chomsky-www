@@ -104,7 +104,6 @@ var actions = {
       test.id = res.id
       commit("ADD_TEST", test)
     })
-
     return test
   },
   createBasicTest: async ({commit, dispatch, rootState}, book) => {

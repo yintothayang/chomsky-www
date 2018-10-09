@@ -61,6 +61,7 @@ export default {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
       setOpenModal: 'modals/SET_OPEN_MODAL',
+      setModalOptions: 'modals/SET_OPTIONS',
     }),
     async play(book){
       if(book.type === "basic"){
@@ -74,6 +75,7 @@ export default {
           this.loading = false
         }
       } else {
+        this.setModalOptions(book)
         this.setOpenModal('CreateTestModal')
       }
     },

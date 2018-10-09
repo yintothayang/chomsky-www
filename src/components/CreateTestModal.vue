@@ -5,36 +5,65 @@
         v-card-title
           span.headline Create a new Test
 
-        .name-container
-          v-text-field.name(v-model="test.name" label="Name")
-
+        .form
+          .question-container
+            v-select.question(:items="questionKeys" label="Question" v-model="test.questionKey")
+          .answer-container
+            v-select.answer(:items="answerKeys" label="Answer" v-model="test.answerKey")
 
         v-card-actions
           v-spacer
           v-btn(color='red' flat='' @click.native='open = ""') Cancel
-          v-btn(color='blue' flat='' @click.native='open = ""') Save
+          v-btn(color='blue' flat='' :disabled="!valid" @click='onPlay()') Play
 
 
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'CreateTestModal',
   data() {
     return {
       loading: false,
-      test: {
-        name: "New Test",
-        pages: []
-      },
-      bookKeys: []
+      test: {},
+      book: null
+    }
+  },
+  watch: {
+    options: function(newVal, oldVal){
+      this.book = newVal
     }
   },
   computed: {
     ...mapGetters({
       openModal: 'modals/openModal',
+      options: 'modals/options',
+      tests: 'tests/tests'
     }),
+    valid(){
+      if(this.test.answerKey && this.test.questionKey){
+        return true
+      } else {
+        return false
+      }
+    },
+    questionKeys(){
+      if(this.book){
+        let keys = Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
+        keys.push("None")
+        return keys
+      } else {
+        return []
+      }
+    },
+    answerKeys(){
+      if(this.book){
+        return Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
+      } else {
+        return []
+      }
+    },
     open: {
       get(){
         return this.openModal == "CreateTestModal"
@@ -46,12 +75,37 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setOpenModal: 'modals/SET_OPEN_MODAL'
-    })
+      setOpenModal: 'modals/SET_OPEN_MODAL',
+    }),
+    ...mapActions({
+      createTest: 'tests/createTest',
+    }),
+    async onPlay(){
+      let existingTest = this.tests.find(t => (t.answerKey === this.test.answerKey && t.questionKey === this.test.questionKey))
+      if(existingTest) {
+        this.open = ""
+        this.$router.push({name: 'test', params: {id: existingTest.id}})
+      } else {
+        let test = await this.createTest({
+          name: this.book.name,
+          book_id: this.book.id,
+          mode: 'text',
+          lang: '日本語',
+          dialect: 'ja-JP',
+          questionKey: this.test.questionKey,
+          answerKey: this.test.answerKey,
+          pages: this.book.pages.map(page => {
+            return {
+              question: this.questionKey === "None" ? "$none" : page[this.test.questionKey],
+              answer: page[this.test.answerKey]
+            }
+          })
+        })
+        this.open = ""
+        this.$router.push({name: 'test', params: {id: test.id}})
+      }
+    }
   },
-  async created(){
-
-  }
 }
 </script>
 
@@ -65,30 +119,7 @@ export default {
     .v-input
       margin-top 8px
 
-  .types
-    display flex
-    align-items center
-    justify-content center
-    margin 1em 1em
-
-    .type
-      padding 1.5em 1em
-      display flex
-      flex-basis 100%
-      flex-wrap wrap
-      border 1px solid rgba(0, 0, 0, .15)
-      align-items center
-      justify-content center
-      margin 0em .5em
-
-      &:hover
-        background-color rgba(0, 0, 0, .1)
-
-      i
-        font-size 2.3em
-        margin-bottom .3em
-      span
-        flex-basis 100%
-        font-size 1.2em
+  .form
+    padding 1em
 
 </style>

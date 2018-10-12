@@ -115,8 +115,12 @@ var actions = {
       book_id: book.id,
       pages: book.pages.map(page => {
         return {
-          question: page.front,
-          answer: page.back,
+          front: {
+            question: page.front,
+          },
+          back: {
+            answer: page.back,
+          }
         }
       })
     }
@@ -138,7 +142,7 @@ var actions = {
     })
   },
   attempt: ({state, getters}, attempt) => {
-    let currentAnswer = getters.currentPage.answer
+    let currentAnswer = getters.currentPage.back.answer
     let result = {state: null}
     if(attempt.mode === 'text'){
       if(attempt.input.toLowerCase() === currentAnswer.toLowerCase()){

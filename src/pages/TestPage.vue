@@ -2,24 +2,34 @@
 #test-page
   .page-container(v-if="currentPage && !loading")
     .page
-      span {{currentPage.question}}
+      span {{currentPage.front.question}}
   .text-input-container(v-if="mode === 'text' && !loading")
     text-input(:page="currentPage" :state="state" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
 
-  .actions-container
-    v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
+
+  .actions-container(v-if="currentPage")
+    v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
+      v-icon(dark) fast_rewind
+
+    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()" v-if="currentPage.audio")
+      v-icon(dark) volume_up
+
+    v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
       v-icon(dark) visibility
 
-    v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="skip()")
+    v-btn(small fab dark color="green lighten-1" slot="activator" @click="skip()")
       v-icon(dark) fast_forward
 
   .answer-modal(v-if="showAnswer")
-    span {{currentPage.answer}}
+    span {{currentPage.back.answer}}
 
   .load-container(v-if="loading")
     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
+
+  audio(ref="audio" :src="currentPage.audio" v-if="currentPage")
+
 
 </template>
 
@@ -88,6 +98,17 @@ export default {
         this.nextPage()
       }
     },
+    previous(){
+      if(0 === this.pageIndex){
+        this.shuffle()
+        this.setPageIndex(0)
+      } else {
+        this.previousPage()
+      }
+    },
+    playAudio(){
+      this.$refs.audio.play()
+    }
   },
   async created(){
     this.loading = true

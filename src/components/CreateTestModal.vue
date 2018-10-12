@@ -6,10 +6,18 @@
           span.headline Create a new Test
 
         .form
-          .question-container
-            v-select.question(:items="questionKeys" label="Question" v-model="test.questionKey")
-          .answer-container
-            v-select.answer(:items="answerKeys" label="Answer" v-model="test.answerKey")
+          .face.front
+            span.name Front
+            .question-container
+              v-select.question(:items="questionKeys" label="Question" v-model="test.questionKey")
+            .image-container
+              v-select.image(:items="questionKeys" label="Image" v-model="test.frontImage")
+          .face.back
+            span.name Back
+            .answer-container
+              v-select.answer(:items="answerKeys" label="Answer" v-model="test.answerKey")
+            .image-container
+              v-select.image(:items="questionKeys" label="Image" v-model="test.backImage")
 
         v-card-actions
           v-spacer
@@ -42,7 +50,7 @@ export default {
       tests: 'tests/tests'
     }),
     valid(){
-      if(this.test.answerKey && this.test.questionKey){
+      if(this.test.answerKey){
         return true
       } else {
         return false
@@ -51,7 +59,6 @@ export default {
     questionKeys(){
       if(this.book){
         let keys = Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
-        keys.push("None")
         return keys
       } else {
         return []
@@ -94,11 +101,26 @@ export default {
           dialect: 'ja-JP',
           questionKey: this.test.questionKey,
           answerKey: this.test.answerKey,
-          pages: this.book.pages.map(page => {
-            return {
-              question: this.questionKey === "None" ? "$none" : page[this.test.questionKey],
-              answer: page[this.test.answerKey]
+          pages: this.book.pages.map(p => {
+            let page = {
+              front: {},
+              back: {}
             }
+            // TODO change this
+            if(p.audio_url){
+              page.audio = p.audio_url
+            }
+            if(this.test.questionKey){
+              page.front.question = p[this.test.questionKey]
+            }
+            if(this.test.frontImage){
+              page.front.image = p[this.test.frontImage]
+            }
+            page.back.answer = p[this.test.answerKey]
+            if(this.test.backImage){
+              page.back.image = p[this.test.backImage]
+            }
+            return page
           })
         })
         this.open = ""
@@ -121,5 +143,16 @@ export default {
 
   .form
     padding 1em
+
+    .face
+      border 1px solid rgba(0, 0, 0, .1)
+      padding .4em
+      text-align left
+      margin-bottom .6em
+      .name
+        font-size 1em
+        font-weight 500
+
+
 
 </style>

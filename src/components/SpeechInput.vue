@@ -100,7 +100,7 @@ export default {
     onAttempt(answers){
       console.log("onAttempt: ", answers)
       this.status = []
-      if(answers.includes(this.page.answer.toLowerCase())){
+      if(answers.includes(this.page.back.answer.toLowerCase())){
         this.status = ['success']
         setTimeout(()=>{
           this.$emit('success')

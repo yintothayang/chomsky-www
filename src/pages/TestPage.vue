@@ -2,7 +2,8 @@
 #test-page
   .page-container(v-if="currentPage && !loading")
     .page
-      span {{currentPage.front.question}}
+      img(v-if="currentPage.front.image" :src="currentPage.front.image")
+      span.question(v-if="currentPage.front.question") {{currentPage.front.question}}
   .text-input-container(v-if="mode === 'text' && !loading")
     text-input(:page="currentPage" :state="state" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
@@ -13,7 +14,7 @@
     v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
       v-icon(dark) fast_rewind
 
-    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()" v-if="currentPage.audio")
+    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()" v-if="currentPage.$audio")
       v-icon(dark) volume_up
 
     v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
@@ -28,7 +29,7 @@
   .load-container(v-if="loading")
     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
 
-  audio(ref="audio" :src="currentPage.audio" v-if="currentPage")
+  audio(ref="audio" :src="currentPage.$audio" v-if="currentPage")
 
 
 </template>
@@ -140,24 +141,35 @@ export default {
     flex-basis 100%
     align-items center
     justify-content center
-    margin-bottom 4em
-    margin-top 4em
+    margin-bottom 2em
+    margin-top 2em
 
     .page
-      font-size 3.5em
-      padding .4em 0em
-      flex-basis 80%
+      display flex
+      flex-wrap wrap
+      align-items center
+      justify-content center
       background white
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+
+      img
+        width auto
+        height 100px
+
+      .question
+        flex-basis 100%
+        padding .4em 0em
+        font-size 2em
 
   .text-input-container
     margin-bottom 1em
     width 60%
+    z-index 2
 
   .actions-container
     padding 0em 1em
     position absolute
-    bottom 10%
+    bottom 5%
     display flex
     justify-content space-between
     width 100%
@@ -168,8 +180,8 @@ export default {
     z-index 3
     background white
     box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
-    font-size 2em
-    padding .3em .5em
-
+    font-size 1em
+    width 80%
+    padding .5em
 
 </style>

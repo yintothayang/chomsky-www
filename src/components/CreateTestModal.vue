@@ -107,8 +107,8 @@ export default {
               back: {}
             }
             // TODO change this
-            if(p.audio_url){
-              page.audio = p.audio_url
+            if(p.$audio){
+              page.$audio = p.$audio
             }
             if(this.test.questionKey){
               page.front.question = p[this.test.questionKey]

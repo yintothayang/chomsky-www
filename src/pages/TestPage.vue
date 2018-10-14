@@ -151,6 +151,7 @@ export default {
       justify-content center
       background white
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
+      flex-basis 80%
 
       img
         width auto

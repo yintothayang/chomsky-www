@@ -8,6 +8,7 @@ import Books from './pages/BooksPage.vue'
 import EditBook from './pages/EditBookPage.vue'
 import Library from './pages/LibraryPage.vue'
 import Test from './pages/TestPage.vue'
+import Tests from './pages/TestsPage.vue'
 import About from './pages/AboutPage.vue'
 
 Vue.use(Router)
@@ -44,14 +45,19 @@ export default new Router({
       component: EditBook
     },
     {
-      path: '/library',
-      name: 'library',
-      component: Library
+      path: '/tests',
+      name: 'tests',
+      component: Tests
     },
     {
       path: '/test/:id',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/library',
+      name: 'library',
+      component: Library
     },
     {
       path: '/about',

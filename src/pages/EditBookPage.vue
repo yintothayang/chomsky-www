@@ -19,7 +19,7 @@
                 span Delete
           .page.advanced(v-else)
             .page-row(v-for="(value, key, index) in page")
-              v-text-field.key(v-model="bookKeys[pageIndex][index]" label="key" @input="onChange")
+              v-text-field.key(v-model="bookKeys[pageIndex][index]" label="key")
               v-text-field.value(v-model="page[key]" label="value")
               .page-row-actions
                 v-btn.delete-page-key(dark small flat icon color="red lighten-1" @click="deletePageKey(page, key)" slot="activator" v-if="Object.keys(page).length > 1")
@@ -31,7 +31,7 @@
                   v-icon(dark) add
                 span Add Field
               v-tooltip.action(top)
-                v-btn.on(dark flat small color="blue lighten-1" @click="copyPage(page)" slot="activator")
+                v-btn.on(dark flat small color="blue lighten-1" @click="copyPage(page, bookKeys[pageIndex])" slot="activator")
                   v-icon(dark) autorenew
                 span Copy Page
               v-tooltip.action(top)
@@ -81,11 +81,8 @@ export default {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
     }),
-    onChange(e){
-      console.log("pages: ", this.book.pages)
-      console.log("pages: ", this.bookKeys)
-    },
-    copyPage(page){
+    copyPage(page, bookKeys){
+      this.bookKeys.push(bookKeys.slice())
       this.book.pages.push(Object.assign({}, page))
     },
     addPage(){
@@ -133,7 +130,6 @@ export default {
         i++
       })
       this.book.pages = pages
-      console.log("done: ", this.book.pages)
     },
     initAdvanced(){
       let i = 0
@@ -144,8 +140,6 @@ export default {
         })
         i++
       })
-      console.log("done: ", this.book)
-      console.log("done: ", this.bookKeys)
     }
   },
   async created(){

@@ -14,7 +14,7 @@
     v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
       v-icon(dark) fast_rewind
 
-    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()" v-if="currentPage.$audio")
+    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()"  v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
       v-icon(dark) volume_up
 
     v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
@@ -29,7 +29,7 @@
   .load-container(v-if="loading")
     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
 
-  audio(ref="audio" :src="currentPage.$audio" v-if="currentPage")
+  audio(ref="audio" :src="currentPage.$audio" v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
 
 
 </template>
@@ -108,7 +108,9 @@ export default {
       }
     },
     playAudio(){
-      this.$refs.audio.play()
+      if(this.$refs.audio){
+        this.$refs.audio.play()
+      }
     }
   },
   async created(){

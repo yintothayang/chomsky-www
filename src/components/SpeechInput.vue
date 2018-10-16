@@ -30,7 +30,6 @@ export default {
   },
   watch: {
     dialect: function(value){
-      console.log("dialect updated")
       if(this.recognition && this.listening){
         this.recognition.stop()
       }
@@ -41,6 +40,7 @@ export default {
     ...mapGetters({
       lang: 'tests/lang',
       dialect: 'tests/dialect',
+      autoStart: 'tests/autoStart',
     })
   },
   methods: {
@@ -49,7 +49,11 @@ export default {
     }),
     toggleRecording(){
       console.log('toggleRecording()')
-      this.listening ? this.recognition.stop() : this.recognition.start()
+      if(this.listening){
+        this.recognition.stop()
+      } else {
+        this.recognition.start()
+      }
     },
     initRecognition(){
       var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
@@ -57,7 +61,7 @@ export default {
       this.recognition = new SpeechRecognition()
       this.recognition.continuous = true
       this.recognition.lang = this.dialect
-      this.recognition.interimResults = true
+      this.recognition.interimResults = false
       this.recognition.maxAlternatives = 10
 
       this.recognition.onstart = this.onstart
@@ -65,6 +69,7 @@ export default {
       this.recognition.onspeechend = this.onspeechend
       this.recognition.onnomatch = this.onnomatch
       this.recognition.onerror = this.onerror
+      this.recognition.onend = this.onend
     },
     onstart(event){
       console.log("onstart: ", event)
@@ -73,46 +78,53 @@ export default {
     onresult(event){
       console.log("onresult: ", event)
       var last = event.results.length - 1
-      this.attempt = event.results[last][0].transcript
       let results = []
       for(let i=0; i<event.results[last].length; i++){
         results.push(event.results[last][i].transcript)
       }
-
       this.onAttempt(results)
-
-      this.recognition.stop()
+      // this.recognition.stop()
+      // this.listening = false
     },
     onspeechend(event){
-      console.log('onspeechend: ', event)
-      this.recognition.stop()
-      this.listening = false
+      // console.log('onspeechend: ', event)
+      // this.recognition.stop()
+      // this.listening = false
     },
     onnomatch(event){
       console.log('onnomatch: ', event)
-      this.listening = false
     },
     onerror(event){
       console.error('onerror: ', event)
       this.error = event.message
+    },
+    onend(event){
+      console.log("onend")
       this.listening = false
     },
-    onAttempt(answers){
-      console.log("onAttempt: ", answers)
+    onAttempt(attempts){
+      console.log("onAttempt: ", attempts)
       this.status = []
-      if(answers.includes(this.page.back.answer.toLowerCase())){
+      attempts = attempts.map(a => a.toLowerCase())
+      let i = attempts.indexOf(this.page.back.answer.toLowerCase())
+      if(i > -1){
         this.status = ['success']
+        this.attempt = attempts[i]
         setTimeout(()=>{
           this.$emit('success')
           this.status = []
           this.attempt = ""
-
-          // this.recognition.stop()
-          // this.recognition.start()
         }, 400)
 
       } else {
+        this.attempt = attempts[0]
         this.status = ['fail']
+      }
+
+      if(this.autoStart && !this.listening){
+        console.log(this.recognition)
+        this.recognition.start()
+        this.listening = true
       }
     }
   },

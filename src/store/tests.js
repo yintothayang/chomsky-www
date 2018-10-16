@@ -10,6 +10,7 @@ const DEFAULTS = {
   mode: 'text',
   lang: '日本語',
   dialect: 'ja-JP',
+  autoStart: true,
 }
 
 // State
@@ -28,6 +29,7 @@ var getters = {
   mode: state => (state.currentTest && state.currentTest.mode) ? state.currentTest.mode : DEFAULTS.mode,
   lang: state => (state.currentTest && state.currentTest.lang) ? state.currentTest.lang : DEFAULTS.lang,
   dialect: state => (state.currentTest && state.currentTest.dialect) ? state.currentTest.dialect : DEFAULTS.dialect,
+  autoStart: state => (state.currentTest && state.currentTest.autoStart) ? state.currentTest.autoStart : DEFAULTS.autoStart,
 }
 
 // Mutations
@@ -112,6 +114,7 @@ var actions = {
       mode: 'text',
       lang: '日本語',
       dialect: 'ja-JP',
+      autoStart: true,
       book_id: book.id,
       pages: book.pages.map(page => {
         return {

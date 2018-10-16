@@ -99,7 +99,7 @@ export default {
           mode: 'text',
           lang: '日本語',
           dialect: 'ja-JP',
-          questionKey: this.test.questionKey,
+          questionKey: this.test.questionKey ? this.test.questionKey : null,
           answerKey: this.test.answerKey,
           pages: this.book.pages.map(p => {
             let page = {

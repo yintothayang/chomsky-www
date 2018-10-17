@@ -83,9 +83,6 @@ export default {
       this.setNavbarTitle("Login")
     }
   },
-  mounted(){
-
-  }
 }
 </script>
 

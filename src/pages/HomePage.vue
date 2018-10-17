@@ -5,8 +5,8 @@
       span.name Einstein
 
   .auth-container
-    v-btn(color="white" @click="$router.push({name: 'login'})") Log In
-    v-btn(color="white" @click="$router.push({name: 'signup'})") Sign Up
+    v-btn(color="white" @click="$router.push({name: 'login'})" large) Log In
+    v-btn(color="white" @click="$router.push({name: 'signup'})" large) Sign Up
 </template>
 
 <script>
@@ -38,11 +38,6 @@ export default {
       this.$router.push({name: 'books'})
     }
   },
-  mounted(){
-    if(this.user){
-      this.$router.push({name: 'books'})
-    }
-  }
 }
 </script>
 
@@ -50,7 +45,7 @@ export default {
 <style lang="stylus" scoped>
 #home-page
   height 100%
-  // background-image: url("/images/noise.png"), -webkit-radial-gradient(top center, #f7931e, #f15a24 250px)
+  background-image: url("/images/noise.png"),   linear-gradient(to bottom, #2980b9, #6dd5fa, #ffffff);
   display flex
   flex-wrap wrap
   justify-content center

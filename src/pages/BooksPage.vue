@@ -110,12 +110,16 @@ export default {
     }
   },
   async created(){
-    this.setNavbarTitle("Books")
-    !this.tests.length ? this.fetchTests() : void(0)
-    if(this.books.length < 2){
-      this.loading = true
-      await this.fetchBooks()
-      this.loading = false
+    if(!this.user){
+      this.$router.push({name: 'login'})
+    } else {
+      this.setNavbarTitle("Books")
+      !this.tests.length ? this.fetchTests() : void(0)
+      if(this.books.length < 2){
+        this.loading = true
+        await this.fetchBooks()
+        this.loading = false
+      }
     }
   }
 }

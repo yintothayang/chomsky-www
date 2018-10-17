@@ -4,7 +4,7 @@ v-toolbar#navbar(dark="" color="light-blue accent-3")
   v-spacer.hidden-md-and-up
   v-toolbar-title.white--text {{title}}
   v-spacer
-  v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search")
+  v-text-field.hidden-sm-and-down(v-model="search" label="Search" single-line hide-details prepend-icon="search" v-if="$route.name == 'books' || $route.name == 'library'")
   v-spacer.hidden-sm-and-down
   v-icon(dark @click="openRightNav()" v-if="$route.name == 'books' || $route.name == 'library'") filter_list
   v-icon(dark @click="openTestSettingsModal()" v-if="$route.name == 'test'") settings

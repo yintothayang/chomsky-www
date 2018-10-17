@@ -27,14 +27,11 @@ var actions = {
   login: async ({commit}, data) => {
     return await firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(results => {
       commit("SET_ACTIVE_USER", results)
-    }).catch((error) => {
-      var errorCode = error.code
-      var errorMessage = error.message
     })
   },
   logout: async ({commit}) => {
     return await firebase.auth().signOut().then(results => {
-
+      commit("SET_ACTIVE_USER", null)
     }).catch((e) =>{
 
     })

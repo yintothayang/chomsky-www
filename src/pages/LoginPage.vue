@@ -1,14 +1,23 @@
 <template lang="pug">
 #login-page
-  .card-container
-    .card
-      v-form(ref="form")
-        v-text-field(v-model="email" label="Email" type="email")
-        v-text-field(v-model="password" label="Password" type="password")
-        v-btn(:disabled="!valid" @click="submit") submit
+  .center(v-if="!loading")
+    .card-container
+      .card
+        v-form(ref="form")
+          v-text-field(v-model="email" label="Email" type="email")
+          v-text-field(v-model="password" label="Password" type="password")
+          transition(mode="out-in" name="fade" v-if="error")
+            span.error(v-if="error") Invalid Email or Password
+          v-btn.submit(:disabled="!valid" @click="submit" type="submit") submit
 
-  .router-link(:disabled="!valid" :to="{name: 'signup'}")
-    v-btn(@click="$router.push({name: 'signup'})") sign up
+    span.or or
+
+    .router-link(:disabled="!valid" :to="{name: 'signup'}")
+      v-btn(@click="$router.push({name: 'signup'})" large color="blue" dark) sign up
+
+  transition(mode="out-in" name="fade" v-if="loading")
+    .load-container(v-if="loading")
+      v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
 
 </template>
 
@@ -19,7 +28,9 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      error: null,
+      loading: false
     }
   },
   computed: {
@@ -34,6 +45,14 @@ export default {
       }
     }
   },
+  watch: {
+    email: function(){
+      this.error = null
+    },
+    password: function(){
+      this.error = null
+    }
+  },
   methods: {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
@@ -41,17 +60,20 @@ export default {
     ...mapActions({
       login: 'users/login'
     }),
-    submit(){
+    async submit(){
+      this.loading = true
+      this.error = null
       let data = {
         email: this.email,
         password: this.password
       }
-      this.login(data).then(()=>{
+      await this.login(data).then(result => {
         this.$router.push({name: 'books'})
       }).catch(e => {
-        // TODO ->
-        console.error("TODO!, need error feedback")
+        this.error = e
+        this.loading = false
       })
+
     }
   },
   created(){
@@ -70,14 +92,15 @@ export default {
 
 <style lang="stylus" scoped>
 #login-page
-  height 100%
-  display flex
-  flex-wrap wrap
-  justify-content center
+  .center
+    display flex
+    flex-wrap wrap
+    justify-content center
 
   .card-container
     margin-top 3em
-    flex-basis 80%
+    margin-bottom 2em
+    width 80%
 
     .card
       padding 1em 2em
@@ -87,17 +110,32 @@ export default {
       border-radius 2px
       user-select none
 
-    .name
-      font-size 3.5em
-      font-family 'Cinzel', serif
+      form
+        display flex
+        flex-wrap wrap
+        align-items center
+        justify-content center
 
-  .auth-container
-    margin-top 4em
+        .v-input
+          flex-basis 100%
+
+      .error
+        width 100%
+        color white
+        font-weight 600
+        padding .5em
+
+      button
+        margin-top 1em
+        margin-bottom 1em
+        flex-basis 80%
+
+  .or
+    flex-basis 100%
+    font-size 1.5em
+    font-weight 500
+    margin-bottom 1em
+  .router-link
     flex-basis 100%
 
-    button
-      flex-basis 100%
-      font-weight 400
-      margin-right 2em
-      margin-left 2em
 </style>

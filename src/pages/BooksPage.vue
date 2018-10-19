@@ -110,7 +110,7 @@ export default {
     }
   },
   async created(){
-    if(!this.user){
+    if(!this.activeUser){
       this.$router.push({name: 'login'})
     } else {
       this.setNavbarTitle("Books")

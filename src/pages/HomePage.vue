@@ -69,7 +69,7 @@ export default {
     flex-basis 100%
 
     button
-      font-weight 400
+      font-weight 500
       margin-right 2em
       margin-left 2em
 </style>

@@ -8,7 +8,7 @@
           v-text-field(v-model="password" label="Password" type="password")
           transition(mode="out-in" name="fade" v-if="error")
             span.error(v-if="error") Invalid Email or Password
-          v-btn.submit(:disabled="!valid" @click="submit" type="submit") submit
+          v-btn.submit(:disabled="!valid" @click="submit()") submit
 
     span.or or
 
@@ -89,6 +89,7 @@ export default {
 
 <style lang="stylus" scoped>
 #login-page
+
   .center
     display flex
     flex-wrap wrap

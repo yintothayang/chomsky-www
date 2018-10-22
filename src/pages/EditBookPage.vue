@@ -14,8 +14,8 @@
             v-text-field.back(v-model="page.back" label="Back")
             .action(v-if="book.pages.length > 1")
               v-tooltip(top)
-                v-btn.on(fab dark small color="red lighten-1" @click="deletePage(page)" slot="activator")
-                  v-icon(dark) remove
+                v-btn.on(fab dark flat small color="red lighten-1" @click="deletePage(page)" slot="activator")
+                  v-icon(dark) remove_circle_outline
                 span Delete
           .page.advanced(v-else)
             .page-row(v-for="(value, key, index) in page")
@@ -159,7 +159,7 @@ export default {
         this.loading = false
       }
     } else {
-      this.bookId === 'new_basic' ? this.book.type = 'basic' : this.book.type = 'advanced'
+      bookId === 'new_basic' ? this.book.type = 'basic' : this.book.type = 'advanced'
       this.addPage()
     }
     this.setNavbarTitle(this.book.name)
@@ -170,7 +170,7 @@ export default {
 
 <style lang="stylus" scoped>
 #edit-book-page
-  padding 2em
+  padding 1em
   .book
     position relative
     box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)

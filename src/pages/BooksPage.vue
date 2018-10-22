@@ -3,17 +3,18 @@
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
       .book
-        span.name {{book.name}}
+        .top
+          span.name {{book.name}}
 
-        .book-actions-container
-          v-btn(color="red" @click="deleteBook(book)" flat="") Delete
+        .bottom
+          v-btn(color="red" @click="onDeleteBook(book)" flat="") Delete
           router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
             v-btn(color="blue" flat="") Edit
           v-btn(color="green" flat="" @click="play(book)") Play
 
   .empty(v-if="!books.length && !loading")
     span.none No Books Found
-    v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book
+    v-btn(color="info" @click="setOpenModal('NewBookModal')" large) Create a Book
     span.or or
     v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 
@@ -56,13 +57,19 @@ export default {
       createBook: 'books/createBook',
       fetchTests: 'tests/fetchTests',
       createBasicTest: 'tests/createBasicTest',
-      deleteTest: 'tests/deleteTest',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
       setOpenModal: 'modals/SET_OPEN_MODAL',
       setModalOptions: 'modals/SET_OPTIONS',
+      setToast: 'toast/SET_TOAST'
     }),
+    async onDeleteBook(book){
+      this.loading = true
+      await this.deleteBook(book)
+      this.setToast({message: "Book Deleted", open: true})
+      this.loading = false
+    },
     async play(book){
       if(book.type === "basic"){
         let test = this.tests.find(t => t.book_id === book.id)
@@ -130,7 +137,7 @@ export default {
 #books-page
   .book-list
     overflow-y auto
-    padding 1em 1.5em
+    padding 1em
     height 90%
 
     .book-container
@@ -138,8 +145,7 @@ export default {
 
       .book
         display flex
-        padding 1em 2em .5em 2em
-        margin .5em
+        margin-bottom .5em
         cursor pointer
         transition all .1s
         background white
@@ -147,23 +153,28 @@ export default {
         user-select none
         flex-wrap wrap
 
-        .name
-          font-size 1.4em
-          font-weight 600
-          flex-basis 100%
-          text-align left
-        .card-count
-          font-size 1em
-          font-weight 500
-          flex-basis 100%
-          text-align left
-
-        .book-actions-container
+        .top
           display flex
-          justify-content flex-end
+          flex-basis 100%
+          margin-bottom .5em
+          padding .8em 1em 0em 1em
+          .name
+            font-size 1.2em
+            font-weight 600
+            flex-basis 100%
+            text-align left
+          .pages
+            font-size 1em
+            font-weight 500
+            flex-basis 100%
+            text-align left
+
+        .bottom
+          display flex
+          justify-content space-around
           align-items center
           flex-basis 100%
-
+          padding 0em 0em .8em 0em
           button
             margin 0px
             padding 0px

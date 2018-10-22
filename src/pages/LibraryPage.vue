@@ -3,18 +3,21 @@
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
       .book
-        span.name {{book.name}}
-
-        .book-actions-container
-          v-btn(color="red" @click="copyBook(book)" flat="") Copy
-          router-link(:to="{name: 'game', params: {id: book.id}}" tag="div")
-            v-btn(color="green" flat="") Play
-
+        .left
+          .top
+            span.name {{book.name}}
+          .bottom
+            span.pages Pages: {{book.pages.length}}
+            .tags(v-if="book.tags")
+              span.tag(v-for="tag in book.tags") {{tag}}
+        .right
+          v-btn.copy(color="green" @click="onCopyBook(book)" flat="")
+            v-icon() add
   .empty(v-if="!books.length && !loading")
     span.none No Books Found
-    v-btn(color="info" @click="$router.push({name: 'edit-book', params: {id: 'new'}})" large) Create a Book
+    v-btn(color="info" @click="setOpenModal('NewBookModal')" large) Create a Book
 
-
+  v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
 
 <script>
@@ -25,12 +28,11 @@ export default {
   data() {
     return {
       loading: false,
-      localDecks: []
     }
   },
   computed: {
     ...mapGetters({
-      books: 'books/publicBooks',
+      books: 'books/libraryBooks',
     }),
   },
   methods: {
@@ -40,7 +42,15 @@ export default {
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
+      setToast: 'toast/SET_TOAST'
     }),
+    async onCopyBook(book){
+      this.loading = true
+      await this.copyBook(book)
+      this.setToast({message: "Book Added!", open: true})
+      this.loading = false
+    }
   },
   created(){
     this.setNavbarTitle("Library")
@@ -58,8 +68,8 @@ export default {
 <style lang="stylus" scoped>
 #library-page
   .book-list
-    overflow-y scroll
-    padding 1em 1.5em
+    overflow-y auto
+    padding 1em
     height 100%
 
     .book-container
@@ -67,43 +77,50 @@ export default {
 
       .book
         display flex
-        padding 1em 2em .5em 2em
-        margin .5em
+        padding 0em
+        margin-bottom .5em
         cursor pointer
         transition all .1s
         background white
         box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
         user-select none
-        flex-wrap wrap
 
-        &:hover
-          background lighten(orange, 80%)
-        &.selected
-          background lighten(orange, 20%)
-          color white
-          .v-btn
-            color white !important
-
-        .name
-          font-size 1.4em
-          font-weight 600
-          flex-basis 100%
-          text-align left
-        .card-count
-          font-size 1em
-          font-weight 500
-          flex-basis 100%
-          text-align left
-
-        .book-actions-container
+        .left
           display flex
-          justify-content flex-end
-          align-items center
-          flex-basis 100%
+          flex-wrap wrap
+          padding 1em 1em
+          flex-grow 1
 
-          button
+          .top
+            flex-basis 100%
+            text-align left
+            font-size .8em
+            .name
+              font-size 1.4em
+              font-weight 600
+              flex-basis 100%
+              text-align left
+          .bottom
+            .pages
+             font-size .8em
+             font-weight 500
+            .tags
+              display flex
+
+        .right
+          flex-basis 20%
+          display flex
+          align-items center
+          justify-content center
+          border-left 1px solid rgba(0, 0, 0, .15)
+          .copy
+            flex-basis 100%
+            height 100%
             margin 0px
             padding 0px
+            font-weight 600
+            font-size 1.1em
+            min-width 0px
 
   .empty
     padding 5em 1em
@@ -123,21 +140,6 @@ export default {
       font-weight 600
       font-size 1.2em
 
-  .actions-container
-    display flex
-    flex-wrap wrap
-    position absolute
-    top 40%
-    right 0em
-    width 65px
-
-    .item
-      flex-basis 100%
-      margin-bottom .5em
-
-    .upload-book
-      input
-        display none
 
   .loading
     margin-top 8em

@@ -13,8 +13,7 @@ const state = {
     tags: [],
     booksPerRow: 'auto',
   },
-  filteredBooks: [],
-  publicBooks: [],
+  version: "0.0.1"
 }
 
 // Getters
@@ -28,10 +27,15 @@ var getters = {
     }
   }),
   publicBooks: (state, commit, rootState) => state.books.filter(book => {
-    if(!rootState.users.activeUser){
+    return rootState.users.activeUser ? book.public : false
+  }),
+  libraryBooks: (state, getters, rootState) => getters.publicBooks.filter(p => {
+    if(getters.usersBooks.map(u => u.id).includes(p.id)){
       return false
-    } else {
-      return book.public && book.owned_by != rootState.users.activeUser.uid
+    } else if(getters.usersBooks.map(u => u.original_id).includes(p.id)){
+      return false
+    }else {
+      return true
     }
   }),
   filters: state => state.filters,
@@ -55,7 +59,8 @@ var mutations = {
     }
   },
   ["DELETE_BOOK"] (state, book) {
-    let i = state.books.indexOf(book)
+    let book_to_delete = state.books.find(b => b.id === book.id)
+    let i = state.books.indexOf(book_to_delete)
     if(i > -1){
       state.books.splice(i, 1)
     }
@@ -96,16 +101,26 @@ var actions = {
     book.created_by = rootState.users.activeUser.uid
     book.created_at = new Date().toJSON()
     book.owned_by = rootState.users.activeUser.uid
-    book.version = "0.0.1"
+    book.version = rootState.books.version
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
       commit("ADD_BOOK", book)
     })
   },
-  copyBook: async ({commit, rootState}, book) => {
+  copyBook: async ({commit, rootState}, bookCopy) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    book.owned_by = rootState.users.activeUser.uid
+    let book = {
+      original_id: bookCopy.id,
+      owned_by: rootState.users.activeUser.uid,
+      created_by:  bookCopy.created_by,
+      name: bookCopy.name,
+      pages: bookCopy.pages,
+      public: true,
+      type: bookCopy.type,
+      version: bookCopy.version ? bookCopy.version: rootState.books.version,
+      tags: bookCopy.tags ? bookCopy.tags : []
+    }
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
       commit("ADD_BOOK", book)

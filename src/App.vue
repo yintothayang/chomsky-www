@@ -13,6 +13,8 @@
 
     new-book-modal
     create-test-modal
+    v-snackbar(v-model="toast.open" :right="true" :top="true" :timeout="1200" :color="toast.color") {{toast.message}}
+
 </template>
 
 <script>
@@ -39,10 +41,10 @@ export default {
       loading: false
     }
   },
-  methods: {
-    ...mapActions({
-      fetchBooks: 'books/fetchBooks',
-    })
+  computed: {
+    ...mapGetters({
+      toast: 'toast/toast',
+    }),
   },
   async created(){
     console.log("0.0.1")

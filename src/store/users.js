@@ -32,10 +32,7 @@ var actions = {
   logout: async ({commit}) => {
     return await firebase.auth().signOut().then(results => {
       commit("SET_ACTIVE_USER", null)
-    }).catch((e) =>{
-
     })
-
   },
 }
 

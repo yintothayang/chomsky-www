@@ -71,7 +71,7 @@ export default {
 #tests-page
   .test-list
     overflow-y auto
-    padding 1em 1.5em
+    padding 1em
     height 90%
 
     .test-container
@@ -80,7 +80,7 @@ export default {
       .test
         display flex
         padding 1em 2em .5em 2em
-        margin .5em
+        margin-bottom .5em
         cursor pointer
         transition all .1s
         background white

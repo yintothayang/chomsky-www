@@ -92,15 +92,15 @@ export default {
         page.front = ""
         page.back = ""
       } else {
-        page['key0'] = "value0"
-        this.bookKeys.push(['key0'])
+        page['key0'] = ""
+        this.bookKeys.push([""])
       }
       this.book.pages.push(page)
     },
     addPageKey(page, pageIndex){
       let i = Object.keys(page).length
-      this.$set(page, 'key'+i, 'value'+i)
-      this.bookKeys[pageIndex].push("key" +i)
+      this.$set(page, '', '')
+      this.bookKeys[pageIndex].push("")
     },
     deletePage(page){
       // TODO delete from bookKeys
@@ -111,6 +111,7 @@ export default {
       this.$delete(page, key)
     },
     async save(){
+      console.log(this.book)
       this.loading = true
       this.book.type === 'advanced' ? this.saveAdvanced() : void(0)
       this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)

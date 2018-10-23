@@ -88,7 +88,7 @@ export default {
       createTest: 'tests/createTest',
     }),
     async onPlay(){
-      let existingTest = this.tests.find(t => (t.answerKey === this.test.answerKey && t.questionKey === this.test.questionKey))
+      let existingTest = this.tests.find(t => (t.answerKey === this.test.answerKey && t.questionKey === this.test.questionKey && this.book.id === t.book_id))
       if(existingTest) {
         this.open = ""
         this.$router.push({name: 'test', params: {id: existingTest.id}})

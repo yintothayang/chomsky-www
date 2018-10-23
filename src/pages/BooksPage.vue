@@ -159,7 +159,7 @@ export default {
           margin-bottom .5em
           padding .8em 1em 0em 1em
           .name
-            font-size 1.2em
+            font-size 1.1em
             font-weight 600
             flex-basis 100%
             text-align left

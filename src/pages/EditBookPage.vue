@@ -2,8 +2,11 @@
 #edit-book-page
   v-form.book(v-if="!loading")
     .name-container
-      v-text-field.name(v-model="book.name" label="Name")
-      v-switch(label="public" v-model="book.public")
+      v-text-field.name(v-model="book.name" label="Name" :hide-details="true")
+      v-switch(label="public" v-model="book.public" :hide-details="true")
+
+    .tags-container
+      v-text-field.tags(v-model="book.tags" label="Tags" :hide-details="true")
 
     .pages-container
       span.label.pages-label Pages
@@ -70,6 +73,21 @@ export default {
     ...mapGetters({
       books: 'books/books'
     }),
+    valid(){
+      if(this.book.pages.length){
+        let valid = true
+        let last = Object.keys(this.book.pages[0])
+        this.book.pages.forEach(page => {
+          let current = Object.keys(page)
+          if(JSON.stringify(last) != JSON.stringify(current)){
+            valid = false
+          }
+        })
+        return valid
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapActions({
@@ -80,6 +98,7 @@ export default {
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
+      setToast: 'toast/SET_TOAST',
     }),
     copyPage(page, bookKeys){
       this.bookKeys.push(bookKeys.slice())
@@ -92,31 +111,34 @@ export default {
         page.front = ""
         page.back = ""
       } else {
-        page['key0'] = ""
-        this.bookKeys.push([""])
+        page['key' + i] = "value" + i
+        this.bookKeys.push(["key" + i])
       }
       this.book.pages.push(page)
     },
     addPageKey(page, pageIndex){
       let i = Object.keys(page).length
-      this.$set(page, '', '')
-      this.bookKeys[pageIndex].push("")
+      this.$set(page, 'key' + i, 'value' + i)
+      this.bookKeys[pageIndex].push("key" +i)
     },
     deletePage(page){
-      // TODO delete from bookKeys
+      this.bookKeys.splice(this.book.pages.indexOf(page), 1)
       this.book.pages.splice(this.book.pages.indexOf(page), 1)
     },
     deletePageKey(page, key){
-      // TODO delete from bookKeys
+      this.bookKeys[this.book.pages.indexOf(page)].splice(this.bookKeys[this.book.pages.indexOf(page)].indexOf(key), 1)
       this.$delete(page, key)
     },
     async save(){
-      console.log(this.book)
-      this.loading = true
-      this.book.type === 'advanced' ? this.saveAdvanced() : void(0)
-      this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)
-      this.loading = false
-      this.$router.push({name: 'books'})
+      if(this.valid){
+        this.loading = true
+        this.book.type === 'advanced' ? this.saveAdvanced() : void(0)
+        this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)
+        this.loading = false
+        this.$router.push({name: 'books'})
+      } else {
+        this.setToast({message: "Every Page must have the same Keys", open: true})
+      }
     },
     saveAdvanced(){
       let pages = []
@@ -180,9 +202,13 @@ export default {
     height 100%
 
   .name-container
+    padding-bottom .5em
     display flex
     .name
       margin-right 3em
+
+  .tags-container
+    margin-bottom 1em
 
   .pages-container
     display flex
@@ -193,7 +219,8 @@ export default {
     .pages-label
       flex-basis 100%
       text-align left
-      font-size .9em
+      font-size 1.1em
+      font-weight 400
   .pages
     overflow-y auto
     padding-top .5em

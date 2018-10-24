@@ -2,15 +2,7 @@
 #books-page
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
-      .book
-        .top
-          span.name {{book.name}}
-
-        .bottom
-          v-btn(color="red" @click="onDeleteBook(book)" flat="") Delete
-          router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
-            v-btn(color="blue" flat="") Edit
-          v-btn(color="green" flat="" @click="play(book)") Play
+      book(:book="book" on-delete="onDeleteBook(book)" on-play="play(book)")
 
   .empty(v-if="!books.length && !loading")
     span.none No Books Found
@@ -36,8 +28,13 @@
 <script>
 
 import {mapActions, mapMutations, mapGetters} from 'vuex'
+import Book from '@/components/Book'
+
 export default {
   name: 'BooksPage',
+  components: {
+    Book,
+  },
   data() {
     return {
       loading: false
@@ -142,42 +139,6 @@ export default {
 
     .book-container
       padding .2em 0em
-
-      .book
-        display flex
-        margin-bottom .5em
-        cursor pointer
-        transition all .1s
-        background white
-        box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
-        user-select none
-        flex-wrap wrap
-
-        .top
-          display flex
-          flex-basis 100%
-          margin-bottom .5em
-          padding .8em 1em 0em 1em
-          .name
-            font-size 1.1em
-            font-weight 600
-            flex-basis 100%
-            text-align left
-          .pages
-            font-size 1em
-            font-weight 500
-            flex-basis 100%
-            text-align left
-
-        .bottom
-          display flex
-          justify-content space-around
-          align-items center
-          flex-basis 100%
-          padding 0em 0em .8em 0em
-          button
-            margin 0px
-            padding 0px
 
   .empty
     padding 5em 1em

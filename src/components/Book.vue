@@ -1,30 +1,28 @@
 <template lang="pug">
-.book
+.book-list-item
   .left
-    span.name {{book.name}}
+    .top
+      span.name {{book.name}}
+      span.pages {{book.pages.length}} pages
+    .bottom
+      .tags(v-if="book.tags")
+        span.tag(v-for="tag in book.tags.split(' ')") {{tag}}
+      span.type {{book.type}}
   .right
     v-speed-dial(v-model='open', transition='slide-y-reverse-transition' direction="bottom")
       v-btn(slot='activator' v-model='open' color='blue darken-2' fab flat)
         v-icon.open expand_more
         v-icon.close close
 
-      v-btn(color="red" @click="onDeleteBook(book)" fab dark small)
+      v-btn(color="deep-orange darken-1" @click="$emit('delete', book)" fab dark small)
         v-icon delete
-      v-btn(fab dark small color='green')
-        v-icon edit
 
-      v-btn(fab dark small color='indigo')
-        v-icon add
+      router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
+        v-btn(fab dark small color='indigo')
+          v-icon edit
 
-        //- v-btn(fab='', dark='', small='', color='red')
-        //-   v-icon delete
-
-
-
-    //- router-link(:to="{name: 'edit-book', params: {id: book.id}}" tag="div")
-    //-   v-btn(color="blue" flat="") Edit
-    //- v-btn(color="green" flat="" @click="play(book)") Play
-
+      v-btn(fab dark small color='green' @click="$emit('play', book)")
+        v-icon play_arrow
 
 </template>
 
@@ -57,7 +55,7 @@ export default {
 
 
 <style lang="stylus">
-.book
+.book-list-item
   display flex
   padding 0em
   margin-bottom .5em
@@ -70,24 +68,46 @@ export default {
   .left
     display flex
     flex-wrap wrap
-    padding 1em 1em
+    padding 1em 1em .5em 1em
     flex-basis 80%
 
     .top
+      display flex
       flex-basis 100%
-      text-align left
-      font-size .8em
+      line-height 1em
+      margin-bottom .2em
       .name
-        font-size 1.4em
+        font-size 1.1em
         font-weight 600
-        flex-basis 100%
         text-align left
-    .bottom
+
       .pages
-       font-size .8em
-       font-weight 500
+        margin-left auto
+        font-size .9em
+        font-weight 600
+
+    .bottom
+      display flex
+      flex-basis 100%
+      align-items center
       .tags
         display flex
+        flex-basis 100%
+        align-items center
+
+        .tag
+          background rgba(0, 0, 0, .08)
+          margin-right .5em
+          padding .5em .8em
+          border-radius 1px
+          font-weight 600
+          font-size .8em
+          line-height .8em
+
+      .type
+        margin-left auto
+        font-weight 500
+        font-size .8em
 
   .right
     flex-basis 20%

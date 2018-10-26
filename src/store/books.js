@@ -119,7 +119,7 @@ var actions = {
       public: true,
       type: bookCopy.type,
       version: bookCopy.version ? bookCopy.version: rootState.books.version,
-      tags: bookCopy.tags ? bookCopy.tags : []
+      tags: bookCopy.tags ? bookCopy.tags : ""
     }
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id

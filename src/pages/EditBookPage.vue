@@ -135,6 +135,7 @@ export default {
         this.book.type === 'advanced' ? this.saveAdvanced() : void(0)
         this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)
         this.loading = false
+        this.setToast({message: "Book Saved!", open: true})
         this.$router.push({name: 'books'})
       } else {
         this.setToast({message: "Every Page must have the same Keys", open: true})

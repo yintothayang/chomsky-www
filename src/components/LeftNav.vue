@@ -46,8 +46,8 @@ export default {
     links(){
       return [
         { title: 'Books', icon: 'book', to: {name: 'books'}, color: "blue"},
-        { title: 'Tests', icon: 'description', to: {name: 'tests'}, color: "green"},
         { title: 'Library', icon: 'local_library', to: {name: 'library'}, color: "purple"},
+        { title: 'Tests', icon: 'description', to: {name: 'tests'}, color: "green"},
         { title: 'About', icon: 'contact_support', to: {name: 'about'}, color: "red" },
       ]
     }

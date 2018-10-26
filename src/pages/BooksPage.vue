@@ -2,7 +2,7 @@
 #books-page
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
-      book(:book="book" on-delete="onDeleteBook(book)" on-play="play(book)")
+      book(:book="book" @delete="onDeleteBook" @play="play")
 
   .empty(v-if="!books.length && !loading")
     span.none No Books Found

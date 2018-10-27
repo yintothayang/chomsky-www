@@ -16,8 +16,6 @@
             span.name Back
             .answer-container
               v-select.answer(:items="answerKeys" label="Answer" v-model="test.answerKey")
-            .image-container
-              v-select.image(:items="questionKeys" label="Image" v-model="test.backImage")
 
         v-card-actions
           v-spacer
@@ -59,6 +57,7 @@ export default {
     questionKeys(){
       if(this.book){
         let keys = Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
+        keys.push("none")
         return keys
       } else {
         return []
@@ -99,7 +98,7 @@ export default {
           mode: 'text',
           lang: '日本語',
           dialect: 'ja-JP',
-          questionKey: this.test.questionKey ? this.test.questionKey : null,
+          questionKey: this.test.questionKey && this.test.questionKey != "none" ? this.test.questionKey : null,
           answerKey: this.test.answerKey,
           pages: this.book.pages.map(p => {
             let page = {
@@ -110,7 +109,7 @@ export default {
             if(p.$audio){
               page.$audio = p.$audio
             }
-            if(this.test.questionKey){
+            if(this.test.questionKey && this.test.questionKey != "none"){
               page.front.question = p[this.test.questionKey]
             }
             if(this.test.frontImage){

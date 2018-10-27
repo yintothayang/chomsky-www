@@ -9,7 +9,7 @@
         span.tag(v-for="tag in book.tags.split(' ')") {{tag}}
       span.type {{book.type}}
   .right
-    v-speed-dial(v-model='open', transition='slide-y-reverse-transition' direction="bottom")
+    v-speed-dial(v-model='open', transition='slide-y-reverse-transition' direction="bottom" v-if="!isLibrary")
       v-btn(slot='activator' v-model='open' color='blue darken-2' fab flat)
         v-icon.open expand_more
         v-icon.close close
@@ -23,6 +23,10 @@
 
       v-btn(fab dark small color='green' @click="$emit('play', book)")
         v-icon play_arrow
+
+    v-btn.copy(color="green" @click="$emit('copy', book)" flat="" v-if="isLibrary")
+      v-icon() add
+
 
 </template>
 
@@ -38,7 +42,10 @@ export default {
   props: {
     book: {
       default: ()=>{}
-    }
+    },
+    isLibrary: {
+      default: false
+    },
   },
   computed: {
     ...mapGetters({

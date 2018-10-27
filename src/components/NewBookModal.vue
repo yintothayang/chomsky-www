@@ -3,9 +3,9 @@
     v-dialog(v-model='open', max-width='500px')
       v-card#create-card-modal
         v-card-title
-          span.headline Create a new Book
+          span.headline Create a new book
         .types
-          router-link.type(:to="{name: 'edit-book', params: {id: 'new_basic'}}" tag="div" @click.native='open = ""')
+          router-link.type.basic(:to="{name: 'edit-book', params: {id: 'new_basic'}}" tag="div" @click.native='open = ""')
             v-icon() view_agenda
             span Basic
           router-link.type(:to="{name: 'edit-book', params: {id: 'new_advanced'}}" tag="div" @click.native='open = ""')
@@ -70,6 +70,10 @@ export default {
       justify-content center
       margin 0em .5em
 
+      &.basic
+        i
+          font-size 2em
+
       &:hover
         background-color rgba(0, 0, 0, .1)
 
@@ -79,5 +83,6 @@ export default {
       span
         flex-basis 100%
         font-size 1.2em
+        font-weight 500
 
 </style>

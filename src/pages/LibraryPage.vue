@@ -2,17 +2,7 @@
 #library-page
   .book-list(v-if="books.length && !loading")
     .book-container(v-for="book in books")
-      .book
-        .left
-          .top
-            span.name {{book.name}}
-          .bottom
-            span.pages Pages: {{book.pages.length}}
-            .tags(v-if="book.tags")
-              span.tag(v-for="tag in book.tags") {{tag}}
-        .right
-          v-btn.copy(color="green" @click="onCopyBook(book)" flat="")
-            v-icon() add
+      book(:book="book" @copy="onCopyBook" :is-library="true")
   .empty(v-if="!books.length && !loading")
     span.none No Books Found
     v-btn(color="info" @click="setOpenModal('NewBookModal')" large) Create a Book
@@ -23,8 +13,12 @@
 <script>
 
 import {mapActions, mapMutations, mapGetters} from 'vuex'
+import Book from '@/components/Book'
 export default {
   name: 'LibraryPage',
+  components: {
+    Book,
+  },
   data() {
     return {
       loading: false,

@@ -8,10 +8,13 @@ if(!firebase.apps.length){
 // State
 const state = {
   books: [],
+  userBooks: [],
+  libraryBooks: [],
   filters: {
-    search: null,
-    tags: [],
-    booksPerRow: 'auto',
+    name: null,
+    tags: null,
+    advanced: true,
+    basic: true,
   },
   version: "0.0.1"
 }
@@ -19,32 +22,31 @@ const state = {
 // Getters
 var getters = {
   books: state => state.books,
-  usersBooks: (state, commit, rootState) => state.books.filter(book => {
-    if(!rootState.users.activeUser){
-      return false
-    } else {
-      return book.owned_by == rootState.users.activeUser.uid
+  usersBooks: state => state.userBooks,
+  filteredUsersBooks: state => {
+    let books = state.userBooks
+    if(state.filters.name){
+      books = books.filter(b => b.name.toLowerCase().includes(state.filters.name.toLowerCase()))
     }
-  }),
-  publicBooks: (state, commit, rootState) => state.books.filter(book => {
-    return rootState.users.activeUser ? book.public : false
-  }),
-  libraryBooks: (state, getters, rootState) => getters.publicBooks.filter(p => {
-    if(getters.usersBooks.map(u => u.id).includes(p.id)){
-      return false
-    } else if(getters.usersBooks.map(u => u.original_id).includes(p.id)){
-      return false
-    }else {
-      return true
+    if(state.filters.tags){
+      books = books.filter(b => b.tags.toLowerCase().includes(state.filters.tags.toLowerCase()))
     }
-  }),
+    return books
+  },
+  libraryBooks: state => state.library,
+  filteredLibraryBooks: state => {
+    return state.libraryBooks
+  },
   filters: state => state.filters,
 }
 
 // Mutations
 var mutations = {
-  ["SET_BOOKS"] (state, books) {
-    state.books = books
+  ["SET_USER_BOOKS"] (state, books) {
+    state.userBooks = books
+  },
+  ["SET_LIBRARY_BOOKS"] (state, books) {
+    state.libraryBooks = books
   },
   ["ADD_BOOK"] (state, book) {
     state.books.push(book)
@@ -83,17 +85,33 @@ var mutations = {
 
 // Actions
 var actions = {
-  fetchBooks: async ({commit}, filters) => {
+  fetchUserBooks: async ({commit, rootState}) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    let res = await firestore.collection("books").get()
+    let query = firestore.collection("books").where('owned_by', '==', rootState.users.activeUser.uid)
+    let res = await query.get()
     let books = []
     res.forEach((doc) =>{
       let book = doc.data()
       book.id = doc.id
       books.push(book)
     })
-    commit("SET_BOOKS", books)
+    commit("SET_USER_BOOKS", books)
+  },
+  fetchLibraryBooks: async ({commit, rootState}) => {
+    const firestore = firebase.firestore()
+    firestore.settings({timestampsInSnapshots: true})
+    let query = firestore.collection("books").where('public', '==', true)
+    let res = await query.get()
+    let books = []
+    res.forEach((doc) =>{
+      let book = doc.data()
+      book.id = doc.id
+      if(book.owned_by != rootState.users.activeUser.uid){
+        books.push(book)
+      }
+    })
+    commit("SET_LIBRARY_BOOKS", books)
   },
   createBook: async ({commit, rootState}, book) => {
     const firestore = firebase.firestore()

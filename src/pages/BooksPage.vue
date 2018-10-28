@@ -43,13 +43,13 @@ export default {
   computed: {
     ...mapGetters({
       activeUser: 'users/activeUser',
-      books: 'books/usersBooks',
+      books: 'books/filteredUsersBooks',
       tests: 'tests/tests',
     }),
   },
   methods: {
     ...mapActions({
-      fetchBooks: 'books/fetchBooks',
+      fetchBooks: 'books/fetchUserBooks',
       deleteBook: 'books/deleteBook',
       createBook: 'books/createBook',
       fetchTests: 'tests/fetchTests',

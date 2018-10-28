@@ -1,7 +1,8 @@
 <template lang="pug">
 v-navigation-drawer#right-nav(v-model="local_open" temporary="" absolute="" right="")
-  filter-books-form(v-if="form === 'FilterBooksForm'")
-  test-settings-form(v-if="form === 'TestSettingsForm'")
+  test-settings-form(v-if="$route.name === 'test'")
+  filter-books-form(v-if="$route.name === 'books' || $route.name === 'library'")
+
 </template>
 
 <script>

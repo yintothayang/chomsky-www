@@ -82,7 +82,8 @@ export default {
       display flex
       flex-basis 100%
       line-height 1em
-      margin-bottom .2em
+      margin-bottom .5em
+
       .name
         font-size 1.1em
         font-weight 600
@@ -97,6 +98,7 @@ export default {
       display flex
       flex-basis 100%
       align-items center
+      margin-bottom .2em
       .tags
         display flex
         flex-basis 100%

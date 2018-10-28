@@ -1,13 +1,13 @@
 <template lang="pug">
-#filter-decks-modal
+#filter-books-form
   v-card-title
-    span.headline Filter Decks
+    span.headline Filter Books
   v-container(grid-list-md='')
     v-layout(wrap='')
       v-flex(xs12='', sm6='', md12='')
-        v-text-field(label='Search' v-model="search")
+        v-text-field(label='Book Name' v-model="name")
       v-flex(xs12='', sm6='', md12='')
-        v-select(v-model="decksPerRow" :items="['auto', 1, 2, 3, 4, 5, 'max']" label="Decks per row")
+        v-text-field(label='Book Tags' v-model="tags")
 
 
 </template>
@@ -15,36 +15,42 @@
 <script>
 import {mapActions, mapMutations, mapGetters} from 'vuex'
 export default {
-  name: 'FilterDecksForm',
-  data(){
-    return {
-      card: {}
+  name: 'FilterBooksForm',
+  watch: {
+    $route: function(){
+      this.updateFilters({
+        name: null,
+        tags: null,
+        advanced: true,
+        basic: true,
+      })
     }
   },
   computed: {
     ...mapGetters({
-      filters: 'decks/filters',
+      filters: 'books/filters',
     }),
-    search: {
+    name: {
       get(){
-        return this.filters.search
+        return this.filters.name
       },
       set(value){
-        this.updateFilters({search: value})
+        this.updateFilters({name: value})
       }
     },
-    decksPerRow: {
+    tags: {
       get(){
-        return this.filters.decksPerRow
+        return this.filters.tags
       },
       set(value){
-        this.updateFilters({decksPerRow: value})
+        this.updateFilters({tags: value})
       }
     },
+
   },
   methods: {
     ...mapMutations({
-      updateFilters: 'decks/UPDATE_FILTERS',
+      updateFilters: 'books/UPDATE_FILTERS',
     }),
   }
 }
@@ -52,7 +58,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#filter-decks-form
+#filter-books-form
   background rgba(0, 0, 0, 0)
   .v-card__title
     padding-bottom 0px
@@ -60,4 +66,5 @@ export default {
   .container
     .v-input
       margin-top 8px
+
 </style>

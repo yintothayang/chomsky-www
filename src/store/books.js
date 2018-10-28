@@ -31,11 +31,30 @@ var getters = {
     if(state.filters.tags){
       books = books.filter(b => b.tags.toLowerCase().includes(state.filters.tags.toLowerCase()))
     }
+    if(!state.filters.basic){
+      books = books.filter(b => b.type != 'basic')
+    }
+    if(!state.filters.advanced){
+      books = books.filter(b => b.type != 'advanced')
+    }
     return books
   },
   libraryBooks: state => state.library,
   filteredLibraryBooks: state => {
-    return state.libraryBooks
+    let books = state.libraryBooks
+    if(state.filters.name){
+      books = books.filter(b => b.name.toLowerCase().includes(state.filters.name.toLowerCase()))
+    }
+    if(state.filters.tags){
+      books = books.filter(b => b.tags.toLowerCase().includes(state.filters.tags.toLowerCase()))
+    }
+    if(!state.filters.basic){
+      books = books.filter(b => b.type != 'basic')
+    }
+    if(!state.filters.advanced){
+      books = books.filter(b => b.type != 'advanced')
+    }
+    return books
   },
   filters: state => state.filters,
 }

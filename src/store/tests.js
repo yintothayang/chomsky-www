@@ -34,6 +34,10 @@ var getters = {
 
 // Mutations
 var mutations = {
+  ["RESET"] (state) {
+    state.tests = []
+    state.currentTest = null
+  },
   ["SET_CURRENT_TEST"] (state, test) {
     state.currentTest = test
   },

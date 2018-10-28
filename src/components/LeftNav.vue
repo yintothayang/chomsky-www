@@ -9,7 +9,7 @@
           v-list-tile-content
             v-list-tile-title.title {{ link.title }}
     v-list.logout(dense='')
-      router-link.link(:to="{name: 'login'}" tag="div" @click.native="logout()")
+      .link(@click="onLogout()")
         v-list-tile
           v-list-tile-action
             v-icon(color="green") exit_to_app
@@ -40,9 +40,6 @@ export default {
     ...mapGetters({
       open: 'leftnav/open',
     }),
-    ...mapActions({
-      logout: 'users/logout',
-    }),
     links(){
       return [
         { title: 'Books', icon: 'book', to: {name: 'books'}, color: "blue"},
@@ -54,8 +51,19 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setOpen: 'leftnav/SET_OPEN'
-    })
+      setOpen: 'leftnav/SET_OPEN',
+      resetBooks: 'books/RESET',
+      resetTests: 'tests/RESET',
+    }),
+    ...mapActions({
+      logout: 'users/logout',
+    }),
+    async onLogout(){
+      await this.logout()
+      this.resetBooks()
+      this.resetTests()
+      this.$router.push({name: 'login'})
+    }
   }
 }
 </script>

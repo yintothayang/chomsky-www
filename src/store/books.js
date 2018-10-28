@@ -7,7 +7,6 @@ if(!firebase.apps.length){
 
 // State
 const state = {
-  books: [],
   userBooks: [],
   libraryBooks: [],
   filters: {
@@ -21,7 +20,6 @@ const state = {
 
 // Getters
 var getters = {
-  books: state => state.books,
   usersBooks: state => state.userBooks,
   filteredUsersBooks: state => {
     let books = state.userBooks
@@ -61,6 +59,10 @@ var getters = {
 
 // Mutations
 var mutations = {
+  ["RESET"] (state) {
+    state.userBooks = []
+    state.libraryBooks = []
+  },
   ["SET_USER_BOOKS"] (state, books) {
     state.userBooks = books
   },
@@ -68,22 +70,22 @@ var mutations = {
     state.libraryBooks = books
   },
   ["ADD_BOOK"] (state, book) {
-    state.books.push(book)
+    state.userBooks.push(book)
   },
   ["UPDATE_BOOK"] (state, book) {
-    let book_to_update = state.books.find(b => b.id === book.id)
-    let i = state.books.indexOf(book_to_update)
+    let book_to_update = state.userBooks.find(b => b.id === book.id)
+    let i = state.userBooks.indexOf(book_to_update)
     if(i > -1){
-      state.books.splice(i, 1, book)
+      state.userBooks.splice(i, 1, book)
     } else {
       console.error("book not found while UPDATE_BOOK", book)
     }
   },
   ["DELETE_BOOK"] (state, book) {
-    let book_to_delete = state.books.find(b => b.id === book.id)
-    let i = state.books.indexOf(book_to_delete)
+    let book_to_delete = state.userBooks.find(b => b.id === book.id)
+    let i = state.userBooks.indexOf(book_to_delete)
     if(i > -1){
-      state.books.splice(i, 1)
+      state.userBooks.splice(i, 1)
     }
   },
   ["UPDATE_FILTERS"] (state, updates) {

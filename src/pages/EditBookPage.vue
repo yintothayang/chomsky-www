@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      books: 'books/books'
+      books: 'books/usersBooks'
     }),
     valid(){
       if(this.book.pages.length){
@@ -94,7 +94,7 @@ export default {
       deleteBook: 'books/DELETE_BOOK',
       updateBook: 'books/updateBook',
       createBook: 'books/createBook',
-      fetchBooks: 'books/fetchBooks',
+      fetchBooks: 'books/fetchUserBooks',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',

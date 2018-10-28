@@ -47,7 +47,7 @@ export default {
     }),
   },
   async created(){
-    console.log("0.0.1")
+    console.log("version: 0.0.0")
   }
 }
 </script>

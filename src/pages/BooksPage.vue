@@ -12,13 +12,13 @@
 
   .actions-container
     .item.add-book
-      v-btn.on(small fab dark color="blue lighten-1" slot="activator" @click="setOpenModal('NewBookModal')")
+      v-btn.on(dark color="blue lighten-1" slot="activator" @click="setOpenModal('NewBookModal')")
         v-icon(dark) add
 
     .item.upload-book
       input(type="file" id="input" ref="fileUpload" multiple @change="onFilesUploaded()")
       v-tooltip(left)
-        v-btn.on(small fab dark color="purple lighten-1" slot="activator" @click="upload()")
+        v-btn.on(dark color="purple lighten-1" slot="activator" @click="upload()")
           v-icon(dark) cloud_upload
         span Upload a Book
 
@@ -132,10 +132,12 @@ export default {
 
 <style lang="stylus" scoped>
 #books-page
+  height 100%
+  display inline-table
   .book-list
     overflow-y auto
-    padding 1em
-    height 90%
+    padding 1em 1em 0em 1em
+    height calc(100% - 4em)
 
     .book-container
       padding .2em 0em
@@ -160,8 +162,8 @@ export default {
 
   .actions-container
     display flex
-    position absolute
-    top 90%
+    position fixed
+    bottom 0%
     width 100%
 
     .item

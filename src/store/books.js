@@ -37,7 +37,7 @@ var getters = {
     }
     return books
   },
-  libraryBooks: state => state.library,
+  libraryBooks: state => state.libraryBooks,
   filteredLibraryBooks: state => {
     let books = state.libraryBooks
     if(state.filters.name){
@@ -88,6 +88,13 @@ var mutations = {
       state.userBooks.splice(i, 1)
     }
   },
+  ["REMOVE_LIBRARY_BOOK"] (state, book) {
+    let book_to_delete = state.libraryBooks.find(b => b.id === book.id)
+    let i = state.libraryBooks.indexOf(book_to_delete)
+    if(i > -1){
+      state.libraryBooks.splice(i, 1)
+    }
+  },
   ["UPDATE_FILTERS"] (state, updates) {
     state.filters = Object.assign(state.filters, updates)
   },
@@ -128,7 +135,7 @@ var actions = {
     res.forEach((doc) =>{
       let book = doc.data()
       book.id = doc.id
-      if(book.owned_by != rootState.users.activeUser.uid){
+      if(book.owned_by != rootState.users.activeUser.uid && book.created_by != rootState.users.activeUser.uid){
         books.push(book)
       }
     })
@@ -163,6 +170,7 @@ var actions = {
     return firestore.collection("books").add(book).then(res => {
       book.id = res.id
       commit("ADD_BOOK", book)
+      commit("REMOVE_LIBRARY_BOOK", bookCopy)
     })
   },
   updateBook: async ({commit}, book) => {

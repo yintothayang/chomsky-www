@@ -5,7 +5,8 @@
     transition(mode="out-in" name="fade")
       navbar(v-if="$route.name != 'home'")
     transition(mode="out-in" name="fade")
-      router-view.page-container
+      .page-container
+        router-view
     //- transition(mode="out-in" name="fade" v-if="loading")
     //-   .load-container(v-if="loading")
     //-     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
@@ -55,7 +56,7 @@ export default {
 
 <style lang="stylus">
 #app
-  height 100vh
+  height 100%
   font-family 'Raleway', sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
@@ -65,7 +66,8 @@ export default {
   overflow hidden
 
   .page-container
-    height calc(100% - 64px)
+    margin-top 56px
+    height calc(100% - 56px)
 
   .fade-enter-active, .fade-leave-active
     transition: opacity .2s

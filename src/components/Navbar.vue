@@ -37,6 +37,7 @@ export default {
 
 <style lang="stylus" scoped>
 #navbar
+  position fixed
   .v-toolbar__title
     margin 0px
     font-size 1.8em

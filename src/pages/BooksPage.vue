@@ -134,6 +134,7 @@ export default {
 #books-page
   height 100%
   display inline-table
+  width 100%
   .book-list
     overflow-y auto
     padding 1em 1em 0em 1em

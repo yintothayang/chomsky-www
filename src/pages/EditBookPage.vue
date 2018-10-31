@@ -195,11 +195,17 @@ export default {
 <style lang="stylus" scoped>
 #edit-book-page
   padding 1em
+  height 100%
+  width 100%
+
   .book
     position relative
     box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
     padding 1em
     background white
+    height 100%
+
+  form
     height 100%
 
   .name-container
@@ -212,14 +218,15 @@ export default {
     margin-bottom 1em
 
   .pages-container
-    display flex
     flex-wrap wrap
-    height 75%
+    height 70%
     overflow-y hidden
+    display table
+    text-align left
+    margin-bottom 1em
 
     .pages-label
       flex-basis 100%
-      text-align left
       font-size 1.1em
       font-weight 400
   .pages

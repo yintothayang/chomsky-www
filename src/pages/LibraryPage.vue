@@ -61,6 +61,9 @@ export default {
 
 <style lang="stylus" scoped>
 #library-page
+  height 100%
+  display inline-table
+  width 100%
   .book-list
     overflow-y auto
     padding 1em

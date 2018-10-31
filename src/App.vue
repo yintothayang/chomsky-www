@@ -69,6 +69,7 @@ export default {
     margin-top 56px
     height calc(100% - 56px)
 
+
   .fade-enter-active, .fade-leave-active
     transition: opacity .2s
 

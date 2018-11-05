@@ -9,7 +9,10 @@
       v-text-field.tags(v-model="book.tags" label="Tags" :hide-details="true")
 
     .pages-container
-      span.label.pages-label Pages
+      .top
+        span.label.pages-label Pages
+        v-icon(color="blue accent-3" v-if="book.type == 'advanced'") settings
+
       transition-group.pages(mode="out-in" name="fade" tag="div")
         .page-holder(v-for="(page, pageIndex) in book.pages" :key="book.pages.indexOf(page)")
           .page.basic(v-if="book.type != 'advanced'")
@@ -64,9 +67,9 @@ export default {
       loading: false,
       book: {
         name: "New Book",
-        pages: []
+        pages: [],
+        pageKeys: [],
       },
-      bookKeys: []
     }
   },
   computed: {
@@ -155,16 +158,6 @@ export default {
       })
       this.book.pages = pages
     },
-    initAdvanced(){
-      let i = 0
-      this.book.pages.forEach(page => {
-        this.bookKeys.push([])
-        Object.keys(page).forEach(key => {
-          this.bookKeys[i].push(key)
-        })
-        i++
-      })
-    }
   },
   async created(){
     let bookId = this.$route.params.id
@@ -225,10 +218,15 @@ export default {
     text-align left
     margin-bottom 1em
 
-    .pages-label
-      flex-basis 100%
+    .top
+      display flex
       font-size 1.1em
       font-weight 400
+
+      i
+        margin-left auto
+        cursor pointer
+
   .pages
     overflow-y auto
     padding-top .5em

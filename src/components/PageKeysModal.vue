@@ -1,7 +1,7 @@
 <template lang="pug">
   v-layout(row='', justify-center='')
     v-dialog(v-model='open', max-width='500px')
-      v-card#create-test-modal
+      v-card#page-keys-modal
         v-card-title
           span.headline Page Keys
 
@@ -21,13 +21,13 @@ export default {
   name: 'PageKeysModal',
   data() {
     return {
-      loading: false,
-      book: null
+      keys: null
     }
   },
   watch: {
     options: function(newVal, oldVal){
-      this.book = newVal
+      console.log("update", newVal)
+      this.keys = newVal
     }
   },
   computed: {
@@ -58,7 +58,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-#create-test-modal
+#page-keys-modal
   .v-card__title
     padding-bottom 0px
 
@@ -69,14 +69,6 @@ export default {
   .form
     padding 1em
 
-    .face
-      border 1px solid rgba(0, 0, 0, .1)
-      padding .4em
-      text-align left
-      margin-bottom .6em
-      .name
-        font-size 1em
-        font-weight 500
 
 
 

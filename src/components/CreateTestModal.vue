@@ -38,7 +38,9 @@ export default {
   },
   watch: {
     options: function(newVal, oldVal){
-      this.book = newVal
+      if(newVal.name){
+        this.book = newVal
+      }
     }
   },
   computed: {

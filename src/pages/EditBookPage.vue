@@ -30,14 +30,14 @@
             .page.advanced(v-else)
               .page-rows
                 .page-row(v-for="(value, key, index) in page")
-                  v-text-field.value(v-model="page[key]" :label="key" hide-details="true")
+                  v-text-field.value(v-model="page[key]" :label="key" :hide-details="true")
               .action
                 v-btn(small color="white" @click="deletePage(page)")
                   v-icon(dark color="red lighten-1") clear
 
     .actions-container
       v-tooltip(left)
-        v-btn.on(fab dark color="blue lighten-1" @click="save()" slot="activator")
+        v-btn(small fab dark color="blue lighten-1" @click="save()" slot="activator")
           v-icon(dark) save
         span Save Book
   v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
@@ -76,7 +76,13 @@ export default {
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',
       setToast: 'toast/SET_TOAST',
+      setOpenModal: 'modals/SET_OPEN_MODAL',
+      setModalOptions: 'modals/SET_OPTIONS',
     }),
+    openPageKeysModal(){
+      this.setModalOptions(this.book.pageKeys)
+      this.setOpenModal('PageKeysModal')
+    },
     addPage(){
       let page = {}
       if(this.book.type === 'basic'){
@@ -187,7 +193,7 @@ export default {
       box-shadow -1px 1px 2px 1px rgba(0, 0, 0, .05)
     .page
       padding 0em 0em 0em .5em
-      border 1px solid rgba(0, 0, 0, .05)
+      border 1px solid rgba(0, 0, 0, .15)
       position relative
       display flex
       align-items center
@@ -200,6 +206,9 @@ export default {
           display flex
           flex-wrap wrap
           padding-bottom 1em
+
+          .page-row
+            margin-bottom .5em
 
       &.basic
         .front

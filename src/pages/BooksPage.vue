@@ -10,17 +10,18 @@
     span.or or
     v-btn(color="info" @click="$router.push({name: 'library'})" large) Visit Library
 
-  .actions-container
-    .item.add-book
-      v-btn.on(dark color="blue lighten-1" slot="activator" @click="setOpenModal('NewBookModal')")
-        v-icon(dark) add
+  .actions-container(v-if="books.length && !loading")
+    .actions
+      .item.add-book
+        v-btn.on(dark small fab color="blue lighten-1" slot="activator" @click="setOpenModal('NewBookModal')")
+          v-icon(dark) add
 
-    .item.upload-book
-      input(type="file" id="input" ref="fileUpload" multiple @change="onFilesUploaded()")
-      v-tooltip(left)
-        v-btn.on(dark color="purple lighten-1" slot="activator" @click="upload()")
-          v-icon(dark) cloud_upload
-        span Upload a Book
+      .item.upload-book
+        input(type="file" id="input" ref="fileUpload" multiple @change="onFilesUploaded()")
+        v-tooltip(left)
+          v-btn.on(small fab dark color="purple lighten-1" slot="activator" @click="upload()")
+            v-icon(dark) cloud_upload
+          span Upload a Book
 
   v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate v-if="loading")
 </template>
@@ -138,7 +139,7 @@ export default {
   .book-list
     overflow-y auto
     padding 1em 1em 0em 1em
-    height calc(100% - 4em)
+    height calc(100% - 52px - 2em)
 
     .book-container
       padding .2em 0em
@@ -163,13 +164,20 @@ export default {
 
   .actions-container
     display flex
-    position fixed
-    bottom 0%
+    align-items center
+    justify-content center
+    bottom 10px
     width 100%
+    margin-top 1em
+
+    .actions
+      display flex
+      background white
+      border-radius 50px
+      box-shadow -1px 2px 2px 1px rgba(0, 0, 0, .05)
 
     .item
-      flex-basis 100%
-      margin-bottom .5em
+      margin 0em .3em
 
     .upload-book
       input

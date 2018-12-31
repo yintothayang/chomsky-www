@@ -7,13 +7,11 @@
     transition(mode="out-in" name="fade")
       .page-container
         router-view
-    //- transition(mode="out-in" name="fade" v-if="loading")
-    //-   .load-container(v-if="loading")
-    //-     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
     right-nav
 
     new-book-modal
     create-test-modal
+    page-keys-modal
     v-snackbar(v-model="toast.open" :right="true" :top="true" :timeout="1200" :color="toast.color") {{toast.message}}
 
 </template>
@@ -24,6 +22,7 @@ import RightNav from '@/components/RightNav'
 import Navbar from '@/components/Navbar'
 import NewBookModal from '@/components/NewBookModal.vue'
 import CreateTestModal from '@/components/CreateTestModal.vue'
+import PageKeysModal from '@/components/PageKeysModal.vue'
 
 import API from '@/api'
 import {mapActions, mapMutations, mapGetters} from 'vuex'
@@ -36,6 +35,7 @@ export default {
     Navbar,
     NewBookModal,
     CreateTestModal,
+    PageKeysModal,
   },
   data(){
     return {

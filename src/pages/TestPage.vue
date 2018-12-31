@@ -11,17 +11,18 @@
 
 
   .actions-container(v-if="currentPage")
-    v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
-      v-icon(dark) fast_rewind
+    .actions
+      v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
+        v-icon(dark) fast_rewind
 
-    v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()"  v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
-      v-icon(dark) volume_up
+      v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()"  v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
+        v-icon(dark) volume_up
 
-    v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
-      v-icon(dark) visibility
+      v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
+        v-icon(dark) visibility
 
-    v-btn(small fab dark color="green lighten-1" slot="activator" @click="skip()")
-      v-icon(dark) fast_forward
+      v-btn(small fab dark color="green lighten-1" slot="activator" @click="skip()")
+        v-icon(dark) fast_forward
 
   .answer-modal(v-if="showAnswer")
     span {{currentPage.back.answer}}
@@ -170,12 +171,28 @@ export default {
     z-index 2
 
   .actions-container
-    padding 0em 1em
     position absolute
-    bottom 8%
     display flex
-    justify-content space-between
+    align-items center
+    justify-content center
+    bottom calc(52px + 2em)
     width 100%
+
+    .actions
+      align-items center
+      justify-content space-around
+      display flex
+      background white
+      border-radius 50px
+      box-shadow -1px 2px 2px 1px rgba(0, 0, 0, .05)
+      padding .6em .7em
+
+      button
+        margin 0 1.5em
+        &:nth-child(1)
+          margin-left 0
+        &:last-child
+          margin-right 0
 
   .answer-modal
     position absolute

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import users from './users'
 import books from './books'
 import tests from './tests'
+import reports from './reports'
 
 import components from './components'
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     users,
     books,
     tests,
+    reports,
 
     // Components
     navbar: components.navbar,

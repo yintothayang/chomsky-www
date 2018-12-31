@@ -65,6 +65,8 @@ export default {
   background-color #efefef
   overflow hidden
 
+  font-family 'Inter UI', sans-serif
+
   .page-container
     margin-top 56px
     height calc(100% - 56px)

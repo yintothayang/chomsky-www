@@ -62,7 +62,6 @@ export default {
 
     .name
       font-size 3.5em
-      font-family 'Cinzel', serif
 
   .auth-container
     margin-top 4em

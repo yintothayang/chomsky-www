@@ -6,6 +6,8 @@
         span.name {{test.name}}
 
         .test-actions-container
+          v-btn(color="red" flat="" @click="deleteTest(test)") Delete
+
           router-link(:to="{name: 'test', params: {id: test.id}}" tag="div")
             v-btn(color="green" flat="") Play
 
@@ -50,6 +52,7 @@ export default {
   methods: {
     ...mapActions({
       fetchTests: 'tests/fetchTests',
+      deleteTest: 'tests/deleteTest',
     }),
     ...mapMutations({
       setNavbarTitle: 'navbar/SET_TITLE',

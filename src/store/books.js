@@ -113,7 +113,7 @@ var mutations = {
 
 // Actions
 var actions = {
-  fetchUserBooks: async ({commit, rootState}) => {
+  fetchUserBooks: async ({commit, dispatch, rootState}) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
     let query = firestore.collection("books").where('owned_by', '==', rootState.users.activeUser.uid)
@@ -121,6 +121,10 @@ var actions = {
     let books = []
     res.forEach((doc) =>{
       let book = doc.data()
+      // TODO remove hack, convert books
+      if(typeof book.pages == "string"){
+        book.pages = JSON.parse(book.pages)
+      }
       book.id = doc.id
       books.push(book)
     })
@@ -148,7 +152,11 @@ var actions = {
     book.created_at = new Date().toJSON()
     book.owned_by = rootState.users.activeUser.uid
     book.version = rootState.books.version
+    // Hack becasue firebase is lame
+    const pages = book.pages
+    book.pages = JSON.stringify(pages)
     return firestore.collection("books").add(book).then(res => {
+      book.pages = pages
       book.id = res.id
       commit("ADD_BOOK", book)
     })
@@ -176,7 +184,12 @@ var actions = {
   updateBook: async ({commit}, book) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
+
+    // Hack because firebase is lame
+    const pages = book.pages
+    book.pages = JSON.stringify(pages)
     await firestore.collection("books").doc(book.id).update(book)
+    book.pages = pages
     commit("UPDATE_BOOK", book)
     return book
   },

@@ -9,13 +9,13 @@
           .face.front
             span.name Front
             .question-container
-              v-select.question(:items="questionKeys" label="Question" v-model="test.questionKey")
+              v-select.question(:items="questionKeys" label="Question" v-model="test.front.pageKey" item-text="name" return-object)
             .image-container
-              v-select.image(:items="questionKeys" label="Image" v-model="test.frontImage")
+              v-select.image(:items="questionKeys" label="Image" v-model="test.front.image" item-text="name" return-object)
           .face.back
             span.name Back
             .answer-container
-              v-select.answer(:items="answerKeys" label="Answer" v-model="test.answerKey")
+              v-select.answer(:items="answerKeys" label="Answer" v-model="test.back.pageKey" item-text="name" return-object)
 
         v-card-actions
           v-spacer
@@ -32,7 +32,14 @@ export default {
   data() {
     return {
       loading: false,
-      test: {},
+      test: {
+        front: {
+          pageKey: {}
+        },
+        back: {
+          pageKey: {}
+        }
+      },
       book: null
     }
   },
@@ -50,27 +57,13 @@ export default {
       tests: 'tests/tests'
     }),
     valid(){
-      if(this.test.answerKey){
-        return true
-      } else {
-        return false
-      }
+      return this.test.front.pageKey ? true : false
     },
     questionKeys(){
-      if(this.book){
-        let keys = Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
-        keys.push("none")
-        return keys
-      } else {
-        return []
-      }
+      return this.book ? this.book.pageKeys : []
     },
     answerKeys(){
-      if(this.book){
-        return Object.keys(this.book.pages[0]).filter(key => key.charAt(0) != "$")
-      } else {
-        return []
-      }
+      return this.book ? this.book.pageKeys : []
     },
     open: {
       get(){
@@ -100,29 +93,8 @@ export default {
           mode: 'text',
           lang: '日本語',
           dialect: 'ja-JP',
-          questionKey: this.test.questionKey && this.test.questionKey != "none" ? this.test.questionKey : null,
-          answerKey: this.test.answerKey,
-          pages: this.book.pages.map(p => {
-            let page = {
-              front: {},
-              back: {}
-            }
-            // TODO change this
-            if(p.$audio){
-              page.$audio = p.$audio
-            }
-            if(this.test.questionKey && this.test.questionKey != "none"){
-              page.front.question = p[this.test.questionKey]
-            }
-            if(this.test.frontImage){
-              page.front.image = p[this.test.frontImage]
-            }
-            page.back.answer = p[this.test.answerKey]
-            if(this.test.backImage){
-              page.back.image = p[this.test.backImage]
-            }
-            return page
-          })
+          front: this.test.front,
+          back: this.test.back,
         })
         this.open = ""
         this.$router.push({name: 'test', params: {id: test.id}})

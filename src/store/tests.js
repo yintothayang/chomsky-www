@@ -120,16 +120,12 @@ var actions = {
       dialect: 'ja-JP',
       autoStart: true,
       book_id: book.id,
-      pages: book.pages.map(page => {
-        return {
-          front: {
-            question: page.front,
-          },
-          back: {
-            answer: page.back,
-          }
-        }
-      })
+      front: {
+        pageKey: {name: "front", type: "string"},
+      },
+      back: {
+        pageKey: {name: "back", type: "string"},
+      }
     }
     await dispatch('createTest', test)
     return test
@@ -144,12 +140,12 @@ var actions = {
   deleteTest: async ({commit}, test) => {
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
-    return await firestore.collection("test").doc(test.id).delete().then(res => {
+    return await firestore.collection("tests").doc(test.id).delete().then(res => {
       commit("REMOVE_TEST", test)
     })
   },
   attempt: ({state, getters}, attempt) => {
-    let currentAnswer = getters.currentPage.back.answer
+    let currentAnswer = getters.currentPage.back.value
     let result = {state: null}
     if(attempt.mode === 'text'){
       if(attempt.input.toLowerCase() === currentAnswer.toLowerCase()){

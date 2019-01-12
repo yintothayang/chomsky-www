@@ -1,31 +1,37 @@
 <template lang="pug">
 #test-page
-  .page-container(v-if="currentPage && !loading")
-    .page
-      img(v-if="currentPage.front.image" :src="currentPage.front.image")
-      span.question(v-if="currentPage.front.question") {{currentPage.front.question}}
+  .page-container(v-if="currentPage && !loading" v-touch="{left: () => skip(), right: () => previous()}")
+    .face-container(@click="front = !front")
+      transition(name="component-fade" mode="out-in")
+        .face(v-if="front")
+          img(v-if="currentPage.front.image" :src="currentPage.front.image")
+          span(v-if="currentPage.front.value") {{currentPage.front.value}}
+        .face(v-if="!front")
+          img(v-if="currentPage.back.image" :src="currentPage.back.image")
+          span(v-if="currentPage.back.value") {{currentPage.back.value}}
+
   .text-input-container(v-if="mode === 'text' && !loading")
     text-input(:page="currentPage" :state="state" @attempt="onAttempt" @success="onSuccess")
   .speech-input-container(v-if="mode === 'speech' && !loading")
     speech-input(:page="currentPage" @attempt="onAttempt" @success="onSuccess")
 
 
-  .actions-container(v-if="currentPage")
-    .actions
-      v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
-        v-icon(dark) fast_rewind
+  //- .actions-container(v-if="currentPage")
+  //-   .actions
+  //-     v-btn(small fab dark color="green lighten-1" slot="activator" @click="previous()")
+  //-       v-icon(dark) fast_rewind
 
-      v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()"  v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
-        v-icon(dark) volume_up
+  //-     v-btn(small fab dark color="purple lighten-1" slot="activator" @click="playAudio()"  v-if="currentPage && currentPage.$audio && currentPage.$audio.length && currentPage.$audio.charAt(0) === 'h'")
+  //-       v-icon(dark) volume_up
 
-      v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
-        v-icon(dark) visibility
+  //-     v-btn(small fab dark color="blue lighten-1" slot="activator" @click="showAnswer = !showAnswer")
+  //-       v-icon(dark) visibility
 
-      v-btn(small fab dark color="green lighten-1" slot="activator" @click="skip()")
-        v-icon(dark) fast_forward
+  //-     v-btn(small fab dark color="green lighten-1" slot="activator" @click="skip()")
+  //-       v-icon(dark) fast_forward
 
   .answer-modal(v-if="showAnswer")
-    span {{currentPage.back.answer}}
+    span {{currentPage.back.value}}
 
   .load-container(v-if="loading")
     v-progress-circular.loading(:size="120" :width="10" color="blue" indeterminate)
@@ -50,14 +56,18 @@ export default {
   data() {
     return {
       loading: false,
+      front: true,
       showAnswer: false,
       state: null,
+      book: null,
     }
   },
   computed: {
     ...mapGetters({
+      activeUser: 'users/activeUser',
       test: 'tests/currentTest',
       tests: 'tests/tests',
+      books: 'books/filteredUsersBooks',
       currentPage: 'tests/currentPage',
       pageIndex: 'tests/pageIndex',
       mode: 'tests/mode',
@@ -76,6 +86,7 @@ export default {
     }),
     ...mapActions({
       fetchTests: 'tests/fetchTests',
+      fetchBooks: 'books/fetchUserBooks',
       attempt: 'tests/attempt',
     }),
     async onAttempt(attempt){
@@ -112,20 +123,42 @@ export default {
       if(this.$refs.audio){
         this.$refs.audio.play()
       }
-    }
+    },
   },
   async created(){
     this.loading = true
-    !this.tests.length ? await this.fetchTests() : void(0)
+
+    let promises = []
+    if(!this.tests.length) promises.push(this.fetchTests())
+    if(!this.books.length) promises.push(this.fetchBooks())
+    await Promise.all(promises)
+
+    this.loading = false
     let test = this.tests.find(t => t.id == this.$route.params.id)
     if(test){
+      this.book = this.books.find(b => b.id == test.book_id)
+      test.pages = this.book.pages.map(page => {
+        const front = page.find(item => item.name == test.front.pageKey.name)
+        const back = page.find(item => item.name == test.back.pageKey.name)
+        return {
+          front: {
+            value: front ? front.value : null,
+            type: front ? front.type : null,
+            image: front ? front.image : null,
+          },
+          back: {
+            value: back ? back.value : null,
+            type: back ? back.type : null,
+            image: back ? back.image : null,
+          },
+        }
+      })
       this.setCurrentTest(test)
+      this.shuffle()
+      this.setNavbarTitle(test.name)
     } else {
       this.$router.push({name: 'books'})
     }
-    this.shuffle()
-    this.loading = false
-    this.setNavbarTitle(this.test.name)
   }
 }
 </script>
@@ -147,7 +180,7 @@ export default {
     margin-bottom 2em
     margin-top 2em
 
-    .page
+    .face-container
       display flex
       flex-wrap wrap
       align-items center
@@ -156,14 +189,16 @@ export default {
       box-shadow -1px 3px 2px 1px rgba(0, 0, 0, .1)
       flex-basis 80%
 
+      .face
+        padding 2.2em .2em
+
       img
         width auto
         height 100px
 
-      .question
+      span
         flex-basis 100%
-        padding .4em 0em
-        font-size 2em
+        font-size 2.5em
 
   .text-input-container
     margin-bottom 1em
@@ -203,5 +238,7 @@ export default {
     font-size 1em
     width 80%
     padding .5em
+
+
 
 </style>

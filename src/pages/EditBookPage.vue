@@ -21,16 +21,16 @@
         .page-holder(v-for="(page, pageIndex) in book.pages" :key="book.pages.indexOf(page)")
 
             .page.basic(v-if="book.type != 'advanced'")
-              v-text-field.front(v-model="page.front" label="Front")
-              v-text-field.back(v-model="page.back" label="Back")
+              v-text-field.front(v-model="page[0].value" label="Front")
+              v-text-field.back(v-model="page[1].value" label="Back")
               .action
                 v-btn(small color="white" @click="deletePage(page)")
                   v-icon(dark color="red lighten-1") clear
 
             .page.advanced(v-else)
               .page-rows
-                .page-row(v-for="(value, key, index) in page")
-                  v-text-field.value(v-model="page[key]" :label="key" :hide-details="true")
+                .page-row(v-for="item in page")
+                  v-text-field.value(v-model="item.value" :label="item.name" :hide-details="true")
               .action
                 v-btn(small color="white" @click="deletePage(page)")
                   v-icon(dark color="red lighten-1") clear
@@ -51,14 +51,15 @@ export default {
   data() {
     return {
       loading: false,
+      pageKeys: [
+        {
+          name: "new key",
+          type: "string"
+        },
+      ],
       book: {
         name: "New Book",
         pages: [],
-        pageKeys: {
-          test1: "string",
-          test2: "string",
-          test3: "string",
-        },
       },
     }
   },
@@ -80,27 +81,36 @@ export default {
       setModalOptions: 'modals/SET_OPTIONS',
     }),
     openPageKeysModal(){
-      this.setModalOptions(this.book.pageKeys)
+      this.setModalOptions({pageKeys: this.pageKeys, book: this.book})
       this.setOpenModal('PageKeysModal')
     },
     addPage(){
-      let page = {}
+      let page = []
       if(this.book.type === 'basic'){
-        page.front = ""
-        page.back = ""
+        page.push({name: 'front', value: ""})
+        page.push({name: 'back', value: ""})
       } else {
         // TODO different key types
-        Object.keys(this.book.pageKeys).forEach(key => {
-          page[key] = ""
+        this.pageKeys.forEach(key => {
+          page.push({name: key.name, value: ""})
         })
       }
       this.book.pages.push(page)
+      console.log(this.book.pages)
     },
     deletePage(page){
       this.book.pages.splice(this.book.pages.indexOf(page), 1)
     },
     async save(){
       this.loading = true
+      if(this.book.type === "basic"){
+        this.book.pageKeys = [
+          {name: "front", type: "string"},
+          {name: "back", type: "string"}
+        ]
+      } else {
+        this.book.pageKeys = this.pageKeys
+      }
       this.book.id ? await this.updateBook(this.book) : await this.createBook(this.book)
       this.loading = false
       this.setToast({message: "Book Saved!", open: true})
@@ -119,7 +129,12 @@ export default {
         this.loading = false
       }
       let foundBook = this.books.find(book => book.id === bookId)
-      foundBook ? this.book = Object.assign({}, foundBook) : this.$router.push({name: 'books'})
+      if(foundBook){
+        this.pageKeys = Object.assign({}, foundBook.pageKeys)
+        this.book = Object.assign({}, foundBook)
+      } else {
+        this.$router.push({name: 'books'})
+      }
     }
     this.setNavbarTitle(this.book.name)
   }

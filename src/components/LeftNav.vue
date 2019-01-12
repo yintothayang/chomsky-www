@@ -12,7 +12,7 @@
       .link(@click="onLogout()")
         v-list-tile
           v-list-tile-action
-            v-icon(color="green") exit_to_app
+            v-icon(color="red") exit_to_app
           v-list-tile-content
             v-list-tile-title.title Logout
 
@@ -43,9 +43,9 @@ export default {
     links(){
       return [
         { title: 'Books', icon: 'book', to: {name: 'books'}, color: "blue"},
+        { title: 'Tests', icon: 'description', to: {name: 'tests'}, color: "green"},
         { title: 'Library', icon: 'local_library', to: {name: 'library'}, color: "purple"},
-        // { title: 'Tests', icon: 'description', to: {name: 'tests'}, color: "green"},
-        { title: 'Help', icon: 'contact_support', to: {name: 'about'}, color: "red" },
+        // { title: 'Help', icon: 'contact_support', to: {name: 'about'}, color: "red" },
       ]
     }
   },

@@ -1,12 +1,12 @@
 <template lang="pug">
-v-toolbar#navbar(dark="" color="blue accent-3")
+v-toolbar#navbar(color="white")
   v-toolbar-side-icon.toggle(@click="toggleLeftNav()" v-if="activeUser")
   v-spacer.hidden-md-and-up
-  v-toolbar-title.white--text {{title}}
+  v-toolbar-title {{title}}
   v-spacer
   v-spacer.hidden-sm-and-down
-  v-icon(dark @click="openRightNav()" v-if="$route.name == 'books' || $route.name == 'library'") filter_list
-  v-icon(dark @click="openTestSettingsModal()" v-if="$route.name == 'test'") settings
+  v-icon(@click="openRightNav()" v-if="$route.name == 'books' || $route.name == 'library'") filter_list
+  v-icon(@click="openTestSettingsModal()" v-if="$route.name == 'test'") settings
 </template>
 
 <script>
@@ -38,10 +38,13 @@ export default {
 <style lang="stylus" scoped>
 #navbar
   position fixed
+
   .v-toolbar__title
     margin 0px
     font-size 1.8em
-    font-weight 400
+    font-weight 500
+    color rgba(0, 0, 0, .6)
+
 
 
 </style>

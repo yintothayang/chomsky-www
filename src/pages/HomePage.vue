@@ -16,7 +16,7 @@ export default {
   watch: {
     user: function(){
       if(this.user){
-        this.$router.push({name: 'books'})
+        this.$router.push({name: 'tests'})
       }
     }
   },
@@ -35,7 +35,7 @@ export default {
   },
   created(){
     if(this.user){
-      this.$router.push({name: 'books'})
+      this.$router.push({name: 'tests'})
     }
   },
 }

@@ -129,6 +129,15 @@ var actions = {
       books.push(book)
     })
     commit("SET_USER_BOOKS", books)
+
+    // Start
+    // books.forEach(book => {
+    //   if(!book.pageKeys.length){
+    //     book.pageKeys = Object.values(book.pageKeys)
+    //   }
+    //   console.log(book.pageKeys)
+    //   dispatch("updateBook", book)
+    // })
   },
   fetchLibraryBooks: async ({commit, rootState}) => {
     const firestore = firebase.firestore()

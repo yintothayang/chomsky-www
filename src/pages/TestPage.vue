@@ -199,6 +199,7 @@ export default {
       span
         flex-basis 100%
         font-size 2.5em
+        user-select none
 
   .text-input-container
     margin-bottom 1em

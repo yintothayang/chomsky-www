@@ -4,10 +4,9 @@
     span {{attempt}}
     span {{error}}
   .record-button(@click="toggleRecording()")
-    v-btn.on(fab dark large color="red" v-if="listening")
-      v-icon(dark) mic
-    v-btn.off(fab outline dark large color="red" v-else)
-      v-icon(dark) mic_none
+    v-progress-circular(:size="70" color="red" indeterminate v-if="listening")
+      v-icon(color="red" large) mic
+    v-icon(v-else large) mic
 
 </template>
 
@@ -104,9 +103,11 @@ export default {
     },
     onAttempt(attempts){
       console.log("onAttempt: ", attempts)
+      console.log("answer: ", this.page.back.value.toLowerCase())
       this.status = []
       attempts = attempts.map(a => a.toLowerCase())
-      let i = attempts.indexOf(this.page.back.answer.toLowerCase())
+      console.log(this.page)
+      let i = attempts.indexOf(this.page.back.value.toLowerCase())
       if(i > -1){
         this.status = ['success']
         this.attempt = attempts[i]
@@ -158,8 +159,11 @@ export default {
       border 2px solid lightgreen
 
   .record-button
-    .on
-      animation recording .5s cubic-bezier(.5, .5, 1, 1) infinite alternate
+    height 70px
+    width 70px
+    display flex
+    align-items center
+    justify-content center
 
   @keyframes recording
     from

@@ -131,6 +131,7 @@ var actions = {
     return test
   },
   updateTest: async ({commit}, test) => {
+    if(test.pages) delete test.pages
     const firestore = firebase.firestore()
     firestore.settings({timestampsInSnapshots: true})
     await firestore.collection("tests").doc(test.id).update(test)

@@ -1,7 +1,7 @@
 <template lang="pug">
-#test-page
-  .page-container(v-if="currentPage && !loading" v-touch="{left: () => skip(), right: () => previous()}")
-    .face-container(@click="front = !front")
+#test-page(v-touch="{left: () => skip(), right: () => previous()}" @click="front = !front" @keyup.space="front = !front")
+  .current-page-container(v-if="currentPage && !loading")
+    .face-container()
       transition(name="component-fade" mode="out-in")
         .face(v-if="front")
           img(v-if="currentPage.front.image" :src="currentPage.front.image")
@@ -125,7 +125,22 @@ export default {
       }
     },
   },
+  beforeDestroy(){
+    document.onkeyup = null
+  },
   async created(){
+    document.onkeyup = (event) => {
+      if(event.key === 'p'){
+        this.previous()
+      }
+      if(event.key === 'n'){
+        this.skip()
+      }
+      if(event.code === 'Space'){
+        this.front = !this.front
+      }
+    }
+
     this.loading = true
 
     let promises = []
@@ -166,12 +181,10 @@ export default {
 
 <style lang="stylus">
 #test-page
-  display flex
-  flex-direction column
   align-items center
-  height auto !important
+  height 100%
 
-  .page-container
+  .current-page-container
     display flex
     width 100%
     flex-basis 100%
@@ -202,9 +215,11 @@ export default {
         user-select none
 
   .text-input-container
-    margin-bottom 1em
-    width 60%
-    z-index 2
+    display flex
+    flex-basis 100%
+    justify-content center
+    #text-input
+      width 50%
 
   .actions-container
     position absolute
